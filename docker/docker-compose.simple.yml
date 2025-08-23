@@ -1,0 +1,132 @@
+# Simplified Docker Compose for core services only
+
+services:
+  # =============================================================================
+  # CORE SERVICES
+  # =============================================================================
+
+  # PostgreSQL Database
+  supabase-db:
+    image: supabase/postgres:15.1.0.117
+    ports:
+      - "54322:5432"
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST_AUTH_METHOD: scram-sha-256
+      POSTGRES_INITDB_ARGS: --auth-host=scram-sha-256 --auth-local=scram-sha-256
+    volumes:
+      - supabase-db-data:/var/lib/postgresql/data
+      - ../database/migrations:/docker-entrypoint-initdb.d:ro
+    networks:
+      - crm-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # PostgREST API
+  supabase-rest:
+    image: postgrest/postgrest:v12.0.1
+    depends_on:
+      supabase-db:
+        condition: service_healthy
+    environment:
+      PGRST_DB_URI: postgresql://postgres:postgres@supabase-db:5432/postgres
+      PGRST_DB_SCHEMAS: public
+      PGRST_DB_ANON_ROLE: anon
+      PGRST_JWT_SECRET: your-super-secret-jwt-key-with-at-least-32-characters
+      PGRST_DB_USE_LEGACY_GUCS: "false"
+      PGRST_DB_ROOT_SPEC: root
+      PGRST_OPENAPI_MODE: ignore-privileges
+    ports:
+      - "54321:3000"
+    networks:
+      - crm-network
+    restart: unless-stopped
+
+  # Supabase Studio (Admin Dashboard)
+  supabase-studio:
+    image: supabase/studio:latest
+    ports:
+      - "54324:3000"
+    environment:
+      STUDIO_PG_META_URL: http://localhost:54322
+      POSTGRES_PASSWORD: postgres
+      DEFAULT_ORGANIZATION_NAME: "CRM v2"
+      DEFAULT_PROJECT_NAME: "CRM v2 Local"
+      SUPABASE_URL: http://localhost:54321
+      SUPABASE_REST_URL: http://supabase-rest:3000
+      SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOuoJy13Bq4TnCuN2FQk8zpYlGCGPMCelCIM
+      SUPABASE_SERVICE_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU
+    networks:
+      - crm-network
+    restart: unless-stopped
+
+  # =============================================================================
+  # APPLICATION SERVICES
+  # =============================================================================
+
+  # Backend (Development)
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3001:3001"
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgresql://postgres:postgres@supabase-db:5432/postgres
+      SUPABASE_URL: http://supabase-rest:3000
+      SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOuoJy13Bq4TnCuN2FQk8zpYlGCGPMCelCIM
+      SUPABASE_SERVICE_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU
+    volumes:
+      - ../backend:/app
+      - /app/node_modules
+    depends_on:
+      supabase-db:
+        condition: service_healthy
+    networks:
+      - crm-network
+    restart: unless-stopped
+
+  # Frontend (Development)
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    environment:
+      REACT_APP_SUPABASE_URL: http://localhost:54321
+      REACT_APP_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOuoJy13Bq4TnCuN2FQk8zpYlGCGPMCelCIM
+      CHOKIDAR_USEPOLLING: true
+    volumes:
+      - ../frontend:/app
+      - /app/node_modules
+    networks:
+      - crm-network
+    restart: unless-stopped
+
+  # Redis for caching
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - crm-network
+    restart: unless-stopped
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+
+volumes:
+  supabase-db-data:
+  redis-data:
+
+networks:
+  crm-network:
+    driver: bridge

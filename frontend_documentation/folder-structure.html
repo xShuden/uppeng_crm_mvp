@@ -1,0 +1,1439 @@
+<!doctype html>
+<html lang="en" data-layout="vertical" data-layout-style="" data-layout-position=""  data-topbar="light" data-sidebar="light" data-sidebar-size="lg" data-layout-width="">
+
+<head>
+
+    <meta charset="utf-8" />
+    <title>Folder Structure | Toner eCommerce + Admin HTML Template Documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Toner eCommerce + Admin HTML Template" name="description" />
+    <meta content="Themesbrand" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="assets/images/favicon.ico">
+
+    <!-- Layout config Js -->
+    <script src="assets/js/layout.js"></script>
+    <!-- Bootstrap Css -->
+    <link href="assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
+
+
+</head>
+
+<body>
+
+<!-- Begin page -->
+<div id="layout-wrapper">
+
+    <header id="page-topbar">
+    <div class="layout-width">
+        <div class="navbar-header">
+            <div class="d-flex">
+                <!-- LOGO -->
+                <div class="navbar-brand-box horizontal-logo">
+                    <a href="index.html" class="logo logo-dark">
+                        <span class="logo-sm">
+                            <img src="assets/images/logo-sm.png" alt="" height="22">
+                        </span>
+                        <span class="logo-lg">
+                            <img src="assets/images/logo-dark.png" alt="" height="17">
+                        </span>
+                    </a>
+
+                    <a href="index.html" class="logo logo-light">
+                        <span class="logo-sm">
+                            <img src="assets/images/logo-sm.png" alt="" height="22">
+                        </span>
+                        <span class="logo-lg">
+                            <img src="assets/images/logo-light.png" alt="" height="17">
+                        </span>
+                    </a>
+                </div>
+
+                <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger" id="topnav-hamburger-icon">
+                    <span class="hamburger-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+                </button>
+            </div>
+
+            <div class="d-flex align-items-center">
+
+                <div class="header-item me-1 me-md-3">
+                    <a href="https://themeforest.net/item/toner-ecommerce-template-admin-pages/44936795/support" target="_blank" class="btn btn-success"><i class="ri-lifebuoy-line me-1 align-middle"></i> Support</a>
+                </div>
+
+                <div class="header-item">
+                    <a href="https://1.envato.market/toner" target="_blank" class="btn btn-primary"><i class="ri-shopping-basket-2-line me-1 align-middle"></i> Buy Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+    <!-- ========== App Menu ========== -->
+    <div class="app-menu navbar-menu">
+        <!-- LOGO -->
+        <div class="navbar-brand-box">
+            <!-- Dark Logo-->
+            <a href="index.html" class="logo logo-dark">
+                <span class="logo-sm">
+                    <img src="assets/images/logo-sm.png" alt="" height="22">
+                </span>
+                <span class="logo-lg">
+                    <img src="assets/images/logo-dark.png" alt="" height="26">
+                </span>
+            </a>
+            <!-- Light Logo-->
+            <a href="index.html" class="logo logo-light">
+                <span class="logo-sm">
+                    <img src="assets/images/logo-sm.png" alt="" height="22">
+                </span>
+                <span class="logo-lg">
+                    <img src="assets/images/logo-light.png" alt="" height="26">
+                </span>
+            </a>
+            <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
+                id="vertical-hover">
+                <i class="ri-record-circle-line"></i>
+            </button>
+        </div>
+
+        <div id="scrollbar">
+            <div class="container-fluid">
+
+                <ul class="navbar-nav" id="navbar-nav">
+                    <li class="menu-title"><span>Menu</span></li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="index.html">
+                            <i class="ri-honour-line"></i> <span>Introduction</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="getting-started.html">
+                            <i class="ri-settings-6-line"></i> <span>Getting Started</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="folder-structure.html">
+                            <i class="ri-folder-2-line"></i> <span>Folder Structure</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="react-structure.html">
+                            <i class="ri-html5-line"></i> <span>React Structure</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="navigation.html">
+                            <i class="ri-menu-line"></i> <span>Navigation</span>
+                        </a>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <a class="nav-link menu-link" href="starter-kit.html">
+                            <i class="ri-rocket-line"></i> <span>Starter Kit</span>
+                        </a>
+                    </li> -->
+
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="#sidebarLayouts" data-bs-toggle="collapse" role="button"
+                            aria-expanded="false" aria-controls="sidebarLayouts">
+                            <i class="ri-layout-3-line"></i> <span>Theme Configuration</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarLayouts">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="vertical.html" class="nav-link">Vertical</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="horizontal.html" class="nav-link">Horizontal</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="detached.html" class="nav-link">Detached</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="two-column.html" class="nav-link">Two Column</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="hovered.html" class="nav-link">Hovered</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="routing.html">
+                            <i class="ri-route-line"></i> <span>Routing</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="multi-language.html">
+                            <i class="ri-global-line"></i> <span>Multi Language</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="redux.html">
+                            <i class="ri-registered-line"></i> <span>Redux</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="create-new-page.html">
+                            <i class="ri-file-add-line"></i> <span>Create New Page</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="dark-mode.html">
+                            <i class="ri-contrast-2-line"></i> <span>Dark Mode</span>
+                        </a>
+                    </li>
+
+
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="light-mode.html">
+                            <i class="ri-sun-line"></i> <span>Light Mode</span>
+                        </a>
+                    </li>
+
+                
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="rtl.html">
+                            <i class="ri-layout-right-2-line"></i> <span>RTL Version</span>
+                        </a>
+                    </li>
+
+                    <!-- <li class="nav-item">
+                        <a class="nav-link menu-link" href="rtl.html">
+                            <i class="ri-layout-right-2-line"></i> <span>RTL Version</span>
+                        </a>
+                    </li> -->
+
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="sources.html">
+                            <i class="ri-pantone-line"></i> <span>Sources & Credits</span>
+                        </a>
+                    </li>
+                    <li class="menu-title"><span>Integrations</span></li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="firebase-setup.html">
+                            <i class="ri-fire-line"></i> <span>Firebase Setup</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="fake-backend-setup.html">
+                            <i class="ri-code-fill"></i> <span>Fake Backend Setup</span>
+                        </a>
+                    </li>
+
+                    <li class="menu-title"><i class="ri-more-fill"></i> <span>Components</span></li>
+
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="bootstrap-ui.html">
+                            <i class="ri-pencil-ruler-2-line"></i> <span>Bootstrap UI</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="icons.html">
+                            <i class="ri-compasses-2-line"></i> <span>Icons</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="#sidebarAdvanceUI" data-bs-toggle="collapse" role="button"
+                            aria-expanded="false" aria-controls="sidebarAdvanceUI">
+                            <i class="ri-stack-line"></i> <span>Advance UI</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarAdvanceUI">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="nestable-list.html" class="nav-link">Nestable List</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="simplebar.html" class="nav-link">Simplebar</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="swiper-slider.html" class="nav-link">Swiper Slider</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="ratings.html" class="nav-link">Raterjs - Ratings</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="prismjs-highlight.html" class="nav-link">Prismjs - Highlight</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="#sidebarForms" data-bs-toggle="collapse" role="button"
+                            aria-expanded="false" aria-controls="sidebarForms">
+                            <i class="ri-file-list-3-line"></i> <span>Forms</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarForms">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="choices.html" class="nav-link">Choices</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="flatpickr.html" class="nav-link"> Flatpickr </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="input-mask.html" class="nav-link"> Cleavejs - Input Mask</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="dual-list-box.html" class="nav-link">Dual Listbox</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="range-slider.html" class="nav-link">RangeSlider</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="ckeditor.html" class="nav-link">Ckeditor</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="dropzone.html" class="nav-link">Dropzone - File Uploads</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="#sidebarTables" data-bs-toggle="collapse" role="button"
+                            aria-expanded="false" aria-controls="sidebarTables">
+                            <i class="ri-layout-grid-line"></i> <span>Tables</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarTables">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="react-table.html" class="nav-link">React Table</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="data-tables.html" class="nav-link">Data Tables</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="#sidebarCharts" data-bs-toggle="collapse" role="button"
+                            aria-expanded="false" aria-controls="sidebarCharts">
+                            <i class="ri-pie-chart-line"></i> <span>Charts</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarCharts">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="apexcharts.html" class="nav-link"> Apexcharts </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="#sidebarMaps" data-bs-toggle="collapse" role="button"
+                            aria-expanded="false" aria-controls="sidebarMaps">
+                            <i class="ri-map-pin-line"></i> <span>Maps</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarMaps">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="google-maps.html" class="nav-link">
+                                        Google
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+            <!-- Sidebar -->
+        </div>
+    </div>
+    <!-- Left Sidebar End -->
+    <!-- Vertical Overlay-->
+    <div class="vertical-overlay"></div>
+
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="main-content">
+
+        <div class="page-content">
+            <div class="container-fluid">
+
+                <!-- start page title -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                            <h4 class="mb-sm-0">Folder Structure</h4>
+
+                            <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Docs</a></li>
+                                    <li class="breadcrumb-item active">Folder Structure</li>
+                                </ol>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- end page title -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row mt-4">
+                                    <div class="col-sm-12">
+                                        <div class="verti-sitemap">
+                                            <ul class="list-unstyled mb-0">
+                                                <li class="p-0 parent-title"><a href="javascript: void(0);"
+                                                        class="fw-medium fs-14">Components</a>
+                                                </li>
+                                                <li>
+                                                    <div class="first-list">
+                                                        <div class="list-wrap">
+                                                            <a href="javascript: void(0);"
+                                                                class="fw-medium text-primary"><i
+                                                                    class=" ri-folder-2-line me-1 align-bottom"></i>public
+                                                                <span class="text-muted"></span></a>
+                                                        </div>
+                                                        <div class="list-wrap">
+                                                            <a href="javascript: void(0);"
+                                                                class="fw-medium text-primary"><i
+                                                                    class=" ri-folder-2-line me-1 align-bottom"></i>src</a>
+                                                        </div>
+                                                        <ul class="second-list list-unstyled">
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-folder-2-line me-1 align-bottom"></i>assets</a>
+                                                                <ul class="second-list list-unstyled">
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>fonts</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>images</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>scss</a>
+                                                                        <ul class="second-list list-unstyled">
+                                                                            <li>
+                                                                                <a href="javascript: void(0);"><i
+                                                                                        class=" ri-folder-2-line me-1 align-bottom"></i>components</a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <a href="javascript: void(0);"><i
+                                                                                        class=" ri-folder-2-line me-1 align-bottom"></i>fonts</a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <a href="javascript: void(0);"><i
+                                                                                        class=" ri-folder-2-line me-1 align-bottom"></i>pages</a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <a href="javascript: void(0);"><i
+                                                                                        class=" ri-folder-2-line me-1 align-bottom"></i>plugins</a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <a href="javascript: void(0);"><i
+                                                                                        class=" ri-folder-2-line me-1 align-bottom"></i>structure</a>
+                                                                            </li>
+
+                                                                        </ul>
+                                                                    </li>
+
+                                                                </ul>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-folder-2-line me-1 align-bottom"></i>Common</a>
+                                                                <ul class="second-list list-unstyled">
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>constants</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>data</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>locales</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-folder-2-line me-1 align-bottom"></i>Layout</a>
+                                                                <ul class="second-list list-unstyled">
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>HorizontalLayout</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>TwoColumnLayout</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>VerticalLayouts</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>Footer.tsx</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>Header.tsx</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>index.tsx</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>LayoutMenuData.tsx</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>RightSidebar.tsx</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>Sidebar.tsx</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>TopBar.tsx</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-folder-2-line me-1 align-bottom"></i>pages</a>
+                                                                <ul class="second-list list-unstyled">
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>AdvanceUI</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>ApexChart</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>BootstrapUI</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>CustomUI</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>Forms</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>Icons</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>Maps</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>Overview</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>Table</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-folder-2-line me-1 align-bottom"></i>Routes</a>
+                                                                <ul class="second-list list-unstyled">
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>allRoutes.tsx</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>Index.ts</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-folder-2-line me-1 align-bottom"></i>slices</a>
+                                                                <ul class="second-list list-unstyled">
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>layouts</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>index.ts</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>thunk.ts</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-file-2-line me-1 align-bottom"></i>App.test.tsx</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-file-2-line me-1 align-bottom"></i>App.tsx</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-file-2-line me-1 align-bottom"></i>index.tsx</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-file-2-line me-1 align-bottom"></i>logo.svg</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-file-2-line me-1 align-bottom"></i>react-app-env.d.ts</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-file-2-line me-1 align-bottom"></i>reportWebVitals.ts</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-file-2-line me-1 align-bottom"></i>setupTests.ts</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="first-list">
+                                                        <div class="list-wrap">
+                                                            <a href="javascript: void(0);"
+                                                                class="fw-medium text-primary"><i
+                                                                    class="ri-file-2-line me-1 align-bottom"></i>.env</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="first-list">
+                                                        <div class="list-wrap">
+                                                            <a href="javascript: void(0);"
+                                                                class="fw-medium text-primary"><i
+                                                                    class="ri-file-2-line me-1 align-bottom"></i>.gitignore</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="first-list">
+                                                        <div class="list-wrap">
+                                                            <a href="javascript: void(0);"
+                                                                class="fw-medium text-primary"><i
+                                                                    class="ri-file-2-line me-1 align-bottom"></i>global.d.ts</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="first-list">
+                                                        <div class="list-wrap">
+                                                            <a href="javascript: void(0);"
+                                                                class="fw-medium text-primary"><i
+                                                                    class="ri-file-2-line me-1 align-bottom"></i>package-lock.json</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="first-list">
+                                                        <div class="list-wrap">
+                                                            <a href="javascript: void(0);"
+                                                                class="fw-medium text-primary"><i
+                                                                    class="ri-file-2-line me-1 align-bottom"></i>package.json</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="first-list">
+                                                        <div class="list-wrap">
+                                                            <a href="javascript: void(0);"
+                                                                class="fw-medium text-primary"><i
+                                                                    class="ri-file-2-line me-1 align-bottom"></i>react-table.d.ts</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="first-list">
+                                                        <div class="list-wrap">
+                                                            <a href="javascript: void(0);"
+                                                                class="fw-medium text-primary"><i
+                                                                    class="ri-file-2-line me-1 align-bottom"></i>README.md</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="first-list">
+                                                        <div class="list-wrap">
+                                                            <a href="javascript: void(0);"
+                                                                class="fw-medium text-primary"><i
+                                                                    class="ri-file-2-line me-1 align-bottom"></i>tsconfig.json</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="first-list">
+                                                        <div class="list-wrap">
+                                                            <a href="javascript: void(0);"
+                                                                class="fw-medium text-primary"><i
+                                                                    class="ri-file-2-line me-1 align-bottom"></i>yarn-error.log</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="first-list">
+                                                        <div class="list-wrap">
+                                                            <a href="javascript: void(0);"
+                                                                class="fw-medium text-primary"><i
+                                                                    class="ri-file-2-line me-1 align-bottom"></i>yarn.lock</a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="col-sm-12">
+                                        <div class="verti-sitemap">
+                                            <ul class="list-unstyled mb-0">
+                                                <li class="p-0 parent-title"><a href="javascript: void(0);"
+                                                        class="fw-medium fs-14">FrontEnd</a>
+                                                </li>
+                                                <li>
+                                                    <div class="first-list">
+                                                        <div class="list-wrap">
+                                                            <a href="javascript: void(0);"
+                                                                class="fw-medium text-primary"><i
+                                                                    class=" ri-folder-2-line me-1 align-bottom"></i>public
+                                                                <span class="text-muted"></span></a>
+                                                        </div>
+                                                        <div class="list-wrap">
+                                                            <a href="javascript: void(0);"
+                                                                class="fw-medium text-primary"><i
+                                                                    class=" ri-folder-2-line me-1 align-bottom"></i>src</a>
+                                                        </div>
+                                                        <ul class="second-list list-unstyled">
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-folder-2-line me-1 align-bottom"></i>assets</a>
+                                                                <ul class="second-list list-unstyled">
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>fonts</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>images</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>scss</a>
+                                                                        <ul class="second-list list-unstyled">
+                                                                            <li>
+                                                                                <a href="javascript: void(0);"><i
+                                                                                        class=" ri-folder-2-line me-1 align-bottom"></i>components</a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <a href="javascript: void(0);"><i
+                                                                                        class=" ri-folder-2-line me-1 align-bottom"></i>fonts</a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <a href="javascript: void(0);"><i
+                                                                                        class=" ri-folder-2-line me-1 align-bottom"></i>pages</a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <a href="javascript: void(0);"><i
+                                                                                        class=" ri-folder-2-line me-1 align-bottom"></i>plugins</a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <a href="javascript: void(0);"><i
+                                                                                        class=" ri-folder-2-line me-1 align-bottom"></i>structure</a>
+                                                                            </li>
+
+                                                                        </ul>
+                                                                    </li>
+
+                                                                </ul>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-folder-2-line me-1 align-bottom"></i>Common</a>
+                                                                <ul class="second-list list-unstyled">
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>data</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>language</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>locales</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>i18n.tsx</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-folder-2-line me-1 align-bottom"></i>Components</a>
+                                                                <ul class="second-list list-unstyled">
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>constants</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>CommonService.tsx</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>DeleteModal.tsx</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>FlashSymbol.tsx</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>FridaySymbol.tsx</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>Homepage.tsx</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>HotDeals.tsx</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>Index.tsx</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>ListProductData.tsx</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>MainModal.tsx</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>OnlineChat.tsx</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>Pagination.tsx</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>ProductSilde.tsx</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>Reacttable.tsx</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>ShopTopBar.tsx</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>Tablecolumns.tsx</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>withRouter.tsx</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-folder-2-line me-1 align-bottom"></i>Layout</a>
+                                                                <ul class="second-list list-unstyled">
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>Footer.tsx</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>Header.tsx</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>index.tsx</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>NonAuthLayout.tsx</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>TopBar.tsx</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-folder-2-line me-1 align-bottom"></i>Pages</a>
+                                                                <ul class="second-list list-unstyled">
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>Catalog</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>ContactUs</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>Home</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>Product</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>Shop</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>User</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-folder-2-line me-1 align-bottom"></i>Routes</a>
+                                                                <ul class="second-list list-unstyled">
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>allRoutes.tsx</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>Index.tsx</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-folder-2-line me-1 align-bottom"></i>slices</a>
+                                                                <ul class="second-list list-unstyled">
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>layouts</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>index.ts</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>thunk.ts</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-file-2-line me-1 align-bottom"></i>App.test.tsx</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-file-2-line me-1 align-bottom"></i>App.tsx</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-file-2-line me-1 align-bottom"></i>index.tsx</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-file-2-line me-1 align-bottom"></i>logo.svg</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-file-2-line me-1 align-bottom"></i>react-app-env.d.ts</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-file-2-line me-1 align-bottom"></i>reportWebVitals.ts</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-file-2-line me-1 align-bottom"></i>setupTests.ts</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="first-list">
+                                                        <div class="list-wrap">
+                                                            <a href="javascript: void(0);"
+                                                                class="fw-medium text-primary"><i
+                                                                    class="ri-file-2-line me-1 align-bottom"></i>.env</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="first-list">
+                                                        <div class="list-wrap">
+                                                            <a href="javascript: void(0);"
+                                                                class="fw-medium text-primary"><i
+                                                                    class="ri-file-2-line me-1 align-bottom"></i>package.json</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="first-list">
+                                                        <div class="list-wrap">
+                                                            <a href="javascript: void(0);"
+                                                                class="fw-medium text-primary"><i
+                                                                    class="ri-file-2-line me-1 align-bottom"></i>README.md</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="first-list">
+                                                        <div class="list-wrap">
+                                                            <a href="javascript: void(0);"
+                                                                class="fw-medium text-primary"><i
+                                                                    class="ri-file-2-line me-1 align-bottom"></i>tsconfig.json</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="first-list">
+                                                        <div class="list-wrap">
+                                                            <a href="javascript: void(0);"
+                                                                class="fw-medium text-primary"><i
+                                                                    class="ri-file-2-line me-1 align-bottom"></i>yarn.lock</a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="col-sm-12">
+                                        <div class="verti-sitemap">
+                                            <ul class="list-unstyled mb-0">
+                                                <li class="p-0 parent-title"><a href="javascript: void(0);"
+                                                        class="fw-medium fs-14">BackEnd</a>
+                                                </li>
+                                                <li>
+                                                    <div class="first-list">
+                                                        <div class="list-wrap">
+                                                            <a href="javascript: void(0);"
+                                                                class="fw-medium text-primary"><i
+                                                                    class=" ri-folder-2-line me-1 align-bottom"></i>public
+                                                                <span class="text-muted"></span></a>
+                                                        </div>
+                                                        <div class="list-wrap">
+                                                            <a href="javascript: void(0);"
+                                                                class="fw-medium text-primary"><i
+                                                                    class=" ri-folder-2-line me-1 align-bottom"></i>src</a>
+                                                        </div>
+                                                        <ul class="second-list list-unstyled">
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-folder-2-line me-1 align-bottom"></i>assets</a>
+                                                                <ul class="second-list list-unstyled">
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>fonts</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>images</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>scss</a>
+                                                                        <ul class="second-list list-unstyled">
+                                                                            <li>
+                                                                                <a href="javascript: void(0);"><i
+                                                                                        class=" ri-folder-2-line me-1 align-bottom"></i>components</a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <a href="javascript: void(0);"><i
+                                                                                        class=" ri-folder-2-line me-1 align-bottom"></i>fonts</a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <a href="javascript: void(0);"><i
+                                                                                        class=" ri-folder-2-line me-1 align-bottom"></i>pages</a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <a href="javascript: void(0);"><i
+                                                                                        class=" ri-folder-2-line me-1 align-bottom"></i>plugins</a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <a href="javascript: void(0);"><i
+                                                                                        class=" ri-folder-2-line me-1 align-bottom"></i>structure</a>
+                                                                            </li>
+
+                                                                        </ul>
+                                                                    </li>
+
+                                                                </ul>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-folder-2-line me-1 align-bottom"></i>Common</a>
+                                                                <ul class="second-list list-unstyled">
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>constants</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>data</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>Hooks</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>locales</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-folder-2-line me-1 align-bottom"></i>helpers</a>
+                                                                <ul class="second-list list-unstyled">
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>AuthType</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>jwt-token-access</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>api_helper.ts</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>fakebackend_helper.ts</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>firebase_helper.ts</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>url_helper.ts</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-folder-2-line me-1 align-bottom"></i>Layout</a>
+                                                                <ul class="second-list list-unstyled">
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>HorizontalLayout</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>TwoColumnLayout</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>VerticalLayouts</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>Footer.tsx</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>Header.tsx</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>index.tsx</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>LayoutMenuData.tsx</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>NonAuthLayout.tsx</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>RightSidebar.tsx</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>Sidebar.tsx</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>TopBar.tsx</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-folder-2-line me-1 align-bottom"></i>pages</a>
+                                                                <ul class="second-list list-unstyled">
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>Accounts</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>Authentication</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>Brands</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>Calendar</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>Coupons</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>Dashboard</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>Invoices</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>Localization</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>Orders</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>Products</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>Reviews-Rating</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>Sellers</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>Shipping</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>Statistics</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>UsersList</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-folder-2-line me-1 align-bottom"></i>Routes</a>
+                                                                <ul class="second-list list-unstyled">
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>allRoutes.tsx</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>AuthProtected.tsx</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>Index.ts</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-folder-2-line me-1 align-bottom"></i>slices</a>
+                                                                <ul class="second-list list-unstyled">
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>auth</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>calendar</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-folder-2-line me-1 align-bottom"></i>layouts</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>index.ts</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="javascript: void(0);"><i
+                                                                                class=" ri-file-2-line me-1 align-bottom"></i>thunk.ts</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-file-2-line me-1 align-bottom"></i>App.test.tsx</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-file-2-line me-1 align-bottom"></i>App.tsx</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-file-2-line me-1 align-bottom"></i>config.js</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-file-2-line me-1 align-bottom"></i>index.tsx</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-file-2-line me-1 align-bottom"></i>logo.svg</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-file-2-line me-1 align-bottom"></i>react-app-env.d.ts</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-file-2-line me-1 align-bottom"></i>reportWebVitals.ts</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript: void(0);"><i
+                                                                        class=" ri-file-2-line me-1 align-bottom"></i>setupTests.ts</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="first-list">
+                                                        <div class="list-wrap">
+                                                            <a href="javascript: void(0);"
+                                                                class="fw-medium text-primary"><i
+                                                                    class="ri-file-2-line me-1 align-bottom"></i>.env</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="first-list">
+                                                        <div class="list-wrap">
+                                                            <a href="javascript: void(0);"
+                                                                class="fw-medium text-primary"><i
+                                                                    class="ri-file-2-line me-1 align-bottom"></i>.gitignore</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="first-list">
+                                                        <div class="list-wrap">
+                                                            <a href="javascript: void(0);"
+                                                                class="fw-medium text-primary"><i
+                                                                    class="ri-file-2-line me-1 align-bottom"></i>global.d.ts</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="first-list">
+                                                        <div class="list-wrap">
+                                                            <a href="javascript: void(0);"
+                                                                class="fw-medium text-primary"><i
+                                                                    class="ri-file-2-line me-1 align-bottom"></i>package-lock.json</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="first-list">
+                                                        <div class="list-wrap">
+                                                            <a href="javascript: void(0);"
+                                                                class="fw-medium text-primary"><i
+                                                                    class="ri-file-2-line me-1 align-bottom"></i>package.json</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="first-list">
+                                                        <div class="list-wrap">
+                                                            <a href="javascript: void(0);"
+                                                                class="fw-medium text-primary"><i
+                                                                    class="ri-file-2-line me-1 align-bottom"></i>react-table.d.ts</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="first-list">
+                                                        <div class="list-wrap">
+                                                            <a href="javascript: void(0);"
+                                                                class="fw-medium text-primary"><i
+                                                                    class="ri-file-2-line me-1 align-bottom"></i>README.md</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="first-list">
+                                                        <div class="list-wrap">
+                                                            <a href="javascript: void(0);"
+                                                                class="fw-medium text-primary"><i
+                                                                    class="ri-file-2-line me-1 align-bottom"></i>tsconfig.json</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="first-list">
+                                                        <div class="list-wrap">
+                                                            <a href="javascript: void(0);"
+                                                                class="fw-medium text-primary"><i
+                                                                    class="ri-file-2-line me-1 align-bottom"></i>yarn.lock</a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end row-->
+                        </div>
+                        <!--end card-body-->
+                    </div>
+                    <!--end card-->
+                </div>
+                <!--end col-->
+            </div>
+            <!--end row-->
+
+        </div>
+        <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+
+    <footer class="footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6">
+                    <script>document.write(new Date().getFullYear())</script> © Toner.
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-sm-end d-none d-sm-block">
+                        Design & Develop by Themesbrand
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+<!-- end main content-->
+
+</div>
+<!-- END layout-wrapper -->
+
+
+
+<!-- JAVASCRIPT -->
+<script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="assets/libs/simplebar/simplebar.min.js"></script>
+<script src="assets/libs/node-waves/waves.min.js"></script>
+<script src="assets/libs/feather-icons/feather.min.js"></script>
+<script src="assets/js/pages/plugins/lord-icon-2.1.0.js"></script>
+<script src="assets/libs/prismjs/prism.js"></script>
+
+<!-- App js -->
+<script src="assets/js/app.js"></script>
+</body>
+
+</html>

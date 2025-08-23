@@ -1,0 +1,78 @@
+# Traefik Dynamic Configuration
+
+http:
+  middlewares:
+    # Security headers
+    secureHeaders:
+      headers:
+        customRequestHeaders:
+          X-Forwarded-Proto: "https"
+        customResponseHeaders:
+          X-Frame-Options: "SAMEORIGIN"
+          X-Content-Type-Options: "nosniff"
+          X-XSS-Protection: "1; mode=block"
+          Strict-Transport-Security: "max-age=31536000; includeSubDomains"
+          Content-Security-Policy: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'"
+        
+    # Rate limiting for API
+    api-rateLimit:
+      rateLimit:
+        average: 100
+        period: 1s
+        burst: 200
+        
+    # Rate limiting for auth
+    auth-rateLimit:
+      rateLimit:
+        average: 10
+        period: 1s
+        burst: 20
+        
+    # CORS middleware
+    cors:
+      headers:
+        accessControlAllowMethods:
+          - GET
+          - OPTIONS
+          - PUT
+          - POST
+          - DELETE
+        accessControlAllowHeaders:
+          - "*"
+        accessControlAllowOriginList:
+          - "*"
+        accessControlMaxAge: 100
+        addVaryHeader: true
+
+  # routers:
+  #   api:
+  #     rule: "Host(`api.example.com`)"
+  #     service: backend
+  #     tls:
+  #       certResolver: letsencrypt
+  #     middlewares:
+  #       - secureHeaders
+  #       - api-rateLimit
+  #       - cors
+
+  # services:
+  #   backend:
+  #     loadBalancer:
+  #       servers:
+  #         - url: "http://backend:3001"
+  #       healthCheck:
+  #         path: /health
+  #         interval: 30s
+  #         timeout: 10s
+
+# TLS Configuration
+tls:
+  options:
+    default:
+      minVersion: "VersionTLS12"
+      cipherSuites:
+        - "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384"
+        - "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305"
+        - "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256"
+        - "TLS_RSA_WITH_AES_256_GCM_SHA384"
+        - "TLS_RSA_WITH_AES_128_GCM_SHA256"

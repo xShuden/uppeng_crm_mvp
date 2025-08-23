@@ -1,0 +1,38 @@
+{
+  "name": "crm-v2-backend",
+  "version": "0.1.0",
+  "description": "CRM v2 Backend API with Bun and Elysia",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "bun run --watch src/index.ts",
+    "build": "bun build src/index.ts --outdir dist",
+    "start": "bun run dist/index.js",
+    "test": "bun test",
+    "lint": "eslint src/**/*.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "elysia": "^0.8.17",
+    "@elysiajs/cors": "^0.8.0",
+    "@elysiajs/swagger": "^0.8.0",
+    "@elysiajs/jwt": "^0.8.0",
+    "@elysiajs/bearer": "^0.8.1",
+    "@supabase/supabase-js": "^2.38.5",
+    "drizzle-orm": "^0.29.1",
+    "postgres": "^3.4.3",
+    "bcryptjs": "^2.4.3",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "bun-types": "latest",
+    "drizzle-kit": "^0.20.6",
+    "eslint": "^8.56.0",
+    "@typescript-eslint/eslint-plugin": "^6.17.0",
+    "@typescript-eslint/parser": "^6.17.0",
+    "typescript": "^5.3.3"
+  },
+  "keywords": ["crm", "appointment", "bun", "elysia", "supabase"],
+  "author": "Your Name",
+  "license": "MIT"
+}
