@@ -1,0 +1,45 @@
+//
+// offcanvas.scss
+//
+
+.p-sidebar {
+    &.p-sidebar-left {
+        right: 0;
+        left: auto;
+    }
+
+    &.p-sidebar-right {
+        right: auto;
+        left: 0;
+    }
+
+    .p-sidebar-header {
+        .p-sidebar-icon {
+            margin-left: 5px;
+            margin-right: auto;
+        }
+    }
+
+    .p-sidebar-footer {
+        padding: 0;
+    }
+}
+
+// .p-sidebar {
+//     visibility: hidden;
+//     transition: transform .3s;
+//     transition-duration: 500ms !important;
+//     transition-property: margin-right !important;
+//     // transform: translate(-100%) !important;
+// }
+
+// .p-sidebar-active {
+//     visibility: visible;
+//     transform: none;
+// }
+
+// .p-sidebar {
+//     right: auto;
+//     position: left !important;
+//     transition: transform .3s !important;
+// }
