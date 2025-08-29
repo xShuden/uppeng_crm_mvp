@@ -230,9 +230,6 @@ const Login = (props: any) => {
                                                     </div>
                                                 </Form>
 
-                                                <div className="text-center mt-5">
-                                                    <p className="mb-0">Don't have an account ? <Link to="/register" className="fw-semibold text-secondary text-decoration-underline"> SignUp</Link> </p>
-                                                </div>
                                             </div>
                                         </Card.Body>
                                     </Card>

@@ -10,6 +10,7 @@ import translationENG from "Common/locales/en.json";
 import translationCN from "Common/locales/ch.json";
 import translationFR from "Common/locales/fr.json";
 import translationAR from "Common/locales/ar.json";
+import translationTR from "Common/locales/tr.json";
 
 // the translations
 const resources = {
@@ -36,6 +37,9 @@ const resources = {
   },
   ar: {
     translation: translationAR,
+  },
+  tr: {
+    translation: translationTR,
   },
 };
 

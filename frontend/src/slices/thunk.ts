@@ -22,9 +22,8 @@ export {
     resetCalendar
 } from "./calendar/thunk";
 
-export { loginUser, logoutUser, socialLogin, resetLoginFlag } from "./auth/login/thunk";
+export { loginUser, logoutUser, socialLogin, resetLoginFlag, apiError } from "./auth/login/thunk";
 
-export { registerUser, resetRegisterFlag, apiError } from "./auth/register/thunk";
 
 export { userForgetPassword } from "./auth/forgetpwd/thunk";
 

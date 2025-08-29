@@ -6,7 +6,6 @@ import ProductDelivery from './ProductDelivery';
 import StockReport from './StockReport';
 import TopCategories from './TopCategories';
 import TopProducts from './TopProducts';
-import TopSalesLocation from './TopSalesLocation';
 import Widgets from './Widgets';
 import RecentOrders from './RecentOrders';
 import Revenue from './Revenue';
@@ -26,7 +25,6 @@ const Dashboard = () => {
                             </Row>
                         </Col>
                         <Revenue />
-                        <TopSalesLocation />
                     </Row>
                     <Row>
                         <RecentOrders />

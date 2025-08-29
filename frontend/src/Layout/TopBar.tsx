@@ -51,48 +51,11 @@ const TopBar = () => {
                                 <i className="bi bi-clock align-middle me-2"></i> <span ref={currentTime} id="current-time"></span>
                             </div>
                         </Col>
-                        <Col md={4} xs={6} className="d-none d-xxl-block">
-                            <div className="d-flex align-items-center justify-content-center gap-3 fs-14 fw-medium">
-                                <div>
-                                    <i className="bi bi-envelope align-middle me-2"></i> support@themesbrand.com
-                                </div>
-                                <div>
-                                    <i className="bi bi-globe align-middle me-2"></i> www.themesbrand.com
-                                </div>
-                            </div>
-                        </Col>
                         <Col md={4} xs={3}>
                             <div className="d-flex align-items-center justify-content-end gap-3 fs-14">
                                 <Link to="#!" className="text-reset fw-normal d-none d-lg-block">
                                     Balance: <span className="fw-semibold">$8451.36</span>
                                 </Link>
-                                <hr className="vr d-none d-lg-block" />
-                                <Dropdown className="topbar-head-dropdown topbar-tag-dropdown justify-content-end">
-                                    <Dropdown.Toggle id="language-dropdown" className="btn btn-icon btn-topbar rounded-circle text-reset fs-13 bg-transparent border-0 arrow-none">
-                                        <img src={get(languages, `${selectedLang}.flag`) || flagus} id="header-lang-img" alt="Header Language" height="16" className="rounded-circle me-2" /> 
-                                        <span id="lang-name" className='fw-semibold'>{get(languages, `${selectedLang}.label`)}</span>
-                                    </Dropdown.Toggle>
-                                    <Dropdown.Menu className="dropdown-menu-end">
-                                        {Object.keys(languages).map(key => (
-                                            <Dropdown.Item
-                                                key={key}
-                                                onClick={() => changeLanguageAction(key)}
-                                                className={`notify-item language py-2 ${selectedLang === key ? "active" : "none"
-                                                    }`}
-                                            >
-                                                <img
-                                                    src={get(languages, `${key}.flag`) || flagus}
-                                                    alt="hybrix" 
-                                                    className="me-2 rounded-circle"
-                                                    height="18"
-                                                />
-                                                <span className="align-middle">
-                                                    {get(languages, `${key}.label`)}
-                                                </span>
-                                            </Dropdown.Item>
-                                        ))}
-                                    </Dropdown.Menu>
-                                </Dropdown>
                             </div>
                         </Col>
                     </Row>

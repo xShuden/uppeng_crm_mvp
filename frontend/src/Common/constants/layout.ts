@@ -29,9 +29,7 @@ enum LAYOUT_POSITION_TYPES {
 }
 
 enum LAYOUT_TOPBAR_THEME_TYPES {
-  LIGHT = "light",
-  DARK = "dark",
-  BRAND = "brand"
+  LIGHT = "light"
 }
 
 enum LEFT_SIDEBAR_SIZE_TYPES {

@@ -19,27 +19,9 @@ class FirebaseAuthBackend {
     }
   }
 
-  /**
-   * Registers the user with given details
-   */
-  registerUser = (email: any, password: any) => {
-    return new Promise((resolve, reject) => {
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password)
-        .then(
-          (user: any) => {
-            resolve(firebase.auth().currentUser);
-          },
-          (error: any) => {
-            reject(this._handleError(error));
-          }
-        );
-    });
-  };
 
   /**
-   * Registers the user with given details
+   * Edit user profile with given details
    */
   editProfileAPI = (email: any, password: any) => {
     return new Promise((resolve, reject) => {

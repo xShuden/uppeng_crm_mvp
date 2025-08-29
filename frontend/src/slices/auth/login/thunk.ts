@@ -101,3 +101,5 @@ export const resetLoginFlag = () => async (dispatch: any) => {
     dispatch(apiError(error));
   }
 };
+
+export { apiError };

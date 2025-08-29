@@ -106,9 +106,6 @@ const SignIn = () => {
                                                     </div>
 
                                                     <div className="mb-3">
-                                                        <div className="float-end">
-                                                            <Link to="/auth-pass-reset-basic" className="text-muted">Forgot password?</Link>
-                                                        </div>
                                                         <Form.Label htmlFor="password-input">Password</Form.Label>
                                                         <div className="position-relative auth-pass-inputgroup mb-3">
                                                             <Form.Control className="form-control pe-5 password-input" placeholder="Enter password" id="password-input"
@@ -150,9 +147,6 @@ const SignIn = () => {
                                                     </div>
                                                 </Form>
 
-                                                <div className="text-center mt-5">
-                                                    <p className="mb-0">Don't have an account ? <Link to="/auth-signup-basic" className="fw-semibold text-secondary text-decoration-underline"> SignUp</Link> </p>
-                                                </div>
                                             </div>
                                         </Card.Body>
                                     </Card>

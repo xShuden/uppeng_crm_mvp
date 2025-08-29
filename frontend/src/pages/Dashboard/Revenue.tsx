@@ -8,7 +8,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { createSelector } from 'reselect';
 
 //import images
-import bodyLight from "assets/images/sidebar/body-light-1.png";
 import CustomDropdownToggle from 'Common/CustomDropdownToggle';
 
 import { getChartData as getChartApiData } from "../../slices/thunk";
@@ -46,7 +45,7 @@ const Revenue = () => {
 
     return (
         <React.Fragment>
-            <Col xxl={9} className="order-last">
+            <Col xxl={12} className="order-last">
                 <Card>
                     <Card.Header className="align-items-center d-flex">
                         <h4 className="card-title mb-0 flex-grow-1">Revenue</h4>
@@ -135,34 +134,8 @@ const Revenue = () => {
 
                                 </Row>
 
-                                <Card className="mt-4 mb-0 bg-info-subtle border-0">
-                                    <Card.Body>
-                                        <h5 className="fs-16">Reached 5k Customers</h5>
-                                        <p className="text-muted">Hey! Awesome products! Can you share the best product name ?</p>
-                                        <Link to="/statistics" className="btn btn-info btn-sm">See Report <i className="bi bi-arrow-right ms-1 align-middle"></i></Link>
-                                    </Card.Body>
-                                </Card>
                             </Col>
                         </Row>
-                    </Card.Body>
-                </Card>
-                <Card className="overflow-hidden">
-                    <div className="position-absolute opacity-50 start-0 end-0 top-0 bottom-0"
-                        style={{ backgroundImage: `url(${bodyLight})` }}
-                    ></div>
-                    <Card.Body className="d-flex justify-content-between align-items-center z-1">
-                        <div className="d-flex align-items-center gap-3">
-                            <div className="flex-shrink-0">
-                                <i className="ph-storefront display-6"></i>
-                            </div>
-                            <div className="flex-grow-1">
-                                <h5 className="card-title fw-medium fs-17 mb-1">Have you tried new <b>Toner eCommerce Templates</b> ?</h5>
-                                <p className="mb-0">That allows customers to browse and purchase items from an online store.</p>
-                            </div>
-                        </div>
-                        <div>
-                            <Link to="/product-create" className="btn btn-success btn-label btn-hover rounded-pill"><i className="bi bi-box-seam label-icon align-middle rounded-pill fs-16 me-2"></i> Add New Product</Link>
-                        </div>
                     </Card.Body>
                 </Card>
 

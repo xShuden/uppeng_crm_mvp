@@ -57,7 +57,7 @@ const pricingPlans = [
 ]
 
 const pricingPackageplan = [
-    { id: 1, icon: "ri-book-mark-line", plan: "Basic Plan", planfor: "For Startup", price: "19.99", projects: "3", customers: "299", ftpLogin: "5", btnColor: "soft-secondary", btntext: "Sign Up Free" },
+    { id: 1, icon: "ri-book-mark-line", plan: "Basic Plan", planfor: "For Startup", price: "19.99", projects: "3", customers: "299", ftpLogin: "5", btnColor: "soft-secondary", btntext: "Get Started" },
     { id: 2, icon: "ri-medal-line", plan: "Pro Business", planfor: "Professional plans", price: "29.99", projects: "15", customers: "Unlimited", ftpLogin: "12", btnColor: "secondary", btntext: "Get Started", support: true },
     { id: 3, icon: "ri-stack-line", plan: "Platinum Plan", planfor: "Enterprise Businesses", price: "39.99", projects: "Unlimited", customers: "Unlimited", ftpLogin: "Unlimited", btnColor: "soft-secondary", btntext: "Get Started", support: true, storage: true, domain: true },
 ]

@@ -294,7 +294,7 @@ services:
       - "3000:3000"
     environment:
       REACT_APP_SUPABASE_URL: http://localhost:54321
-      REACT_APP_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZUI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOuoJy13Bq4TnCuN2FQk8zpYlGCGPMCelCIM
+      REACT_APP_SUPABASE_ANON_KEY: ${ANON_KEY}
       CHOKIDAR_USEPOLLING: true
     volumes:
       - ../frontend:/app

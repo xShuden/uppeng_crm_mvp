@@ -68,16 +68,6 @@
             top: 13px !important;
         }
 
-        .notification-actions {
-            display: none;
-            position: absolute;
-            background-color: var(--#{$prefix}dropdown-bg);
-            left: 0;
-            right: 0;
-            bottom: 0;
-            padding: 7px;
-            border-top: 1px solid var(--#{$prefix}border-color-translucent);
-        }
     }
 
     .btn-topbar {
@@ -205,15 +195,6 @@
     width: 32px;
 }
 
-.topbar-badge-sm {
-    right: 0;
-    top: 7px !important;
-}
-
-.topbar-badge {
-    right: -9px;
-    top: 4px !important;
-}
 
 .navbar-header .topbar-user {
     @media (min-width: 768px) {
@@ -225,36 +206,6 @@
     }
 }
 
-.notification-item {
-    padding: 0.75rem 1rem;
-    white-space: inherit;
-    position: relative;
-
-    .form-check-input {
-        position: relative;
-        z-index: 2;
-    }
-
-    .active-badge {
-        top: 25px;
-        border: 2px solid var(--#{$prefix}light);
-    }
-
-    &.unread-message {
-        background-color: rgba(var(--#{$prefix}light-rgb), 1.5);
-
-        &:active,
-        &.active {
-            background-color: rgba(var(--#{$prefix}light-rgb), 2.5);
-        }
-    }
-
-    border-bottom: 1px solid var(--#{$prefix}border-color-translucent);
-
-    &:last-child {
-        border-bottom: none;
-    }
-}
 
 // Dropdown with Icons
 .dropdown-icon-item {
