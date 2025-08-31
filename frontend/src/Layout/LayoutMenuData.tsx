@@ -4,7 +4,6 @@ const Navdata = () => {
     //state data
     const [isEcommerce, setIsEcommerce] = useState(false);
     const [isOrder, setIsOrder] = useState(false);
-    const [isSellers, setIsSellers] = useState(false);
     const [isAuth, setIsAuth] = useState(false);
 
     const [iscurrentState, setIscurrentState] = useState('Dashboard');
@@ -33,7 +32,6 @@ const Navdata = () => {
             setIsOrder(false);
         }
         if (iscurrentState !== 'Sellers') {
-            setIsSellers(false);
         }
         if (iscurrentState !== 'Auth') {
             setIsAuth(false);
@@ -42,7 +40,6 @@ const Navdata = () => {
         iscurrentState,
         isEcommerce,
         isOrder,
-        isSellers,
         isAuth
     ]);
 
@@ -142,39 +139,6 @@ const Navdata = () => {
             label: "Calendar",
             icon: "bi bi-calendar-week",
             link: "/calendar",
-        },
-        {
-            id: "seller",
-            label: "Sellers",
-            icon: "bi bi-binoculars",
-            link: "/#",
-            click: function (e: any) {
-                e.preventDefault();
-                setIsSellers(!isSellers);
-                setIscurrentState('Sellers');
-                updateIconSidebar(e);
-            },
-            stateVariables: isSellers,
-            subItems: [
-                {
-                    id: "listview",
-                    label: "List View",
-                    link: "/sellers-list-view",
-                    parentId: "seller",
-                },
-                {
-                    id: "gridview",
-                    label: "Grid View",
-                    link: "/seller-grid-view",
-                    parentId: "seller",
-                },
-                {
-                    id: "overview",
-                    label: "Overview",
-                    link: "/seller-overview",
-                    parentId: "seller",
-                },
-            ],
         },
         {
             id: "userslist",

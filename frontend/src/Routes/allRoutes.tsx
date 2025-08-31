@@ -17,10 +17,6 @@ import OrdersOverview from "pages/Orders/Overview"
 // Calender
 import Calendar from "pages/Calendar"
 
-// Sellers
-import SellersListView from "pages/Sellers/ListView"
-import SellersGridView from "pages/Sellers/GridView"
-import SellersOverview from "pages/Sellers/Overview"
 
 
 
@@ -75,10 +71,6 @@ const authProtectedRoutes = [
 
     { path: "/calendar", component: <Calendar /> },
 
-    // Sellers
-    { path: "/sellers-list-view", component: <SellersListView /> },
-    { path: "/seller-grid-view", component: <SellersGridView /> },
-    { path: "/seller-overview", component: <SellersOverview /> },
 
 
 
