@@ -26,6 +26,8 @@ import SellersOverview from "pages/Sellers/Overview"
 
 // User List
 import UsersList from "pages/UsersList"
+import PersonnelList from "pages/PersonnelList"
+import TenantList from "pages/TenantList"
 
 
 
@@ -66,6 +68,8 @@ const authProtectedRoutes = [
 
     // User List
     { path: "/users-list", component: <UsersList /> },
+    { path: "/personnel-list", component: <PersonnelList /> },
+    { path: "/tenant-list", component: <TenantList /> },
 
 
 

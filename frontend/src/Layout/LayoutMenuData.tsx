@@ -183,6 +183,18 @@ const Navdata = () => {
             link: "/users-list",
         },
         {
+            id: "personnellist",
+            label: "Personnel List",
+            icon: "bi bi-people-fill",
+            link: "/personnel-list",
+        },
+        {
+            id: "tenantlist",
+            label: "Tenant List",
+            icon: "bi bi-building",
+            link: "/tenant-list",
+        },
+        {
             id: "components",
             label: "Components",
             icon: "bi bi-layers",

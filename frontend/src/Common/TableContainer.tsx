@@ -272,12 +272,12 @@ const TableContainer = ({
       </div>
       <Row className="align-items-center mt-2 py-2 px-2 gy-2 text-center text-sm-start">
         <div className="col-sm">
-          <div className="text-muted">Showing <span className="fw-semibold">{pageIndex + 1}</span> of <span className="fw-semibold">{pageOptions.length}</span> Results</div>
+          <div className="text-muted">Toplam <span className="fw-semibold">{pageOptions.length}</span> sonuçtan <span className="fw-semibold">{pageIndex + 1}</span> gösteriliyor</div>
         </div>
         <div className="col-sm-auto">
           <ul className="pagination pagination-separated mb-0 justify-content-center justify-content-sm-start">
             <li className={!canPreviousPage ? "page-item disabled" : "page-item"} onClick={previousPage}>
-              <Button variant="link" className="page-link">Previous</Button>
+              <Button variant="link" className="page-link">Önceki</Button>
             </li>
             {pageOptions.map((item: any, key: number) => (
               <React.Fragment key={key}>
@@ -287,7 +287,7 @@ const TableContainer = ({
               </React.Fragment>
             ))}
             <li className={!canNextPage ? "page-item disabled" : "page-item"} onClick={nextPage}>
-              <Button variant="link" className="page-link">Next</Button>
+              <Button variant="link" className="page-link">Sonraki</Button>
             </li>
           </ul>
         </div>

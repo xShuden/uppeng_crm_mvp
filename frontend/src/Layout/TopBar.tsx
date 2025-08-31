@@ -53,9 +53,6 @@ const TopBar = () => {
                         </Col>
                         <Col md={4} xs={3}>
                             <div className="d-flex align-items-center justify-content-end gap-3 fs-14">
-                                <Link to="#!" className="text-reset fw-normal d-none d-lg-block">
-                                    Balance: <span className="fw-semibold">$8451.36</span>
-                                </Link>
                             </div>
                         </Col>
                     </Row>
