@@ -296,17 +296,6 @@ const TenantList = () => {
                                                 Şirket Ekle
                                             </Button>
                                         </Col>
-                                        <Col sm={9} className="col-lg-auto">
-                                            <select className="form-select" data-choices data-choices-search-false name="choices-single-default" id="idStatus">
-                                                <option value="all">Tümü</option>
-                                                <option value="Today">Bugün</option>
-                                                <option value="Yesterday">Dün</option>
-                                                <option value="Last 7 Days">Son 7 Gün</option>
-                                                <option value="Last 30 Days">Son 30 Gün</option>
-                                                <option defaultValue="This Month">Bu Ay</option>
-                                                <option value="Last Month">Geçen Ay</option>
-                                            </select>
-                                        </Col>
                                     </Row>
                                 </Card.Body>
                             </Card>

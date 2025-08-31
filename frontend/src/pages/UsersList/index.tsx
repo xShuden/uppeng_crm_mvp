@@ -5,15 +5,35 @@ import CountUp from 'react-countup';
 import TableContainer from "Common/TableContainer";
 import { userList } from "Common/data";
 import Flatpickr from "react-flatpickr";
-import dummyImg from "../../assets/images/users/user-dummy-img.jpg"
 import { Link } from 'react-router-dom';
 
 const UsersList = () => {
-    document.title = "Users List | Toner eCommerce + Admin React Template";
+    document.title = "Kullanıcı Listesi | CRM v2 Randevu Takip";
     const [modal_AddUserModals, setmodal_AddUserModals] = useState<boolean>(false);
-    const [isMultiDeleteButton, setIsMultiDeleteButton] = useState<boolean>(false)
+    const [modal_EditUserModals, setmodal_EditUserModals] = useState<boolean>(false);
+    const [modal_DeleteUserModals, setmodal_DeleteUserModals] = useState<boolean>(false);
+    const [isMultiDeleteButton, setIsMultiDeleteButton] = useState<boolean>(false);
+    const [selectedUser, setSelectedUser] = useState<any>(null);
     function tog_AddUserModals() {
         setmodal_AddUserModals(!modal_AddUserModals);
+    }
+
+    function tog_EditUserModals() {
+        setmodal_EditUserModals(!modal_EditUserModals);
+    }
+
+    function tog_DeleteUserModals() {
+        setmodal_DeleteUserModals(!modal_DeleteUserModals);
+    }
+
+    function handleEditUser(user: any) {
+        setSelectedUser(user);
+        tog_EditUserModals();
+    }
+
+    function handleDeleteUser(user: any) {
+        setSelectedUser(user);
+        tog_DeleteUserModals();
     }
 
     // Checked All
@@ -54,32 +74,25 @@ const UsersList = () => {
                 id: '#',
             },
             {
-                Header: "User Name",
+                Header: "Kullanıcı Adı",
                 disableFilters: true,
                 filterable: true,
-                accessor: (cellProps: any) => {
-                    return (<div className="d-flex align-items-center gap-2">
-                        <div className="flex-shrink-0">
-                            <img src={cellProps.user_img} alt="" className="avatar-xs rounded-circle user-profile-img" />
-                        </div>
-                        <div className="flex-grow-1 ms-2 user_name">{cellProps.user_name}</div>
-                    </div>)
-                }
+                accessor: "user_name"
             },
             {
-                Header: "Email",
+                Header: "E-posta",
                 accessor: "email_id",
                 disableFilters: true,
                 filterable: true,
             },
             {
-                Header: "Create Date",
+                Header: "Oluşturma Tarihi",
                 accessor: "date",
                 disableFilters: true,
                 filterable: true,
             },
             {
-                Header: "Account Status",
+                Header: "Hesap Durumu",
                 disableFilters: true,
                 filterable: true,
                 accessor: (cellProps: any) => {
@@ -94,17 +107,17 @@ const UsersList = () => {
                 },
             },
             {
-                Header: "Action",
+                Header: "İşlem",
                 disableFilters: true,
                 filterable: true,
                 accessor: (cellProps: any) => {
                     return (
                         <div className="d-flex gap-2">
                             <div className="edit">
-                                <Button variant="ghost-info" size="sm" className="btn-ghost-info btn-icon edit-item-btn"><i className="ph-pencil-line"></i></Button>
+                                <Button variant="ghost-info" size="sm" className="btn-ghost-info btn-icon edit-item-btn" onClick={() => handleEditUser(cellProps)}><i className="ph-pencil-line"></i></Button>
                             </div>
                             <div className="remove">
-                                <Button variant="ghost-danger" size="sm" className="btn-ghost-danger btn-icon remove-item-btn"><i className="ph-trash"></i></Button>
+                                <Button variant="ghost-danger" size="sm" className="btn-ghost-danger btn-icon remove-item-btn" onClick={() => handleDeleteUser(cellProps)}><i className="ph-trash"></i></Button>
                             </div>
                         </div>
                     )
@@ -118,7 +131,7 @@ const UsersList = () => {
         <React.Fragment>
             <div className="page-content">
                 <Container fluid={true}>
-                    <Breadcrumb title="Users List" pageTitle="More" />
+                    <Breadcrumb title="Kullanıcı Listesi" pageTitle="Kullanıcı Yönetimi" />
 
                     <Row>
                         <Col xxl={3} md={6}>
@@ -158,7 +171,7 @@ const UsersList = () => {
                                 </div>
                                 <Card.Body className="p-4 z-1 position-relative">
                                     <h4 className="fs-22 fw-semibold mb-3"><CountUp end={7845102} separator=','/> </h4>
-                                    <p className="mb-0 fw-medium text-uppercase fs-14">Total Users</p>
+                                    <p className="mb-0 fw-medium text-uppercase fs-14">Toplam Kullanıcı</p>
                                 </Card.Body>
                             </Card>
                         </Col>
@@ -199,7 +212,7 @@ const UsersList = () => {
                                 </div>
                                 <Card.Body className="p-4 z-1 position-relative">
                                     <h4 className="fs-22 fw-semibold mb-3"><CountUp end={559.25} decimals={2} suffix="k" /></h4>
-                                    <p className="mb-0 fw-medium text-uppercase fs-14">Active Users</p>
+                                    <p className="mb-0 fw-medium text-uppercase fs-14">Aktif Kullanıcı</p>
                                 </Card.Body>
                             </Card>
                         </Col>
@@ -240,7 +253,7 @@ const UsersList = () => {
                                 </div>
                                 <Card.Body className="p-4 z-1 position-relative">
                                     <h4 className="fs-22 fw-semibold mb-3"><CountUp end={559.25} decimals={2} suffix="k" /></h4>
-                                    <p className="mb-0 fw-medium text-uppercase fs-14">Unactive Users</p>
+                                    <p className="mb-0 fw-medium text-uppercase fs-14">Pasif Kullanıcı</p>
                                 </Card.Body>
                             </Card>
                         </Col>
@@ -257,8 +270,8 @@ const UsersList = () => {
                                                 </div>
                                             </div>
                                             <div className="flex-grow-1">
-                                                <Link to="#" className="stretched-link"><h6 className="fs-17">Invite your friends to Toner</h6></Link>
-                                                <p className="text-muted mb-0">Nor again is there anyone pursues</p>
+                                                <Link to="#" className="stretched-link"><h6 className="fs-17">Kullanıcı Davet Et</h6></Link>
+                                                <p className="text-muted mb-0">Yeni kullanıcıları sisteme davet et</p>
                                             </div>
                                         </div>
                                     </div>
@@ -274,7 +287,7 @@ const UsersList = () => {
                                     <Row className="g-lg-2 g-4">
                                         <Col lg={3}>
                                             <div className="search-box">
-                                                <input type="text" className="form-control search" placeholder="Search for users..." />
+                                                <input type="text" className="form-control search" placeholder="Kullanıcı ara..." />
                                                 <i className="ri-search-line search-icon"></i>
                                             </div>
                                         </Col>
@@ -283,19 +296,8 @@ const UsersList = () => {
 
                                         <Col sm={3} className="col-lg-auto ms-auto">
                                             <Button onClick={() => tog_AddUserModals()} variant='primary' type="button" className="w-100 add-btn">
-                                                Add User
+                                                Kullanıcı Ekle
                                             </Button>
-                                        </Col>
-                                        <Col sm={9} className="col-lg-auto">
-                                            <select className="form-select" data-choices data-choices-search-false name="choices-single-default" id="idStatus">
-                                                <option value="all">All</option>
-                                                <option value="Today">Today</option>
-                                                <option value="Yesterday">Yesterday</option>
-                                                <option value="Last 7 Days">Last 7 Days</option>
-                                                <option value="Last 30 Days">Last 30 Days</option>
-                                                <option defaultValue="This Month">This Month</option>
-                                                <option value="Last Month">Last Month</option>
-                                            </select>
                                         </Col>
                                     </Row>
                                 </Card.Body>
@@ -313,12 +315,12 @@ const UsersList = () => {
                                             className="custom-header-css table align-middle table-nowrap"
                                             tableClass="table-centered align-middle table-nowrap mb-0"
                                             theadClass="text-muted table-light"
-                                            SearchPlaceholder='Search Products...'
+                                            SearchPlaceholder='Kullanıcı Ara...'
                                         />
                                         <div className="noresult" style={{ display: "none" }}>
                                             <div className="text-center">
-                                                <h5 className="mt-2">Sorry! No Result Found</h5>
-                                                <p className="text-muted mb-0">We've searched more than 150+ Orders We did not find any orders for you search.</p>
+                                                <h5 className="mt-2">Üzgünüz! Sonuç Bulunamadı</h5>
+                                                <p className="text-muted mb-0">150'den fazla kullanıcı aradık ancak aramanız için herhangi bir kullanıcı bulamadık.</p>
                                             </div>
                                         </div>
                                     
@@ -336,63 +338,152 @@ const UsersList = () => {
                                 <div id="alert-error-msg" className="d-none alert alert-danger py-2"></div>
                                 <input type="hidden" id="id-field" />
 
-                                <div className="text-center">
-                                    <div className="position-relative d-inline-block">
-                                        <div className="position-absolute  bottom-0 end-0">
-                                            <label htmlFor="customer-image-input" className="mb-0" data-bs-toggle="tooltip" data-bs-placement="right" title="Select Image">
-                                                <div className="avatar-xs cursor-pointer">
-                                                    <div className="avatar-title bg-light border rounded-circle text-muted">
-                                                        <i className="ri-image-fill"></i>
-                                                    </div>
-                                                </div>
-                                            </label>
-                                            <Form.Control className="d-none" defaultValue="" id="users-image-input" type="file" accept="image/png, image/gif, image/jpeg" />
-                                        </div>
-                                        <div className="avatar-lg p-1">
-                                            <div className="avatar-title bg-light rounded-circle">
-                                                <img src={dummyImg} alt="dummyImg" id="users-img-field" className="avatar-md rounded-circle object-cover" />
-                                            </div>
-                                        </div>
-                                    </div>
+
+                                <div className="mb-3">
+                                    <Form.Label htmlFor="user-name">Kullanıcı Adı</Form.Label>
+                                    <Form.Control type="text" id="user-name-field" placeholder="Adını Girin" required />
+                                </div>
+                                <div className="mb-3">
+                                    <Form.Label htmlFor="email-field">E-posta Adresi</Form.Label>
+                                    <Form.Control type="email" id="email-field" placeholder="E-posta Adresini Girin" required />
                                 </div>
 
                                 <div className="mb-3">
-                                    <Form.Label htmlFor="user-name">User Name</Form.Label>
-                                    <Form.Control type="text" id="user-name-field" placeholder="Enter Name" required />
-                                </div>
-                                <div className="mb-3">
-                                    <Form.Label htmlFor="email-field">User Email</Form.Label>
-                                    <Form.Control type="email" id="email-field" placeholder="Enter Email" required />
-                                </div>
-
-                                <div className="mb-3">
-                                    <Form.Label htmlFor="date-field">Date</Form.Label>
+                                    <Form.Label htmlFor="date-field">Oluşturma Tarihi</Form.Label>
                                     <Flatpickr
                                         className="form-control flatpickr-input"
-                                        placeholder='Select Date'
+                                        placeholder='Tarih Seç'
                                         options={{
                                             mode: "range",
                                             dateFormat: "d M, Y",
+                                            locale: {
+                                                weekdays: {
+                                                    shorthand: ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'],
+                                                    longhand: ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi']
+                                                },
+                                                months: {
+                                                    shorthand: ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'],
+                                                    longhand: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık']
+                                                }
+                                            }
                                         }}
                                     />
                                 </div>
 
                                 <div>
-                                    <label htmlFor="account-status" className="form-label">Account Status</label>
+                                    <label htmlFor="account-status" className="form-label">Hesap Durumu</label>
                                     <select className="form-select" required id="account-status-field">
-                                        <option defaultValue="">Account Status</option>
-                                        <option value="Active">Active</option>
-                                        <option value="Inactive">inactive</option>
+                                        <option defaultValue="">Hesap Durumu</option>
+                                        <option value="Active">Aktif</option>
+                                        <option value="Inactive">Pasif</option>
                                     </select>
                                 </div>
                             </Modal.Body>
                             <div className="modal-footer">
                                 <div className="hstack gap-2 justify-content-end">
-                                    <Button className="btn-ghost-danger" onClick={() => { tog_AddUserModals(); }}>Close</Button>
-                                    <Button variant='success' id="add-btn">Add User</Button>
+                                    <Button className="btn-ghost-danger" onClick={() => { tog_AddUserModals(); }}>Kapat</Button>
+                                    <Button variant='success' id="add-btn">Kullanıcı Ekle</Button>
                                 </div>
                             </div>
                         </Form>
+                    </Modal>
+
+                    {/* Edit User Modal */}
+                    <Modal className="fade" show={modal_EditUserModals} onHide={() => { tog_EditUserModals(); }} centered>
+                        <Modal.Header className="px-4 pt-4" closeButton>
+                            <h5 className="modal-title" id="editModalLabel">Kullanıcı Düzenle</h5>
+                        </Modal.Header>
+                        <Form className="tablelist-form">
+                            <Modal.Body className="p-4">
+                                <div id="alert-error-msg" className="d-none alert alert-danger py-2"></div>
+                                <input type="hidden" id="edit-id-field" />
+
+                                <div className="mb-3">
+                                    <Form.Label htmlFor="edit-user-name">Kullanıcı Adı</Form.Label>
+                                    <Form.Control 
+                                        type="text" 
+                                        id="edit-user-name-field" 
+                                        placeholder="Kullanıcı Adını Girin" 
+                                        defaultValue={selectedUser?.user_name || ''} 
+                                        required 
+                                    />
+                                </div>
+                                <div className="mb-3">
+                                    <Form.Label htmlFor="edit-email-field">E-posta Adresi</Form.Label>
+                                    <Form.Control 
+                                        type="email" 
+                                        id="edit-email-field" 
+                                        placeholder="E-posta Adresini Girin" 
+                                        defaultValue={selectedUser?.email_id || ''} 
+                                        required 
+                                    />
+                                </div>
+
+                                <div className="mb-3">
+                                    <Form.Label htmlFor="edit-date-field">Oluşturma Tarihi</Form.Label>
+                                    <Flatpickr
+                                        className="form-control flatpickr-input"
+                                        placeholder='Tarih Seç'
+                                        defaultValue={selectedUser?.date || ''}
+                                        options={{
+                                            mode: "range",
+                                            dateFormat: "d M, Y",
+                                            locale: {
+                                                weekdays: {
+                                                    shorthand: ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'],
+                                                    longhand: ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi']
+                                                },
+                                                months: {
+                                                    shorthand: ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'],
+                                                    longhand: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık']
+                                                }
+                                            }
+                                        }}
+                                    />
+                                </div>
+
+                                <div>
+                                    <label htmlFor="edit-account-status" className="form-label">Hesap Durumu</label>
+                                    <select className="form-select" required id="edit-account-status-field" defaultValue={selectedUser?.status || ''}>
+                                        <option value="">Hesap Durumu</option>
+                                        <option value="Active">Aktif</option>
+                                        <option value="Inactive">Pasif</option>
+                                    </select>
+                                </div>
+                            </Modal.Body>
+                            <div className="modal-footer">
+                                <div className="hstack gap-2 justify-content-end">
+                                    <Button className="btn-ghost-danger" onClick={() => { tog_EditUserModals(); }}>İptal</Button>
+                                    <Button variant='success' id="edit-btn">Güncelle</Button>
+                                </div>
+                            </div>
+                        </Form>
+                    </Modal>
+
+                    {/* Delete Confirmation Modal */}
+                    <Modal className="fade" show={modal_DeleteUserModals} onHide={() => { tog_DeleteUserModals(); }} centered>
+                        <Modal.Header className="px-4 pt-4" closeButton>
+                            <h5 className="modal-title" id="deleteModalLabel">Kullanıcıyı Sil</h5>
+                        </Modal.Header>
+                        <Modal.Body className="p-4">
+                            <div className="text-center">
+                                <div className="avatar-md mx-auto mb-4">
+                                    <div className="avatar-title bg-danger-subtle text-danger display-4 rounded-circle">
+                                        <i className="bi bi-exclamation-triangle"></i>
+                                    </div>
+                                </div>
+                                <h4 className="text-danger">Emin misiniz?</h4>
+                                <p className="text-muted fs-15 mb-4">
+                                    <strong>{selectedUser?.user_name}</strong> kullanıcısını silmek istediğinizden emin misiniz? Bu işlem geri alınamaz!
+                                </p>
+                            </div>
+                        </Modal.Body>
+                        <div className="modal-footer">
+                            <div className="hstack gap-2 justify-content-center">
+                                <Button className="btn-light" onClick={() => { tog_DeleteUserModals(); }}>İptal</Button>
+                                <Button variant='danger' id="delete-btn">Evet, Sil</Button>
+                            </div>
+                        </div>
                     </Modal>
 
                 </Container >

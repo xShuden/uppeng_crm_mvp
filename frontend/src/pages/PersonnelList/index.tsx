@@ -5,15 +5,35 @@ import CountUp from 'react-countup';
 import TableContainer from "Common/TableContainer";
 import { userList } from "Common/data";
 import Flatpickr from "react-flatpickr";
-import dummyImg from "../../assets/images/users/user-dummy-img.jpg"
 import { Link } from 'react-router-dom';
 
 const PersonnelList = () => {
-    document.title = "Personnel List | CRM v2 Randevu Takip";
+    document.title = "Personel Listesi | CRM v2 Randevu Takip";
     const [modal_AddPersonnelModals, setmodal_AddPersonnelModals] = useState<boolean>(false);
-    const [isMultiDeleteButton, setIsMultiDeleteButton] = useState<boolean>(false)
+    const [modal_EditPersonnelModals, setmodal_EditPersonnelModals] = useState<boolean>(false);
+    const [modal_DeletePersonnelModals, setmodal_DeletePersonnelModals] = useState<boolean>(false);
+    const [isMultiDeleteButton, setIsMultiDeleteButton] = useState<boolean>(false);
+    const [selectedPersonnel, setSelectedPersonnel] = useState<any>(null);
     function tog_AddPersonnelModals() {
         setmodal_AddPersonnelModals(!modal_AddPersonnelModals);
+    }
+
+    function tog_EditPersonnelModals() {
+        setmodal_EditPersonnelModals(!modal_EditPersonnelModals);
+    }
+
+    function tog_DeletePersonnelModals() {
+        setmodal_DeletePersonnelModals(!modal_DeletePersonnelModals);
+    }
+
+    function handleEditPersonnel(personnel: any) {
+        setSelectedPersonnel(personnel);
+        tog_EditPersonnelModals();
+    }
+
+    function handleDeletePersonnel(personnel: any) {
+        setSelectedPersonnel(personnel);
+        tog_DeletePersonnelModals();
     }
 
     // Checked All
@@ -54,32 +74,25 @@ const PersonnelList = () => {
                 id: '#',
             },
             {
-                Header: "Personnel Name",
+                Header: "Personel Adı",
                 disableFilters: true,
                 filterable: true,
-                accessor: (cellProps: any) => {
-                    return (<div className="d-flex align-items-center gap-2">
-                        <div className="flex-shrink-0">
-                            <img src={cellProps.user_img} alt="" className="avatar-xs rounded-circle user-profile-img" />
-                        </div>
-                        <div className="flex-grow-1 ms-2 user_name">{cellProps.user_name}</div>
-                    </div>)
-                }
+                accessor: "user_name"
             },
             {
-                Header: "Email",
+                Header: "E-posta",
                 accessor: "email_id",
                 disableFilters: true,
                 filterable: true,
             },
             {
-                Header: "Join Date",
+                Header: "İşe Giriş Tarihi",
                 accessor: "date",
                 disableFilters: true,
                 filterable: true,
             },
             {
-                Header: "Status",
+                Header: "Durum",
                 disableFilters: true,
                 filterable: true,
                 accessor: (cellProps: any) => {
@@ -94,17 +107,17 @@ const PersonnelList = () => {
                 },
             },
             {
-                Header: "Action",
+                Header: "İşlem",
                 disableFilters: true,
                 filterable: true,
                 accessor: (cellProps: any) => {
                     return (
                         <div className="d-flex gap-2">
                             <div className="edit">
-                                <Button variant="ghost-info" size="sm" className="btn-ghost-info btn-icon edit-item-btn"><i className="ph-pencil-line"></i></Button>
+                                <Button variant="ghost-info" size="sm" className="btn-ghost-info btn-icon edit-item-btn" onClick={() => handleEditPersonnel(cellProps)}><i className="ph-pencil-line"></i></Button>
                             </div>
                             <div className="remove">
-                                <Button variant="ghost-danger" size="sm" className="btn-ghost-danger btn-icon remove-item-btn"><i className="ph-trash"></i></Button>
+                                <Button variant="ghost-danger" size="sm" className="btn-ghost-danger btn-icon remove-item-btn" onClick={() => handleDeletePersonnel(cellProps)}><i className="ph-trash"></i></Button>
                             </div>
                         </div>
                     )
@@ -118,7 +131,7 @@ const PersonnelList = () => {
         <React.Fragment>
             <div className="page-content">
                 <Container fluid={true}>
-                    <Breadcrumb title="Personnel List" pageTitle="Staff Management" />
+                    <Breadcrumb title="Personel Listesi" pageTitle="Personel Yönetimi" />
 
                     <Row>
                         <Col xxl={3} md={6}>
@@ -157,7 +170,7 @@ const PersonnelList = () => {
                                 </div>
                                 <Card.Body className="p-4 z-1 position-relative">
                                     <h4 className="fs-22 fw-semibold mb-3"><CountUp end={125} separator=','/> </h4>
-                                    <p className="mb-0 fw-medium text-uppercase fs-14">Total Personnel</p>
+                                    <p className="mb-0 fw-medium text-uppercase fs-14">Toplam Personel</p>
                                 </Card.Body>
                             </Card>
                         </Col>
@@ -197,7 +210,7 @@ const PersonnelList = () => {
                                 </div>
                                 <Card.Body className="p-4 z-1 position-relative">
                                     <h4 className="fs-22 fw-semibold mb-3"><CountUp end={98} /></h4>
-                                    <p className="mb-0 fw-medium text-uppercase fs-14">Active Personnel</p>
+                                    <p className="mb-0 fw-medium text-uppercase fs-14">Aktif Personel</p>
                                 </Card.Body>
                             </Card>
                         </Col>
@@ -237,7 +250,7 @@ const PersonnelList = () => {
                                 </div>
                                 <Card.Body className="p-4 z-1 position-relative">
                                     <h4 className="fs-22 fw-semibold mb-3"><CountUp end={27} /></h4>
-                                    <p className="mb-0 fw-medium text-uppercase fs-14">Inactive Personnel</p>
+                                    <p className="mb-0 fw-medium text-uppercase fs-14">Pasif Personel</p>
                                 </Card.Body>
                             </Card>
                         </Col>
@@ -254,8 +267,8 @@ const PersonnelList = () => {
                                                 </div>
                                             </div>
                                             <div className="flex-grow-1">
-                                                <Link to="#" className="stretched-link"><h6 className="fs-17">Staff Training Program</h6></Link>
-                                                <p className="text-muted mb-0">Improve staff performance</p>
+                                                <Link to="#" className="stretched-link"><h6 className="fs-17">Vardiya Planlama</h6></Link>
+                                                <p className="text-muted mb-0">Çalışma çizelgesini düzenle</p>
                                             </div>
                                         </div>
                                     </div>
@@ -271,7 +284,7 @@ const PersonnelList = () => {
                                     <Row className="g-lg-2 g-4">
                                         <Col lg={3}>
                                             <div className="search-box">
-                                                <input type="text" className="form-control search" placeholder="Search for personnel..." />
+                                                <input type="text" className="form-control search" placeholder="Personel ara..." />
                                                 <i className="ri-search-line search-icon"></i>
                                             </div>
                                         </Col>
@@ -280,19 +293,8 @@ const PersonnelList = () => {
 
                                         <Col sm={3} className="col-lg-auto ms-auto">
                                             <Button onClick={() => tog_AddPersonnelModals()} variant='primary' type="button" className="w-100 add-btn">
-                                                Add Personnel
+                                                Personel Ekle
                                             </Button>
-                                        </Col>
-                                        <Col sm={9} className="col-lg-auto">
-                                            <select className="form-select" data-choices data-choices-search-false name="choices-single-default" id="idStatus">
-                                                <option value="all">All</option>
-                                                <option value="Today">Today</option>
-                                                <option value="Yesterday">Yesterday</option>
-                                                <option value="Last 7 Days">Last 7 Days</option>
-                                                <option value="Last 30 Days">Last 30 Days</option>
-                                                <option defaultValue="This Month">This Month</option>
-                                                <option value="Last Month">Last Month</option>
-                                            </select>
                                         </Col>
                                     </Row>
                                 </Card.Body>
@@ -309,12 +311,12 @@ const PersonnelList = () => {
                                             className="custom-header-css table align-middle table-nowrap"
                                             tableClass="table-centered align-middle table-nowrap mb-0"
                                             theadClass="text-muted table-light"
-                                            SearchPlaceholder='Search Personnel...'
+                                            SearchPlaceholder='Personel Ara...'
                                         />
                                         <div className="noresult" style={{ display: "none" }}>
                                             <div className="text-center">
-                                                <h5 className="mt-2">Sorry! No Result Found</h5>
-                                                <p className="text-muted mb-0">We've searched more than 150+ Personnel We did not find any personnel for you search.</p>
+                                                <h5 className="mt-2">Üzgünüz! Sonuç Bulunamadı</h5>
+                                                <p className="text-muted mb-0">150'den fazla personel aradık ancak aramanız için herhangi bir personel bulamadık.</p>
                                             </div>
                                         </div>
                                     
@@ -325,70 +327,159 @@ const PersonnelList = () => {
 
                     <Modal className="fade" show={modal_AddPersonnelModals} onHide={() => { tog_AddPersonnelModals(); }} centered>
                         <Modal.Header className="px-4 pt-4" closeButton>
-                            <h5 className="modal-title" id="exampleModalLabel">Add Personnel</h5>
+                            <h5 className="modal-title" id="exampleModalLabel">Personel Ekle</h5>
                         </Modal.Header>
                         <Form className="tablelist-form">
                             <Modal.Body className="p-4">
                                 <div id="alert-error-msg" className="d-none alert alert-danger py-2"></div>
                                 <input type="hidden" id="id-field" />
 
-                                <div className="text-center">
-                                    <div className="position-relative d-inline-block">
-                                        <div className="position-absolute  bottom-0 end-0">
-                                            <label htmlFor="personnel-image-input" className="mb-0" data-bs-toggle="tooltip" data-bs-placement="right" title="Select Image">
-                                                <div className="avatar-xs cursor-pointer">
-                                                    <div className="avatar-title bg-light border rounded-circle text-muted">
-                                                        <i className="ri-image-fill"></i>
-                                                    </div>
-                                                </div>
-                                            </label>
-                                            <Form.Control className="d-none" defaultValue="" id="personnel-image-input" type="file" accept="image/png, image/gif, image/jpeg" />
-                                        </div>
-                                        <div className="avatar-lg p-1">
-                                            <div className="avatar-title bg-light rounded-circle">
-                                                <img src={dummyImg} alt="dummyImg" id="personnel-img-field" className="avatar-md rounded-circle object-cover" />
-                                            </div>
-                                        </div>
-                                    </div>
+
+                                <div className="mb-3">
+                                    <Form.Label htmlFor="personnel-name">Personel Adı</Form.Label>
+                                    <Form.Control type="text" id="personnel-name-field" placeholder="Adını Girin" required />
+                                </div>
+                                <div className="mb-3">
+                                    <Form.Label htmlFor="email-field">Personel E-postası</Form.Label>
+                                    <Form.Control type="email" id="email-field" placeholder="E-posta Girin" required />
                                 </div>
 
                                 <div className="mb-3">
-                                    <Form.Label htmlFor="personnel-name">Personnel Name</Form.Label>
-                                    <Form.Control type="text" id="personnel-name-field" placeholder="Enter Name" required />
-                                </div>
-                                <div className="mb-3">
-                                    <Form.Label htmlFor="email-field">Personnel Email</Form.Label>
-                                    <Form.Control type="email" id="email-field" placeholder="Enter Email" required />
-                                </div>
-
-                                <div className="mb-3">
-                                    <Form.Label htmlFor="date-field">Join Date</Form.Label>
+                                    <Form.Label htmlFor="date-field">İşe Giriş Tarihi</Form.Label>
                                     <Flatpickr
                                         className="form-control flatpickr-input"
-                                        placeholder='Select Date'
+                                        placeholder='Tarih Seç'
                                         options={{
                                             mode: "range",
                                             dateFormat: "d M, Y",
+                                            locale: {
+                                                weekdays: {
+                                                    shorthand: ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'],
+                                                    longhand: ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi']
+                                                },
+                                                months: {
+                                                    shorthand: ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'],
+                                                    longhand: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık']
+                                                }
+                                            }
                                         }}
                                     />
                                 </div>
 
                                 <div>
-                                    <label htmlFor="personnel-status" className="form-label">Status</label>
+                                    <label htmlFor="personnel-status" className="form-label">Durum</label>
                                     <select className="form-select" required id="personnel-status-field">
-                                        <option defaultValue="">Personnel Status</option>
-                                        <option value="Active">Active</option>
-                                        <option value="Inactive">Inactive</option>
+                                        <option defaultValue="">Personel Durumu</option>
+                                        <option value="Active">Aktif</option>
+                                        <option value="Inactive">Pasif</option>
                                     </select>
                                 </div>
                             </Modal.Body>
                             <div className="modal-footer">
                                 <div className="hstack gap-2 justify-content-end">
-                                    <Button className="btn-ghost-danger" onClick={() => { tog_AddPersonnelModals(); }}>Close</Button>
-                                    <Button variant='success' id="add-btn">Add Personnel</Button>
+                                    <Button className="btn-ghost-danger" onClick={() => { tog_AddPersonnelModals(); }}>Kapat</Button>
+                                    <Button variant='success' id="add-btn">Personel Ekle</Button>
                                 </div>
                             </div>
                         </Form>
+                    </Modal>
+
+                    {/* Edit Personnel Modal */}
+                    <Modal className="fade" show={modal_EditPersonnelModals} onHide={() => { tog_EditPersonnelModals(); }} centered>
+                        <Modal.Header className="px-4 pt-4" closeButton>
+                            <h5 className="modal-title" id="editModalLabel">Personel Düzenle</h5>
+                        </Modal.Header>
+                        <Form className="tablelist-form">
+                            <Modal.Body className="p-4">
+                                <div id="alert-error-msg" className="d-none alert alert-danger py-2"></div>
+                                <input type="hidden" id="edit-id-field" />
+
+                                <div className="mb-3">
+                                    <Form.Label htmlFor="edit-personnel-name">Personel Adı</Form.Label>
+                                    <Form.Control 
+                                        type="text" 
+                                        id="edit-personnel-name-field" 
+                                        placeholder="Personel Adını Girin" 
+                                        defaultValue={selectedPersonnel?.user_name || ''} 
+                                        required 
+                                    />
+                                </div>
+                                <div className="mb-3">
+                                    <Form.Label htmlFor="edit-email-field">Personel E-postası</Form.Label>
+                                    <Form.Control 
+                                        type="email" 
+                                        id="edit-email-field" 
+                                        placeholder="E-posta Adresini Girin" 
+                                        defaultValue={selectedPersonnel?.email_id || ''} 
+                                        required 
+                                    />
+                                </div>
+
+                                <div className="mb-3">
+                                    <Form.Label htmlFor="edit-date-field">İşe Giriş Tarihi</Form.Label>
+                                    <Flatpickr
+                                        className="form-control flatpickr-input"
+                                        placeholder='Tarih Seç'
+                                        defaultValue={selectedPersonnel?.date || ''}
+                                        options={{
+                                            mode: "range",
+                                            dateFormat: "d M, Y",
+                                            locale: {
+                                                weekdays: {
+                                                    shorthand: ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'],
+                                                    longhand: ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi']
+                                                },
+                                                months: {
+                                                    shorthand: ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'],
+                                                    longhand: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık']
+                                                }
+                                            }
+                                        }}
+                                    />
+                                </div>
+
+                                <div>
+                                    <label htmlFor="edit-personnel-status" className="form-label">Durum</label>
+                                    <select className="form-select" required id="edit-personnel-status-field" defaultValue={selectedPersonnel?.status || ''}>
+                                        <option value="">Personel Durumu</option>
+                                        <option value="Active">Aktif</option>
+                                        <option value="Inactive">Pasif</option>
+                                    </select>
+                                </div>
+                            </Modal.Body>
+                            <div className="modal-footer">
+                                <div className="hstack gap-2 justify-content-end">
+                                    <Button className="btn-ghost-danger" onClick={() => { tog_EditPersonnelModals(); }}>İptal</Button>
+                                    <Button variant='success' id="edit-btn">Güncelle</Button>
+                                </div>
+                            </div>
+                        </Form>
+                    </Modal>
+
+                    {/* Delete Confirmation Modal */}
+                    <Modal className="fade" show={modal_DeletePersonnelModals} onHide={() => { tog_DeletePersonnelModals(); }} centered>
+                        <Modal.Header className="px-4 pt-4" closeButton>
+                            <h5 className="modal-title" id="deleteModalLabel">Personeli Sil</h5>
+                        </Modal.Header>
+                        <Modal.Body className="p-4">
+                            <div className="text-center">
+                                <div className="avatar-md mx-auto mb-4">
+                                    <div className="avatar-title bg-danger-subtle text-danger display-4 rounded-circle">
+                                        <i className="bi bi-exclamation-triangle"></i>
+                                    </div>
+                                </div>
+                                <h4 className="text-danger">Emin misiniz?</h4>
+                                <p className="text-muted fs-15 mb-4">
+                                    <strong>{selectedPersonnel?.user_name}</strong> personelini silmek istediğinizden emin misiniz? Bu işlem geri alınamaz!
+                                </p>
+                            </div>
+                        </Modal.Body>
+                        <div className="modal-footer">
+                            <div className="hstack gap-2 justify-content-center">
+                                <Button className="btn-light" onClick={() => { tog_DeletePersonnelModals(); }}>İptal</Button>
+                                <Button variant='danger' id="delete-btn">Evet, Sil</Button>
+                            </div>
+                        </div>
                     </Modal>
 
                 </Container >
