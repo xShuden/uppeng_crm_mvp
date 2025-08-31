@@ -92,11 +92,6 @@ const ChangePassword = () => {
                                 </Col>
 
                                 <Col lg={12}>
-                                    <div>
-                                        <Link to="#" className="link-primary text-decoration-underline">Şifrenizi mi unuttunuz?</Link>
-                                    </div>
-                                </Col>
-                                <Col lg={12}>
                                     <div className="text-end">
                                         <Button variant='success' type="submit">Şifre Değiştir</Button>
                                     </div>

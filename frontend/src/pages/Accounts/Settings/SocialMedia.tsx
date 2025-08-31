@@ -16,7 +16,13 @@ const SocialMedia = () => {
                                 <Col lg={4}>
                                     <div>
                                         <Form.Label htmlFor="facebook">Facebook</Form.Label>
-                                        <Form.Control type="text" id="facebook" placeholder="Kullanıcı adı" defaultValue="AhmetYilmaz"/>
+                                        <Form.Control type="text" id="facebook" placeholder="Kullanıcı adı" defaultValue="GuzellikSalonuElite"/>
+                                    </div>
+                                </Col>
+                                <Col lg={4}>
+                                    <div>
+                                        <Form.Label htmlFor="instagram">Instagram</Form.Label>
+                                        <Form.Control type="text" id="instagram" placeholder="Kullanıcı adı" defaultValue="@guzellik_salonu_elite"/>
                                     </div>
                                 </Col>
                                 <Col lg={4}>
@@ -27,14 +33,8 @@ const SocialMedia = () => {
                                 </Col>
                                 <Col lg={4}>
                                     <div>
-                                        <Form.Label htmlFor="twitterInput">Twitter <span className="text-danger">*</span></Form.Label>
-                                        <Form.Control type="text" id="twitterInput" placeholder="Kullanıcı adı" defaultValue="@ahmet_yilmaz"/>
-                                    </div>
-                                </Col>
-                                <Col lg={4}>
-                                    <div>
-                                        <Form.Label htmlFor="emailInput2">E-posta</Form.Label>
-                                        <Form.Control type="text" id="emailInput2" placeholder="ornek@site.com" defaultValue="ahmet@ornek.com"/>
+                                        <Form.Label htmlFor="twitterInput">Twitter</Form.Label>
+                                        <Form.Control type="text" id="twitterInput" placeholder="Kullanıcı adı" defaultValue="@guzellik_elite"/>
                                     </div>
                                 </Col>
                                 <Col lg={12}>

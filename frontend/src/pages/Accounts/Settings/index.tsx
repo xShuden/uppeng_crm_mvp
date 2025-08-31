@@ -6,7 +6,7 @@ import Breadcrumb from 'Common/BreadCrumb';
 import PersonalInformation from './PersonalInformation';
 import SocialMedia from './SocialMedia';
 import ChangePassword from './ChangePassword';
-import ApplicationNotifications from './ApplicationNotifications';
+import BusinessHours from './BusinessHours';
 import PrivacySecurity from './PrivacySecurity';
 
 const Settings = () => {
@@ -22,7 +22,7 @@ const Settings = () => {
                     <PersonalInformation />
                     <SocialMedia />
                     <ChangePassword />
-                    <ApplicationNotifications />
+                    <BusinessHours />
                     <PrivacySecurity/>
 
                 </Container>

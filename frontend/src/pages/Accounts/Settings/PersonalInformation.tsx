@@ -7,8 +7,8 @@ const PersonalInformation = () => {
         <React.Fragment>
             <Row>
                 <Col lg={4}>
-                    <h5 className="fs-16">Kişisel Bilgiler</h5>
-                    <p className="text-muted mb-lg-0">Kişisel bilgilerinizi bu bölümden güncelleyebilirsiniz. Lütfen bilgilerinizin doğru ve güncel olduğundan emin olun.</p>
+                    <h5 className="fs-16">Şirket Bilgileri</h5>
+                    <p className="text-muted mb-lg-0">Şirket bilgilerinizi bu bölümden güncelleyebilirsiniz. Lütfen bilgilerinizin doğru ve güncel olduğundan emin olun.</p>
                 </Col>
                 <Col lg={8}>
                     <Card>
@@ -20,19 +20,19 @@ const PersonalInformation = () => {
                                         <Form.Control type="text" id="firstName" placeholder="Adınızı girin" defaultValue="Ahmet"/>
                                     </div>
                                 </Col>
-                                <Col lg={4}>
+                                <Col lg={6}>
                                     <div>
                                         <Form.Label htmlFor="lastName">Soyad <span className="text-danger">*</span></Form.Label>
                                         <Form.Control type="text" id="lastName" placeholder="Soyadınızı girin" defaultValue="Yılmaz"/>
                                     </div>
                                 </Col>
-                                <Col lg={4}>
+                                <Col lg={6}>
                                     <div>
                                         <Form.Label htmlFor="emailInput">E-posta Adresi <span className="text-danger">*</span></Form.Label>
                                         <Form.Control type="text" id="emailInput" placeholder="isim@ornek.com" defaultValue="ahmet@ornek.com"/>
                                     </div>
                                 </Col>
-                                <Col lg={4}>
+                                <Col lg={6}>
                                     <div>
                                         <Form.Label htmlFor="phoneInput">Telefon Numarası</Form.Label>
                                         <Form.Control type="text" id="phoneInput" placeholder="Telefon numaranızı girin" defaultValue="+90 (532) 123 45 67"/>
@@ -61,16 +61,16 @@ const PersonalInformation = () => {
                                         />
                                     </div>
                                 </Col>
-                                <Col lg={6}>
+                                <Col lg={4}>
                                     <div>
                                         <Form.Label htmlFor="designationInput">Ünvan</Form.Label>
-                                        <Form.Control type="text" id="designationInput" placeholder="Ünvan" defaultValue="Satış ve Pazarlama Müdürü"/>
+                                        <Form.Control type="text" id="designationInput" placeholder="Ünvan" defaultValue="Salon Sahibi"/>
                                     </div>
                                 </Col>
-                                <Col lg={6}>
+                                <Col lg={4}>
                                     <div>
                                         <Form.Label htmlFor="websiteInput1">Web Sitesi</Form.Label>
-                                        <Form.Control type="text" id="websiteInput1" placeholder="www.ornek.com" defaultValue="www.orneksite.com"/>
+                                        <Form.Control type="text" id="websiteInput1" placeholder="www.ornek.com" defaultValue="www.guzelliksalonu.com"/>
                                     </div>
                                 </Col>
                                 <Col lg={4}>
@@ -89,6 +89,30 @@ const PersonalInformation = () => {
                                     <div>
                                         <Form.Label htmlFor="zipcodeInput">Posta Kodu</Form.Label>
                                         <Form.Control type="text" id="zipcodeInput" placeholder="Posta kodunu girin" defaultValue="34000"/>
+                                    </div>
+                                </Col>
+                                <Col lg={6}>
+                                    <div>
+                                        <Form.Label htmlFor="companyName">Şirket Adı <span className="text-danger">*</span></Form.Label>
+                                        <Form.Control type="text" id="companyName" placeholder="Şirket adını girin" defaultValue="Güzellik Salonu Elite"/>
+                                    </div>
+                                </Col>
+                                <Col lg={6}>
+                                    <div>
+                                        <Form.Label htmlFor="companyTitle">Şirket Başlığı</Form.Label>
+                                        <Form.Control type="text" id="companyTitle" placeholder="Şirket başlığını girin" defaultValue="Premium Güzellik ve Bakım Merkezi"/>
+                                    </div>
+                                </Col>
+                                <Col lg={8}>
+                                    <div>
+                                        <Form.Label htmlFor="companyAddress">Açık Adres</Form.Label>
+                                        <Form.Control type="text" id="companyAddress" placeholder="Şirket adresini girin" defaultValue="Kadıköy Mah. Bağdat Cad. No:123/A Kadıköy/İstanbul"/>
+                                    </div>
+                                </Col>
+                                <Col lg={4}>
+                                    <div>
+                                        <Form.Label htmlFor="mapsLink">Google Maps Linki</Form.Label>
+                                        <Form.Control type="text" id="mapsLink" placeholder="Google Maps linkini girin" defaultValue="https://goo.gl/maps/example"/>
                                     </div>
                                 </Col>
                                 <Col lg={12}>
