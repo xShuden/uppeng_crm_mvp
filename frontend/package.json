@@ -3,7 +3,7 @@
   "version": "1.3.0",
   "private": true,
   "dependencies": {
-    "@ckeditor/ckeditor5-build-classic": "40.1.0",
+    "@ckeditor/ckeditor5-build-classic": "^39.0.2",
     "@ckeditor/ckeditor5-react": "^6.2.0",
     "@fullcalendar/bootstrap": "^6.1.10",
     "@fullcalendar/core": "^6.1.10",
@@ -40,9 +40,7 @@
     "react-countup": "^6.5.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
-    "react-facebook-login": "^4.1.1",
     "react-flatpickr": "^3.10.13",
-    "react-google-login": "^5.2.2",
     "react-i18next": "^13.5.0",
     "react-perfect-scrollbar": "^1.5.8",
     "react-redux": "^9.0.2",
@@ -84,7 +82,10 @@
     ]
   },
   "resolutions": {
-    "autoprefixer": "10.4.5"
+    "autoprefixer": "10.4.5",
+    "**/nth-check": "^2.1.1",
+    "**/css-select": "^4.3.0",
+    "**/svgo": "^2.8.0"
   },
   "devDependencies": {
     "@types/react-flatpickr": "^3.8.8",
