@@ -184,7 +184,7 @@ const TenantList = () => {
                                 </div>
                                 <Card.Body className="p-4 z-1 position-relative">
                                     <h4 className="fs-22 fw-semibold mb-3"><CountUp end={47} separator=','/> </h4>
-                                    <p className="mb-0 fw-medium text-uppercase fs-14">Toplam Şirket</p>
+                                    <p className="mb-0 fw-medium fs-14">Toplam Şirket</p>
                                 </Card.Body>
                             </Card>
                         </Col>
@@ -224,7 +224,7 @@ const TenantList = () => {
                                 </div>
                                 <Card.Body className="p-4 z-1 position-relative">
                                     <h4 className="fs-22 fw-semibold mb-3"><CountUp end={42} /></h4>
-                                    <p className="mb-0 fw-medium text-uppercase fs-14">Aktif Abonelik</p>
+                                    <p className="mb-0 fw-medium fs-14">Aktif Abonelik</p>
                                 </Card.Body>
                             </Card>
                         </Col>
@@ -264,7 +264,7 @@ const TenantList = () => {
                                 </div>
                                 <Card.Body className="p-4 z-1 position-relative">
                                     <h4 className="fs-22 fw-semibold mb-3"><CountUp end={5} /></h4>
-                                    <p className="mb-0 fw-medium text-uppercase fs-14">Bekleyen Yenileme</p>
+                                    <p className="mb-0 fw-medium fs-14">Bekleyen Yenileme</p>
                                 </Card.Body>
                             </Card>
                         </Col>
@@ -304,28 +304,7 @@ const TenantList = () => {
                                 </div>
                                 <Card.Body className="p-4 z-1 position-relative">
                                     <h4 className="fs-22 fw-semibold mb-3"><CountUp end={7} /></h4>
-                                    <p className="mb-0 fw-medium text-uppercase fs-14">Düşük Token</p>
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                        <Col xxl={3} md={6}>
-                            <Card className="bg-light border-0">
-                                <Card.Body className="p-3">
-                                    <div className="p-3 bg-white rounded">
-                                        <div className="d-flex align-items-center gap-3">
-                                            <div className="flex-shrink-0">
-                                                <div className="avatar-sm">
-                                                    <div className="avatar-title bg-success-subtle text-success fs-4 rounded">
-                                                        <i className="ph-buildings"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="flex-grow-1">
-                                                <Link to="#" className="stretched-link"><h6 className="fs-17">Fatura Yönetimi</h6></Link>
-                                                <p className="text-muted mb-0">Ödemeleri takip et ve yönet</p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <p className="mb-0 fw-medium fs-14">Düşük Token</p>
                                 </Card.Body>
                             </Card>
                         </Col>
@@ -404,8 +383,7 @@ const TenantList = () => {
                                         className="form-control flatpickr-input"
                                         placeholder='Tarih Seç'
                                         options={{
-                                            mode: "range",
-                                            dateFormat: "d M, Y",
+                                            dateFormat: "d.m.Y",
                                             locale: {
                                                 weekdays: {
                                                     shorthand: ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'],
@@ -476,8 +454,7 @@ const TenantList = () => {
                                         placeholder='Tarih Seç'
                                         defaultValue={selectedTenant?.date || ''}
                                         options={{
-                                            mode: "range",
-                                            dateFormat: "d M, Y",
+                                            dateFormat: "d.m.Y",
                                             locale: {
                                                 weekdays: {
                                                     shorthand: ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'],

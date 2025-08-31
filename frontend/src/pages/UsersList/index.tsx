@@ -185,7 +185,7 @@ const UsersList = () => {
                                 </div>
                                 <Card.Body className="p-4 z-1 position-relative">
                                     <h4 className="fs-22 fw-semibold mb-3"><CountUp end={7845102} separator=','/> </h4>
-                                    <p className="mb-0 fw-medium text-uppercase fs-14">Toplam Kullanıcı</p>
+                                    <p className="mb-0 fw-medium fs-14">Toplam Kullanıcı</p>
                                 </Card.Body>
                             </Card>
                         </Col>
@@ -226,7 +226,7 @@ const UsersList = () => {
                                 </div>
                                 <Card.Body className="p-4 z-1 position-relative">
                                     <h4 className="fs-22 fw-semibold mb-3"><CountUp end={559.25} decimals={2} suffix="k" /></h4>
-                                    <p className="mb-0 fw-medium text-uppercase fs-14">Aktif Kullanıcı</p>
+                                    <p className="mb-0 fw-medium fs-14">Aktif Kullanıcı</p>
                                 </Card.Body>
                             </Card>
                         </Col>
@@ -267,7 +267,7 @@ const UsersList = () => {
                                 </div>
                                 <Card.Body className="p-4 z-1 position-relative">
                                     <h4 className="fs-22 fw-semibold mb-3"><CountUp end={559.25} decimals={2} suffix="k" /></h4>
-                                    <p className="mb-0 fw-medium text-uppercase fs-14">Pasif Kullanıcı</p>
+                                    <p className="mb-0 fw-medium fs-14">Pasif Kullanıcı</p>
                                 </Card.Body>
                             </Card>
                         </Col>
@@ -368,8 +368,7 @@ const UsersList = () => {
                                         className="form-control flatpickr-input"
                                         placeholder='Tarih Seç'
                                         options={{
-                                            mode: "range",
-                                            dateFormat: "d M, Y",
+                                            dateFormat: "d.m.Y",
                                             locale: {
                                                 weekdays: {
                                                     shorthand: ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'],
@@ -440,8 +439,7 @@ const UsersList = () => {
                                         placeholder='Tarih Seç'
                                         defaultValue={selectedUser?.date || ''}
                                         options={{
-                                            mode: "range",
-                                            dateFormat: "d M, Y",
+                                            dateFormat: "d.m.Y",
                                             locale: {
                                                 weekdays: {
                                                     shorthand: ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'],
