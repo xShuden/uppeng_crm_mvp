@@ -19,8 +19,8 @@ const ChangePassword = () => {
             confirm_password: '',
         },
         validationSchema: Yup.object({
-            password: Yup.string().required("Please Enter Your Password").matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/, "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"),
-            confirm_password: Yup.string().required("Please Enter Your Confirm Password").oneOf([Yup.ref('password')], 'Passwords must match'),
+            password: Yup.string().required("Şifre gerekli").matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/, "En az 8 karakter, bir büyük harf, bir küçük harf ve bir sayı içermeli"),
+            confirm_password: Yup.string().required("Şifre tekrarı gerekli").oneOf([Yup.ref('password')], 'Şifreler eşleşmeli'),
         }),
         onSubmit: (values) => {
             console.log("Change Password", values)
@@ -31,8 +31,8 @@ const ChangePassword = () => {
         <React.Fragment>
             <Row>
                 <Col lg={4}>
-                    <h5 className="fs-16">Change Password</h5>
-                    <p className="text-muted mb-lg-0">Personal Identifiable Information (PII) is defined as: Any representation of information that permits the identity of an individual to whom the information applies to be reasonably inferred by either direct or indirect means.</p>
+                    <h5 className="fs-16">Şifre Değiştir</h5>
+                    <p className="text-muted mb-lg-0">Güvenliğiniz için şifrenizi düzenli olarak değiştirin. Yeni şifreniz en az 8 karakter olmalı ve büyük harf, küçük harf, sayı içermelidir.</p>
                 </Col>
                 <Col lg={8}>
                     <Card>
@@ -41,17 +41,17 @@ const ChangePassword = () => {
                                 <Col lg={4}>
                                     <div>
                                         <Form>
-                                            <Form.Label htmlFor="oldpasswordInput">Old Password*</Form.Label>
-                                            <Form.Control type="password" id="oldpasswordInput" placeholder="Enter current password" autoComplete='off' />
+                                            <Form.Label htmlFor="oldpasswordInput">Mevcut Şifre*</Form.Label>
+                                            <Form.Control type="password" id="oldpasswordInput" placeholder="Mevcut şifrenizi girin" autoComplete='off' />
                                         </Form>
                                     </div>
                                 </Col>
                                 <Col lg={4}>
                                     <Form>
-                                        <Form.Label htmlFor="password-input">Password</Form.Label>
+                                        <Form.Label htmlFor="password-input">Yeni Şifre</Form.Label>
                                         <div className="position-relative auth-pass-inputgroup">
                                             <Form.Control
-                                                type={passwordShow ? "text" : "password"} className="pe-5 password-input" placeholder="Enter password" id="password-input"
+                                                type={passwordShow ? "text" : "password"} className="pe-5 password-input" placeholder="Yeni şifrenizi girin" id="password-input"
                                                 name="password"
                                                 autoComplete='off'
                                                 onChange={validation.handleChange}
@@ -71,9 +71,9 @@ const ChangePassword = () => {
 
                                 <Col lg={4}>
                                     <Form>
-                                        <Form.Label htmlFor="confirm-password-input">Confirm Password</Form.Label>
+                                        <Form.Label htmlFor="confirm-password-input">Şifre Tekrarı</Form.Label>
                                         <div className="position-relative auth-pass-inputgroup">
-                                            <Form.Control type={confirmPasswordShow ? "text" : "password"} className="pe-5 password-input" placeholder="Confirm password" id="confirm-password-input"
+                                            <Form.Control type={confirmPasswordShow ? "text" : "password"} className="pe-5 password-input" placeholder="Şifrenizi tekrar girin" id="confirm-password-input"
                                                 name="confirm_password"
                                                 autoComplete='off'
                                                 onChange={validation.handleChange}
@@ -93,12 +93,12 @@ const ChangePassword = () => {
 
                                 <Col lg={12}>
                                     <div>
-                                        <Link to="#" className="link-primary text-decoration-underline">Forgot Password ?</Link>
+                                        <Link to="#" className="link-primary text-decoration-underline">Şifrenizi mi unuttunuz?</Link>
                                     </div>
                                 </Col>
                                 <Col lg={12}>
                                     <div className="text-end">
-                                        <Button variant='success' type="submit">Change Password</Button>
+                                        <Button variant='success' type="submit">Şifre Değiştir</Button>
                                     </div>
                                 </Col>
                             </Row>

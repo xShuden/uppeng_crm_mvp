@@ -6,54 +6,54 @@ const ApplicationNotifications = () => {
         <React.Fragment>
             <Row>
                 <Col lg={4}>
-                    <h5 className="fs-16">Application Notifications:</h5>
-                    <p className="text-muted mb-lg-0">An app notification is a message or alert sent by an application to the device user. They include push notifications and in-app notifications.</p>
+                    <h5 className="fs-16">Uygulama Bildirimleri:</h5>
+                    <p className="text-muted mb-lg-0">Uygulama bildirimlerinizi buradan yönetebilirsiniz. E-posta ve push bildirim tercihlerinizi ayarlayabilirsiniz.</p>
                 </Col>
                 <Col lg={8}>
                     <Card>
                         <Card.Body>
-                            <h6 className="fs-16">By Email</h6>
-                            <p className="text-muted">Receive the latest news, update and industry tutorials for us.</p>
+                            <h6 className="fs-16">E-posta İle</h6>
+                            <p className="text-muted">En son haberler, güncellemeler ve sektör eğitimlerini alın.</p>
                             
                             <Row className="g-3">
                                 <Col lg={12}>
                                     <div className="form-check">
                                         <Form.Check type="checkbox" value="" id="ExclusiveProduct" />
                                         <Form.Label htmlFor="ExclusiveProduct" className='form-check-label'>
-                                            Exclusive product offers
+                                            Özel ürün teklifleri
                                         </Form.Label>
-                                        <p className="text-muted">Used or owned by only one person or group, and not shared with anyone else.</p>
+                                        <p className="text-muted">Sadece sizin için hazırlanmış özel indirim ve kampanya teklifleri.</p>
                                     </div>
                                 </Col>
                                 <Col lg={12}>
                                     <div className="form-check">
                                         <Form.Check type="checkbox" value="" id="dailyMessages"/>
                                         <Form.Label htmlFor="dailyMessages" className='form-check-label'>
-                                            Daily Messages
+                                            Günlük Mesajlar
                                         </Form.Label>
-                                        <p className="text-muted">Today is hard, tomorrow will be worse, but the day after tomorrow will be sunshine.</p>
+                                        <p className="text-muted">Günlük motivasyon ve bilgilendirme mesajları alın.</p>
                                     </div>
                                 </Col>
                                 <Col lg={12}>
                                     <div className="form-check">
                                         <Form.Check type="checkbox" value="" id="weeklyActivity" defaultChecked/>
                                         <Form.Label htmlFor="weeklyActivity" className='form-check-label'>
-                                            Weekly activity summary
+                                            Haftalık faaliyet özeti
                                         </Form.Label>
-                                        <p className="text-muted">Open the activity app on the watch and scroll down to the bottom and tap on "Weekly Summary"</p>
+                                        <p className="text-muted">Haftalık performansınız ve aktivite özetinizi e-posta ile alın.</p>
                                     </div>
                                 </Col>
                             </Row>
 
-                            <h6 className="fs-16 mt-4">Notification from Us</h6>
-                            <p className="text-muted">Receive the latest news, update and industry tutorials for us.</p>
+                            <h6 className="fs-16 mt-4">Bizden Bildirimler</h6>
+                            <p className="text-muted">Sistem güncellemeleri ve yeni özellikler hakkında bilgi alın.</p>
 
                             <Row className="g-3">
                                 <Col lg={4}>
                                     <div className="form-check">
                                         <Form.Check type="checkbox" value="" id="news&Upates" defaultChecked/>
                                         <Form.Label htmlFor="news&Upates">
-                                            News & Updates
+                                            Haberler ve Güncellemeler
                                         </Form.Label>
                                     </div>
                                 </Col>
@@ -61,7 +61,7 @@ const ApplicationNotifications = () => {
                                     <div className="form-check">
                                         <Form.Check type="checkbox" value="" id="bestTrips"/>
                                         <Form.Label htmlFor="bestTrips">
-                                            Best Trips
+                                            En İyi Fırsatlar
                                         </Form.Label>
                                     </div>
                                 </Col>
@@ -69,21 +69,21 @@ const ApplicationNotifications = () => {
                                     <div className="form-check">
                                         <Form.Check type="checkbox" value="" id="userResearch"/>
                                         <Form.Label htmlFor="userResearch">
-                                            User Research
+                                            Kullanıcı Araştırmaları
                                         </Form.Label>
                                     </div>
                                 </Col>
                             </Row>
 
-                            <h6 className="fs-16 mt-4">Comments</h6>
-                            <p className="text-muted">Receive the latest news, update and industry tutorials for us.</p>
+                            <h6 className="fs-16 mt-4">Yorumlar</h6>
+                            <p className="text-muted">Yorum bildirimlerinizi nasıl almak istediğinizi seçin.</p>
                             
                             <Row className="g-3">
                                 <Col lg={4}>
                                     <div className="form-check">
                                         <Form.Check type="radio" name="commentsList" id="donotNotifyme"/>
                                         <Form.Label htmlFor="donotNotifyme">
-                                            Do not notify me
+                                            Beni bilgilendirme
                                         </Form.Label>
                                     </div>
                                 </Col>
@@ -91,7 +91,7 @@ const ApplicationNotifications = () => {
                                     <div className="form-check">
                                         <Form.Check type="radio" name="commentsList" id="mentionsOnly"/>
                                         <Form.Label htmlFor="mentionsOnly">
-                                            Mentions only
+                                            Sadece bahsedilme
                                         </Form.Label>
                                     </div>
                                 </Col>
@@ -99,7 +99,7 @@ const ApplicationNotifications = () => {
                                     <div className="form-check">
                                         <Form.Check type="radio" name="commentsList" id="allcomment" defaultChecked/>
                                         <Form.Label htmlFor="allcomment">
-                                            All comments
+                                            Tüm yorumlar
                                         </Form.Label>
                                     </div>
                                 </Col>

@@ -11,13 +11,13 @@ import PrivacySecurity from './PrivacySecurity';
 
 const Settings = () => {
 
-    document.title = "Settings | Toner eCommerce + Admin React Template";
+    document.title = "Ayarlar | CRM v2 Randevu Takip";
 
     return (
         <React.Fragment>
             <div className="page-content">
                 <Container fluid={true}>
-                    <Breadcrumb title="Settings" pageTitle="Accounts" />
+                    <Breadcrumb title="Ayarlar" pageTitle="Hesap Yönetimi" />
 
                     <PersonalInformation />
                     <SocialMedia />

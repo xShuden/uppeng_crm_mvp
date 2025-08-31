@@ -6,8 +6,8 @@ const SocialMedia = () => {
         <React.Fragment>
             <Row>
                 <Col lg={4}>
-                    <h5 className="fs-16">Social Media</h5>
-                    <p className="text-muted mb-lg-0">Personal Identifiable Information (PII) is defined as: Any representation of information that permits the identity of an individual to whom the information applies to be reasonably inferred by either direct or indirect means.</p>
+                    <h5 className="fs-16">Sosyal Medya</h5>
+                    <p className="text-muted mb-lg-0">Sosyal medya hesaplarınızı ve iletişim bilgilerinizi bu bölümden güncelleyebilirsiniz.</p>
                 </Col>
                 <Col lg={8}>
                     <Card>
@@ -16,30 +16,30 @@ const SocialMedia = () => {
                                 <Col lg={4}>
                                     <div>
                                         <Form.Label htmlFor="facebook">Facebook</Form.Label>
-                                        <Form.Control type="text" id="facebook" placeholder="Username" defaultValue="Raquel"/>
+                                        <Form.Control type="text" id="facebook" placeholder="Kullanıcı adı" defaultValue="AhmetYilmaz"/>
                                     </div>
                                 </Col>
                                 <Col lg={4}>
                                     <div>
                                         <Form.Label htmlFor="whatsappInput">Whatsapp</Form.Label>
-                                        <Form.Control type="number" id="whatsappInput" placeholder="+(235) 01234 5678" defaultValue="+(253) 98765 4321"/>
+                                        <Form.Control type="text" id="whatsappInput" placeholder="+90 (532) 123 45 67" defaultValue="+90 (532) 987 65 43"/>
                                     </div>
                                 </Col>
                                 <Col lg={4}>
                                     <div>
                                         <Form.Label htmlFor="twitterInput">Twitter <span className="text-danger">*</span></Form.Label>
-                                        <Form.Control type="text" id="twitterInput" placeholder="Username" defaultValue="@raquel_morillo"/>
+                                        <Form.Control type="text" id="twitterInput" placeholder="Kullanıcı adı" defaultValue="@ahmet_yilmaz"/>
                                     </div>
                                 </Col>
                                 <Col lg={4}>
                                     <div>
-                                        <Form.Label htmlFor="emailInput2">Email</Form.Label>
-                                        <Form.Control type="text" id="emailInput2" placeholder="example@toner.com" defaultValue="raquelmurillo@toner.com"/>
+                                        <Form.Label htmlFor="emailInput2">E-posta</Form.Label>
+                                        <Form.Control type="text" id="emailInput2" placeholder="ornek@site.com" defaultValue="ahmet@ornek.com"/>
                                     </div>
                                 </Col>
                                 <Col lg={12}>
                                     <div className="text-end">
-                                        <Button variant='primary' type="submit">Change Social Media</Button>
+                                        <Button variant='primary' type="submit">Sosyal Medya Güncelle</Button>
                                     </div>
                                 </Col>
                             </Row>
