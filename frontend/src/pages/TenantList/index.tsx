@@ -87,9 +87,23 @@ const TenantList = () => {
             },
             {
                 Header: "Kayıt Tarihi",
-                accessor: "date",
                 disableFilters: true,
                 filterable: true,
+                accessor: (cellProps: any) => {
+                    const dateStr = cellProps.date;
+                    if (dateStr) {
+                        try {
+                            const date = new Date(dateStr);
+                            const day = date.getDate().toString().padStart(2, '0');
+                            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                            const year = date.getFullYear();
+                            return `${day}.${month}.${year}`;
+                        } catch {
+                            return dateStr;
+                        }
+                    }
+                    return dateStr;
+                }
             },
             {
                 Header: "Abonelik Durumu",
@@ -98,11 +112,11 @@ const TenantList = () => {
                 accessor: (cellProps: any) => {
                     switch (cellProps.status) {
                         case "Active":
-                            return (<span className="badge bg-success-subtle text-success"> {cellProps.status}</span>)
+                            return (<span className="badge bg-success-subtle text-success"> Aktif</span>)
                         case "Inactive":
-                            return (<span className="badge bg-danger-subtle text-danger"> {cellProps.status}</span>)
+                            return (<span className="badge bg-danger-subtle text-danger"> Pasif</span>)
                         default:
-                            return (<span className="badge bg-success-subtle text-success"> {cellProps.status}</span>)
+                            return (<span className="badge bg-success-subtle text-success"> Aktif</span>)
                     }
                 },
             },
@@ -255,6 +269,46 @@ const TenantList = () => {
                             </Card>
                         </Col>
                         <Col xxl={3} md={6}>
+                            <Card className="card-height-100 bg-danger-subtle border-0 overflow-hidden">
+                                <div className="position-absolute end-0 start-0 top-0 z-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
+                                        width="400" height="250" preserveAspectRatio="none" viewBox="0 0 400 250">
+                                        <g mask="url(&quot;#SvgjsMask1701&quot;)" fill="none">
+                                            <path d="M306 65L446 -75" strokeWidth="8" stroke="url(#SvgjsLinearGradient1702)" strokeLinecap="round" className="BottomLeft"></path>
+                                            <path d="M399 2L315 86" strokeWidth="10" stroke="url(#SvgjsLinearGradient1703)" strokeLinecap="round" className="TopRight"></path>
+                                            <path d="M83 77L256 -96" strokeWidth="6" stroke="url(#SvgjsLinearGradient1703)" strokeLinecap="round" className="TopRight"></path>
+                                            <path d="M281 212L460 33" strokeWidth="6" stroke="url(#SvgjsLinearGradient1703)" strokeLinecap="round" className="TopRight"></path>
+                                            <path d="M257 62L76 243" strokeWidth="6" stroke="url(#SvgjsLinearGradient1703)" strokeLinecap="round" className="TopRight"></path>
+                                            <path d="M305 123L214 214" strokeWidth="6" stroke="url(#SvgjsLinearGradient1702)" strokeLinecap="round" className="BottomLeft"></path>
+                                            <path d="M327 222L440 109" strokeWidth="6" stroke="url(#SvgjsLinearGradient1702)" strokeLinecap="round" className="BottomLeft"></path>
+                                            <path d="M287 109L362 34" strokeWidth="10" stroke="url(#SvgjsLinearGradient1703)" strokeLinecap="round" className="TopRight"></path>
+                                            <path d="M259 194L332 121" strokeWidth="8" stroke="url(#SvgjsLinearGradient1703)" strokeLinecap="round" className="TopRight"></path>
+                                            <path d="M376 186L240 322" strokeWidth="8" stroke="url(#SvgjsLinearGradient1703)" strokeLinecap="round" className="TopRight"></path>
+                                            <path d="M308 153L123 338" strokeWidth="6" stroke="url(#SvgjsLinearGradient1703)" strokeLinecap="round" className="TopRight"></path>
+                                            <path d="M218 62L285 -5" strokeWidth="8" stroke="url(#SvgjsLinearGradient1702)" strokeLinecap="round" className="BottomLeft"></path>
+                                        </g>
+                                        <defs>
+                                            <mask id="SvgjsMask1701">
+                                                <rect width="400" height="250" fill="#ffffff"></rect>
+                                            </mask>
+                                            <linearGradient x1="0%" y1="100%" x2="100%" y2="0%" id="SvgjsLinearGradient1702">
+                                                <stop stopColor="rgba(var(--tb-danger-rgb), 0)" offset="0"></stop>
+                                                <stop stopColor="rgba(var(--tb-danger-rgb), 0.2)" offset="1"></stop>
+                                            </linearGradient>
+                                            <linearGradient x1="100%" y1="0%" x2="0%" y2="100%" id="SvgjsLinearGradient1703">
+                                                <stop stopColor="rgba(var(--tb-danger-rgb), 0)" offset="0"></stop>
+                                                <stop stopColor="rgba(var(--tb-danger-rgb), 0.2)" offset="1"></stop>
+                                            </linearGradient>
+                                        </defs>
+                                    </svg>
+                                </div>
+                                <Card.Body className="p-4 z-1 position-relative">
+                                    <h4 className="fs-22 fw-semibold mb-3"><CountUp end={7} /></h4>
+                                    <p className="mb-0 fw-medium text-uppercase fs-14">Düşük Token</p>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                        <Col xxl={3} md={6}>
                             <Card className="bg-light border-0">
                                 <Card.Body className="p-3">
                                     <div className="p-3 bg-white rounded">
@@ -267,8 +321,8 @@ const TenantList = () => {
                                                 </div>
                                             </div>
                                             <div className="flex-grow-1">
-                                                <Link to="#" className="stretched-link"><h6 className="fs-17">Kurumsal Çözümler</h6></Link>
-                                                <p className="text-muted mb-0">İşinizi büyütün</p>
+                                                <Link to="#" className="stretched-link"><h6 className="fs-17">Fatura Yönetimi</h6></Link>
+                                                <p className="text-muted mb-0">Ödemeleri takip et ve yönet</p>
                                             </div>
                                         </div>
                                     </div>

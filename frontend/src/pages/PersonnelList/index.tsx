@@ -87,9 +87,23 @@ const PersonnelList = () => {
             },
             {
                 Header: "İşe Giriş Tarihi",
-                accessor: "date",
                 disableFilters: true,
                 filterable: true,
+                accessor: (cellProps: any) => {
+                    const dateStr = cellProps.date;
+                    if (dateStr) {
+                        try {
+                            const date = new Date(dateStr);
+                            const day = date.getDate().toString().padStart(2, '0');
+                            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                            const year = date.getFullYear();
+                            return `${day}.${month}.${year}`;
+                        } catch {
+                            return dateStr;
+                        }
+                    }
+                    return dateStr;
+                }
             },
             {
                 Header: "Durum",
@@ -98,11 +112,11 @@ const PersonnelList = () => {
                 accessor: (cellProps: any) => {
                     switch (cellProps.status) {
                         case "Active":
-                            return (<span className="badge bg-success-subtle text-success"> {cellProps.status}</span>)
+                            return (<span className="badge bg-success-subtle text-success"> Aktif</span>)
                         case "Inactive":
-                            return (<span className="badge bg-danger-subtle text-danger"> {cellProps.status}</span>)
+                            return (<span className="badge bg-danger-subtle text-danger"> Pasif</span>)
                         default:
-                            return (<span className="badge bg-success-subtle text-success"> {cellProps.status}</span>)
+                            return (<span className="badge bg-success-subtle text-success"> Aktif</span>)
                     }
                 },
             },
