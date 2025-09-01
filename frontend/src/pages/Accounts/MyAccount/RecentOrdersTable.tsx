@@ -15,7 +15,7 @@ const RecentOrdersTable = () => {
                 id: '#',
             },
             {
-                Header: "Order ID",
+                Header: "Randevu ID",
                 accessor: (cellProps: any) => {
                     return (
                         <Link to="#" className="fw-medium">{cellProps.OrderID}</Link>
@@ -25,54 +25,54 @@ const RecentOrdersTable = () => {
                 filterable: true,
             },
             {
-                Header: "Product Name",
+                Header: "Hizmet Adı",
                 accessor: "ProductName",
                 disableFilters: true,
                 filterable: true,
             },
             {
-                Header: "Amount",
+                Header: "Tutar",
                 accessor: "Amount",
                 disableFilters: true,
                 filterable: true,
             },
             {
-                Header: "Order Date",
+                Header: "Randevu Tarihi",
                 accessor: "OrderDate",
                 disableFilters: true,
                 filterable: true,
             },
             {
-                Header: "Payment Method",
+                Header: "Ödeme Yöntemi",
                 accessor: "PaymentMethod",
                 disableFilters: true,
                 filterable: true,
             },
             {
-                Header: "Delivery Status",
+                Header: "Durum",
                 disableFilters: true,
                 filterable: true,
                 accessor: (cellProps: any) => {
                     switch (cellProps.DeliveryStatus) {
                         case "Delivered":
-                            return (<span className="badge bg-success-subtle text-success text-uppercase"> {cellProps.DeliveryStatus}</span>)
+                            return (<span className="badge bg-success-subtle text-success text-uppercase">Tamamlandı</span>)
                         case "Pickups":
-                            return (<span className="badge bg-info-subtle text-info text-uppercase"> {cellProps.DeliveryStatus}</span>)
+                            return (<span className="badge bg-info-subtle text-info text-uppercase">Hazır</span>)
                         case "Pending":
-                            return (<span className="badge bg-warning-subtle text-warning text-uppercase"> {cellProps.DeliveryStatus}</span>)
+                            return (<span className="badge bg-warning-subtle text-warning text-uppercase">Beklemede</span>)
                         case "Inprogress":
-                            return (<span className="badge bg-secondary-subtle text-secondary text-uppercase"> {cellProps.DeliveryStatus}</span>)
+                            return (<span className="badge bg-secondary-subtle text-secondary text-uppercase">Devam Ediyor</span>)
                         case "Returns":
-                            return (<span className="badge bg-primary-subtle text-primary text-uppercase"> {cellProps.DeliveryStatus}</span>)
+                            return (<span className="badge bg-primary-subtle text-primary text-uppercase">İade</span>)
                         case "Cancelled":
-                            return (<span className="badge bg-danger-subtle text-danger text-uppercase"> {cellProps.DeliveryStatus}</span>)
+                            return (<span className="badge bg-danger-subtle text-danger text-uppercase">İptal</span>)
                         default:
-                            return (<span className="badge bg-success-subtle text-success text-uppercase"> {cellProps.DeliveryStatus}</span>)
+                            return (<span className="badge bg-success-subtle text-success text-uppercase">Tamamlandı</span>)
                     }
                 },
             },
             {
-                Header: "Action",
+                Header: "İşlemler",
                 disableFilters: true,
                 filterable: true,
                 accessor: (cellProps: any) => {
@@ -85,12 +85,12 @@ const RecentOrdersTable = () => {
                                 <Dropdown.Menu as="ul" className="dropdown-menu-end">
                                     <li>
                                         <Dropdown.Item href="/orders-overview">
-                                            <i className="ri-eye-fill align-bottom me-2 text-muted" /> View
+                                            <i className="ri-eye-fill align-bottom me-2 text-muted" /> Görüntüle
                                         </Dropdown.Item>
                                     </li>
                                     <li>
                                         <Dropdown.Item href="#" className="remove-list">
-                                            <i className="ri-delete-bin-fill align-bottom me-2 text-muted" />Delete
+                                            <i className="ri-delete-bin-fill align-bottom me-2 text-muted" />Sil
                                         </Dropdown.Item>
                                     </li>
                                 </Dropdown.Menu>
@@ -115,7 +115,7 @@ const RecentOrdersTable = () => {
                 className="custom-header-css table align-middle table-nowrap"
                 tableClass="table-centered align-middle table-nowrap mb-0"
                 theadClass="text-muted table-light"
-                SearchPlaceholder='Search Products...'
+                SearchPlaceholder='Hizmet Ara...'
             />
         </React.Fragment>
     );

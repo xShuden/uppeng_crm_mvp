@@ -11,7 +11,7 @@ const Profile = () => {
     return (
         <React.Fragment>
             <Row>
-                <Col xxl={9}>
+                <Col xxl={12}>
                     <Card>
                         <Card.Body>
                             <Row>
@@ -24,8 +24,8 @@ const Profile = () => {
                                 <Col lg={9}>
                                     <div className="d-flex border-bottom border-bottom-dashed pb-3 mb-3 mt-4 mt-lg-0">
                                         <div className="flex-grow-1">
-                                            <h5>Raquel Murillo</h5>
-                                            <p className="text-muted mb-0">Sales & Marketing Manager</p>
+                                            <h5>Ahmet Yılmaz</h5>
+                                            <p className="text-muted mb-0">Salon Sahibi</p>
                                         </div>
                                         <div className="flex-shrink-0">
                                             <Dropdown>
@@ -48,43 +48,43 @@ const Profile = () => {
                                                     <tbody>
                                                         <tr>
                                                             <td>
-                                                                Location
+                                                                Konum
                                                             </td>
                                                             <td className="fw-medium">
-                                                                Phoenix, USA
+                                                                Kadıköy, İstanbul
                                                             </td>
                                                         </tr>
                                                         
                                                         <tr>
                                                             <td>
-                                                                Email ID
+                                                                E-posta Adresi
                                                             </td>
                                                             <td className="fw-medium">
-                                                                raquelmurillo@sales.com
+                                                                ahmet@guzelliksalonu.com
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td>
-                                                                Date of Birth
+                                                                Doğum Tarihi
                                                             </td>
                                                             <td className="fw-medium">
-                                                                29 Oct, 1986
+                                                                15 Mart, 1985
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td>
-                                                                Mobile / Phone No.
+                                                                Telefon Numarası
                                                             </td>
                                                             <td className="fw-medium">
-                                                                +(235) 01234 5678
+                                                                +90 (532) 123 45 67
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td>
-                                                                Total Reviews
+                                                                Toplam Değerlendirme
                                                             </td>
                                                             <td className="fw-medium">
-                                                                <i className="bi bi-star-half text-warning align-middle me-1"></i> 365
+                                                                <i className="bi bi-star-half text-warning align-middle me-1"></i> 248
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -97,42 +97,42 @@ const Profile = () => {
                                                     <tbody>
                                                         <tr>
                                                             <td>
-                                                                Designation
+                                                                Ünvan
                                                             </td>
                                                             <td className="fw-medium">
-                                                                Sales & Marketing Managers
+                                                                Salon Sahibi
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td>
-                                                                Total Products
+                                                                Toplam Hizmet
                                                             </td>
                                                             <td className="fw-medium">
-                                                                237
+                                                                42
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td>
-                                                                Orders
+                                                                Randevular
                                                             </td>
                                                             <td className="fw-medium">
-                                                                3,412
+                                                                1,245
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td>
-                                                                Earnings
+                                                                Kazanç
                                                             </td>
                                                             <td className="fw-medium">
-                                                                $2,960.32
+                                                                ₺142,850
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td>
-                                                                Joining Date
+                                                                Başlangıç Tarihi
                                                             </td>
                                                             <td className="fw-medium">
-                                                                16 Aug, 2000
+                                                                12 Ocak, 2020
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -144,7 +144,7 @@ const Profile = () => {
                                     <div className="mt-3">
                                         <ul className="list-unstyled hstack gap-2 mb-0">
                                             <li>
-                                                Social Media:
+                                                Sosyal Medya:
                                             </li>
                                             <li>
                                                 <Link to="#!" className="btn btn-soft-secondary btn-icon btn-sm"><i className="ph-facebook-logo"></i></Link>
@@ -167,9 +167,6 @@ const Profile = () => {
                     <RecentOrders />
                 </Col>
 
-                <Col xxl={3}>
-                    <Acitivity />
-                </Col>
             </Row>
         </React.Fragment>
     );

@@ -5,13 +5,13 @@ import Profile from './Profile';
 
 const MyAccount = () => {
 
-    document.title = "My Account | Toner eCommerce + Admin React Template";
+    document.title = "Hesabım | CRM v2 Randevu Takip";
 
     return (
         <React.Fragment>
             <div className="page-content">
                 <Container fluid={true}>
-                    <Breadcrumb title="My Account" pageTitle="Accounts" />
+                    <Breadcrumb title="Hesabım" pageTitle="Hesap Yönetimi" />
                     <Profile />
                 </Container>
             </div>

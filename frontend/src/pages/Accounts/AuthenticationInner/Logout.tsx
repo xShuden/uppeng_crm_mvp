@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 
 const Logout = () => {
 
-    document.title = "Logout | Toner eCommerce + Admin React Template";
+    document.title = "Çıkış Yap | CRM v2 Randevu Takip";
 
     return (
         <React.Fragment>
@@ -27,19 +27,6 @@ const Logout = () => {
                             </Col>
                             <Col className="col-auto">
                                 <ul className="list-unstyled hstack gap-2 mb-0">
-                                    <li className="me-md-3">
-                                        <Link to="#!" className="text-body fw-medium fs-15">Become a Selling</Link>
-                                    </li>
-                                    <li className="d-none d-md-block">
-                                        <Link to="#!" className="btn btn-soft-secondary" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i className="bi bi-google-play align-middle me-1"></i> Download App
-                                        </Link>
-                                    </li>
-                                    <li className="d-none d-md-block">
-                                        <Link to="#!" className="btn btn-soft-primary" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i className="bi bi-apple align-middle me-1"></i> Download App
-                                        </Link>
-                                    </li>
                                 </ul>
                             </Col>
                         </Row>
@@ -57,17 +44,14 @@ const Logout = () => {
                                                     <img src={img1} alt="" className="img-fluid"/>
                                                 </Col>
                                                 <Col lg={8} className="col-9">
-                                                    <h1 className="text-white lh-base fw-lighter">You are Logged Out</h1>
+                                                    <h1 className="text-white lh-base fw-lighter">Başarıyla Çıkış Yaptınız</h1>
                                                 </Col>
                                             </Row>
                                         </Card.Header>
                                         <Card.Body className="text-center">
-                                            <div className="mb-4">
-                                                <img src={avatar1} alt="" className="avatar-md rounded-circle"/>
-                                            </div>
-                                            <p className="text-muted fs-15">Thank you for using <span className="fw-semibold">Toner</span> admin template</p>
+                                            <p className="text-muted fs-15">CRM Randevu Takip sistemini kullandığınız için teşekkürler</p>
                                             <div>
-                                                <Link to="/auth-signin-basic" className="btn btn-primary w-100">Sign In</Link>
+                                                <Link to="/login" className="btn btn-primary w-100">Giriş Yap</Link>
                                             </div>
                                         </Card.Body>
                                     </Card>
@@ -76,19 +60,6 @@ const Logout = () => {
                         </Row>
                     </Container>
 
-                    <footer className="footer">
-                        <Container>
-                            <Row>
-                                <Col lg={12}>
-                                    <div className="text-center">
-                                        <p className="mb-0 text-muted">© 
-                                            {(new Date().getFullYear())} Toner. Crafted with <i className="mdi mdi-heart text-danger"></i> by Themesbrand
-                                        </p>
-                                    </div>
-                                </Col>
-                            </Row>
-                        </Container>
-                    </footer>
                 </div>
             </section>
         </React.Fragment>

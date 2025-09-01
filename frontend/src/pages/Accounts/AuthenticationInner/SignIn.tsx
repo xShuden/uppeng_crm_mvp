@@ -13,7 +13,7 @@ import { useFormik } from "formik";
 
 const SignIn = () => {
 
-    document.title = "Sign In | Toner eCommerce + Admin React Template";
+    document.title = "Giriş Yap | CRM v2 Randevu Takip";
     const [passwordShow, setPasswordShow] = useState<any>(false);
 
     const validation: any = useFormik({
@@ -25,8 +25,8 @@ const SignIn = () => {
             password: '123456',
         },
         validationSchema: Yup.object({
-            email: Yup.string().required("Please Enter Your Username"),
-            password: Yup.string().required("Please Enter Your Password"),
+            email: Yup.string().required("Lütfen kullanıcı adınızı girin"),
+            password: Yup.string().required("Lütfen şifrenizi girin"),
         }),
         onSubmit: (values) => {
             console.log("Submitted", values)
@@ -47,19 +47,6 @@ const SignIn = () => {
                             </Col>
                             <Col className="col-auto">
                                 <ul className="list-unstyled hstack gap-2 mb-0">
-                                    <li className="me-md-3">
-                                        <Link to="#!" className="text-body fw-medium fs-15">Become a Selling</Link>
-                                    </li>
-                                    <li className="d-none d-md-block">
-                                        <Link to="#!" className="btn btn-soft-secondary" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i className="bi bi-google-play align-middle me-1"></i> Download App
-                                        </Link>
-                                    </li>
-                                    <li className="d-none d-md-block">
-                                        <Link to="#!" className="btn btn-soft-primary" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i className="bi bi-apple align-middle me-1"></i> Download App
-                                        </Link>
-                                    </li>
                                 </ul>
                             </Col>
                         </Row>
@@ -77,12 +64,11 @@ const SignIn = () => {
                                                     <img src={img1} alt="" className="img-fluid" />
                                                 </Col>
                                                 <Col lg={8} className="col-9">
-                                                    <h1 className="text-white lh-base fw-lighter">Join Our Toner Store</h1>
+                                                    <h1 className="text-white lh-base fw-lighter">CRM Randevu Sistemi</h1>
                                                 </Col>
                                             </Row>
                                         </Card.Header>
                                         <Card.Body>
-                                            <p className="text-muted fs-15">Sign in to continue to Toner.</p>
                                             <div className="p-2">
                                                 <Form action="#" onSubmit={(e) => {
                                                     e.preventDefault();
@@ -91,8 +77,8 @@ const SignIn = () => {
                                                 }}>
 
                                                     <div className="mb-3">
-                                                        <Form.Label htmlFor="username">Username</Form.Label>
-                                                        <Form.Control name="email" type="email" className="form-control" id="username" placeholder="Enter username"
+                                                        <Form.Label htmlFor="username">Kullanıcı Adı</Form.Label>
+                                                        <Form.Control name="email" type="email" className="form-control" id="username" placeholder="Kullanıcı adınızı girin"
                                                             onChange={validation.handleChange}
                                                             onBlur={validation.handleBlur}
                                                             value={validation.values.email || ""}
@@ -106,9 +92,9 @@ const SignIn = () => {
                                                     </div>
 
                                                     <div className="mb-3">
-                                                        <Form.Label htmlFor="password-input">Password</Form.Label>
+                                                        <Form.Label htmlFor="password-input">Şifre</Form.Label>
                                                         <div className="position-relative auth-pass-inputgroup mb-3">
-                                                            <Form.Control className="form-control pe-5 password-input" placeholder="Enter password" id="password-input"
+                                                            <Form.Control className="form-control pe-5 password-input" placeholder="Şifrenizi girin" id="password-input"
                                                                 name="password"
                                                                 value={validation.values.password || ""}
                                                                 type={passwordShow ? "text" : "password"}
@@ -127,24 +113,13 @@ const SignIn = () => {
 
                                                     <div className="form-check">
                                                         <Form.Check type="checkbox" value="" id="auth-remember-check" />
-                                                        <Form.Label htmlFor="auth-remember-check">Remember me</Form.Label>
+                                                        <Form.Label htmlFor="auth-remember-check">Beni Hatırla</Form.Label>
                                                     </div>
 
                                                     <div className="mt-4">
-                                                        <Button variant='primary' className="w-100" type="submit">Sign In</Button>
+                                                        <Button variant='primary' className="w-100" type="submit">Giriş Yap</Button>
                                                     </div>
 
-                                                    <div className="mt-4 pt-2 text-center">
-                                                        <div className="signin-other-title">
-                                                            <h5 className="fs-13 mb-4 title">Sign In with</h5>
-                                                        </div>
-                                                        <div className="pt-2 hstack gap-2 justify-content-center">
-                                                            <Button variant='soft-primary' className="btn-icon"><i className="ri-facebook-fill fs-16"></i></Button>
-                                                            <Button variant='soft-danger' className="btn-icon"><i className="ri-google-fill fs-16"></i></Button>
-                                                            <Button variant='soft-dark' className="btn-icon"><i className="ri-github-fill fs-16"></i></Button>
-                                                            <Button variant='soft-info' className="btn-icon"><i className="ri-twitter-fill fs-16"></i></Button>
-                                                        </div>
-                                                    </div>
                                                 </Form>
 
                                             </div>
@@ -155,19 +130,6 @@ const SignIn = () => {
                         </Row>
                     </Container>
 
-                    <footer className="footer">
-                        <Container>
-                            <Row>
-                                <Col lg={12}>
-                                    <div className="text-center">
-                                        <p className="mb-0 text-muted">©
-                                            {(new Date().getFullYear())} Toner. Crafted with <i className="mdi mdi-heart text-danger"></i> by Themesbrand
-                                        </p>
-                                    </div>
-                                </Col>
-                            </Row>
-                        </Container>
-                    </footer>
                 </div>
             </section>
         </React.Fragment >

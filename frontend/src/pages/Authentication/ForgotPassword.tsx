@@ -19,7 +19,7 @@ import { userForgetPassword } from "slices/thunk";
 
 const ForgotPassword = (props: any) => {
 
-    document.title = "Forget Password | Toner eCommerce + Admin React Template";
+    document.title = "Şifre Sıfırla | CRM v2 Randevu Takip";
 
     const dispatch = useDispatch<any>();
 
@@ -31,7 +31,7 @@ const ForgotPassword = (props: any) => {
             email: '',
         },
         validationSchema: Yup.object({
-            email: Yup.string().required("Please Enter Your Email"),
+            email: Yup.string().required("Lütfen e-posta adresinizi girin"),
         }),
         onSubmit: (values) => {
             dispatch(userForgetPassword(values, props.history));
@@ -62,19 +62,6 @@ const ForgotPassword = (props: any) => {
                             </Col>
                             <Col className="col-auto">
                                 <ul className="list-unstyled hstack gap-2 mb-0">
-                                    <li className="me-md-3">
-                                        <Link to="#!" className="text-body fw-medium fs-15">Become a Selling</Link>
-                                    </li>
-                                    <li className="d-none d-md-block">
-                                        <Link to="#!" className="btn btn-soft-secondary" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i className="bi bi-google-play align-middle me-1"></i> Download App
-                                        </Link>
-                                    </li>
-                                    <li className="d-none d-md-block">
-                                        <Link to="#!" className="btn btn-soft-primary" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i className="bi bi-apple align-middle me-1"></i> Download App
-                                        </Link>
-                                    </li>
                                 </ul>
                             </Col>
                         </Row>
@@ -92,15 +79,15 @@ const ForgotPassword = (props: any) => {
                                                     <img src={img1} alt="" className="img-fluid" />
                                                 </Col>
                                                 <Col lg={8} className="col-9">
-                                                    <h1 className="text-white lh-base fw-lighter">Forgot Password?</h1>
+                                                    <h1 className="text-white lh-base fw-lighter">Şifre Unuttum?</h1>
                                                 </Col>
                                             </Row>
                                         </Card.Header>
                                         <Card.Body>
-                                            <p className="text-muted fs-15">Reset password with Toner.</p>
+                                            <p className="text-muted fs-15">CRM sisteminiz ile şifrenizi sıfırlayın.</p>
 
                                             <div className="alert alert-borderless alert-warning text-center mb-2 mx-2" role="alert">
-                                                Enter your email and instructions will be sent to you!
+                                                E-posta adresinizi girin, talimatlar size gönderilecektir!
                                             </div>
                                             <div className="p-2">
                                                 {forgetError && forgetError ? (
@@ -119,8 +106,8 @@ const ForgotPassword = (props: any) => {
                                                     return false;
                                                 }}>
                                                     <div className="mb-4">
-                                                        <Form.Label htmlFor="email">Email</Form.Label>
-                                                        <Form.Control type="email" id="email" placeholder="Enter your email or username"
+                                                        <Form.Label htmlFor="email">E-posta</Form.Label>
+                                                        <Form.Control type="email" id="email" placeholder="E-posta adresinizi veya kullanıcı adınızı girin"
                                                             name="email"
                                                             className="form-control"
                                                             onChange={validation.handleChange}
@@ -136,12 +123,12 @@ const ForgotPassword = (props: any) => {
                                                     </div>
 
                                                     <div className="text-center mt-4">
-                                                        <Button variant='primary' className="w-100" type="submit">Send Reset Link</Button>
+                                                        <Button variant='primary' className="w-100" type="submit">Sıfırlama Bağlantısı Gönder</Button>
                                                     </div>
                                                 </Form>
                                             </div>
                                             <div className="mt-4 text-center">
-                                                <p className="mb-0">Wait, I remember my password... <Link to="/login" className="fw-semibold text-primary text-decoration-underline"> Click here </Link> </p>
+                                                <p className="mb-0">Dur, şifremi hatırladım... <Link to="/login" className="fw-semibold text-primary text-decoration-underline"> Buraya tıklayın </Link> </p>
                                             </div>
                                         </Card.Body>
                                     </Card>
@@ -150,19 +137,6 @@ const ForgotPassword = (props: any) => {
                         </Row>
                     </Container>
 
-                    <footer className="footer">
-                        <Container>
-                            <Row>
-                                <Col lg={12}>
-                                    <div className="text-center">
-                                        <p className="mb-0 text-muted">©
-                                            {(new Date().getFullYear())} Toner. Crafted with <i className="mdi mdi-heart text-danger"></i> by Themesbrand
-                                        </p>
-                                    </div>
-                                </Col>
-                            </Row>
-                        </Container>
-                    </footer>
                 </div>
             </section>
         </React.Fragment>

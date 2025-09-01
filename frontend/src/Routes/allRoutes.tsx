@@ -90,13 +90,11 @@ const authProtectedRoutes = [
 const publicRoutes = [
 
     // Authentication
-    { path: "/login", component: <Login /> },
-    { path: "/logout", component: <Logout /> },
     { path: "/forgot-password", component: <ForgotPassword /> },
 
     // AuthenticationInner
-    { path: "/auth-signin-basic", component: <SignIn /> },
-    { path: "/auth-logout-basic", component: <BasicLogout /> },
+    { path: "/login", component: <SignIn /> },
+    { path: "/logout", component: <BasicLogout /> },
     { path: "/auth-404", component: <Error404 /> },
     { path: "/auth-500", component: <Error500 /> },
 ];
