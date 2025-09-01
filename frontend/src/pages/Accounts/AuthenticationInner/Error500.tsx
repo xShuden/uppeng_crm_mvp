@@ -9,7 +9,7 @@ import logoLight from 'assets/images/logo-light.png'
 
 const Error500 = () => {
 
-    document.title = "500 | Toner eCommerce + Admin React Template";
+    document.title = "500 Sunucu Hatası | CRM v2 Randevu Takip";
 
     return (
         <React.Fragment>
@@ -25,19 +25,6 @@ const Error500 = () => {
                             </Col>
                             <Col className="col-auto">
                                 <ul className="list-unstyled hstack gap-2 mb-0">
-                                    <li className="me-md-3">
-                                        <Link to="#!" className="text-body fw-medium fs-15">Become a Selling</Link>
-                                    </li>
-                                    <li className="d-none d-md-block">
-                                        <Link to="#!" className="btn btn-soft-secondary" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i className="bi bi-google-play align-middle me-1"></i> Download App
-                                        </Link>
-                                    </li>
-                                    <li className="d-none d-md-block">
-                                        <Link to="#!" className="btn btn-soft-primary" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i className="bi bi-apple align-middle me-1"></i> Download App
-                                        </Link>
-                                    </li>
                                 </ul>
                             </Col>
                         </Row>
@@ -56,10 +43,10 @@ const Error500 = () => {
                                             </div>
                                             <div className="mt-4 text-center pt-3">
                                                 <div className="position-relative">
-                                                    <h4 className="fs-18 error-subtitle text-uppercase mb-0">Internal Server Error</h4>
-                                                    <p className="fs-15 text-muted mt-3">It will be as simple as Occidental in fact, it will Occidental to an English person</p>
+                                                    <h4 className="fs-18 error-subtitle text-uppercase mb-0">Sunucu Hatası</h4>
+                                                    <p className="fs-15 text-muted mt-3">Sunucuda bir hata oluştu. Lütfen daha sonra tekrar deneyin.</p>
                                                     <div className="mt-4">
-                                                        <Link to="/" className="btn btn-primary"><i className="mdi mdi-home me-1"></i>Back to home</Link>
+                                                        <Link to="/" className="btn btn-primary"><i className="mdi mdi-home me-1"></i>Ana Sayfaya Dön</Link>
                                                     </div>
                                                 </div>
                                             </div>
@@ -70,19 +57,6 @@ const Error500 = () => {
                         </Row>
                     </Container>
 
-                    <footer className="footer">
-                        <Container>
-                            <Row>
-                                <Col lg={12}>
-                                    <div className="text-center">
-                                        <p className="mb-0 text-muted">©  
-                                            {(new Date().getFullYear())} Toner. Crafted with <i className="mdi mdi-heart text-danger"></i> by Themesbrand
-                                        </p>
-                                    </div>
-                                </Col>
-                            </Row>
-                        </Container>
-                    </footer>
                 </div>
             </section>
         </React.Fragment>

@@ -95,8 +95,8 @@ const publicRoutes = [
     // AuthenticationInner
     { path: "/login", component: <SignIn /> },
     { path: "/logout", component: <BasicLogout /> },
-    { path: "/auth-404", component: <Error404 /> },
-    { path: "/auth-500", component: <Error500 /> },
+    { path: "/404", component: <Error404 /> },
+    { path: "/500", component: <Error500 /> },
 ];
 
 export { authProtectedRoutes, publicRoutes };
