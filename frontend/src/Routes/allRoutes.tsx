@@ -16,6 +16,7 @@ import OrdersOverview from "pages/Orders/Overview"
 
 // Calender
 import Calendar from "pages/Calendar"
+import Rezervasyon from "pages/Rezervasyon"
 
 
 
@@ -40,8 +41,6 @@ import Error404 from "pages/Accounts/AuthenticationInner/Error404";
 import Error500 from "pages/Accounts/AuthenticationInner/Error500";
 
 // Authentication
-import Login from "pages/Authentication/Login"
-import Logout from "pages/Authentication/Logout";
 import ForgotPassword from "pages/Authentication/ForgotPassword";
 import UserProfile from "pages/Authentication/user-profile";
 
@@ -70,6 +69,7 @@ const authProtectedRoutes = [
 
 
     { path: "/calendar", component: <Calendar /> },
+    { path: "/rezervasyon", component: <Rezervasyon /> },
 
 
 

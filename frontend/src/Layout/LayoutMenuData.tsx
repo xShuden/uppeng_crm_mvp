@@ -141,6 +141,12 @@ const Navdata = () => {
             link: "/calendar",
         },
         {
+            id: "rezervasyon",
+            label: "Rezervasyon",
+            icon: "bi bi-calendar-check",
+            link: "/rezervasyon",
+        },
+        {
             id: "userslist",
             label: "Users List",
             icon: "bi bi-person-bounding-box",

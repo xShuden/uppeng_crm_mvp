@@ -1,6 +1,5 @@
 import React from 'react';
 import { Card, Col, Dropdown, Row, Table } from 'react-bootstrap';
-import Acitivity from './Activity';
 import RecentOrders from './RecentOrders';
 import { Link } from 'react-router-dom';
 
