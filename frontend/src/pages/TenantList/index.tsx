@@ -91,18 +91,21 @@ const TenantList = () => {
                 filterable: true,
                 accessor: (cellProps: any) => {
                     const dateStr = cellProps.date;
-                    if (dateStr) {
+                    if (dateStr && dateStr !== 'NaN.NaN.NaN') {
                         try {
                             const date = new Date(dateStr);
-                            const day = date.getDate().toString().padStart(2, '0');
-                            const month = (date.getMonth() + 1).toString().padStart(2, '0');
-                            const year = date.getFullYear();
-                            return `${day}.${month}.${year}`;
+                            // Geçerli tarih kontrolü
+                            if (!isNaN(date.getTime())) {
+                                const day = date.getDate().toString().padStart(2, '0');
+                                const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                                const year = date.getFullYear();
+                                return `${day}.${month}.${year}`;
+                            }
                         } catch {
-                            return dateStr;
+                            // Hata durumunda boş string döndür
                         }
                     }
-                    return dateStr;
+                    return '-';
                 }
             },
             {
