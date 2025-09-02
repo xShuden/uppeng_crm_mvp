@@ -135,12 +135,6 @@ const Navdata = () => {
             ],
         },
         {
-            id: "calendar",
-            label: "Calendar",
-            icon: "bi bi-calendar-week",
-            link: "/calendar",
-        },
-        {
             id: "rezervasyon",
             label: "Rezervasyon",
             icon: "bi bi-calendar-check",
@@ -148,19 +142,19 @@ const Navdata = () => {
         },
         {
             id: "userslist",
-            label: "Users List",
+            label: "Müşteriler",
             icon: "bi bi-person-bounding-box",
-            link: "/users-list",
+            link: "/customers",
         },
         {
             id: "personnellist",
-            label: "Personnel List",
+            label: "Personel",
             icon: "bi bi-people-fill",
             link: "/personnel-list",
         },
         {
             id: "tenantlist",
-            label: "Tenant List",
+            label: "Kiracılar",
             icon: "bi bi-building",
             link: "/tenant-list",
         },
@@ -176,7 +170,7 @@ const Navdata = () => {
         },
         {
             id: "accounts",
-            label: "Accounts",
+            label: "Hesaplar",
             icon: "bi bi-person-circle",
             link: "/#",
             click: function (e: any) {
@@ -189,7 +183,7 @@ const Navdata = () => {
             subItems: [
                 {
                     id: "myAccount",
-                    label: "My Accounts",
+                    label: "Hesabım",
                     link: "/account",
                     parentId: "account",
                 },

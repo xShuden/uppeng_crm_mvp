@@ -8,32 +8,32 @@ import Flatpickr from "react-flatpickr";
 import { Link } from 'react-router-dom';
 
 const UsersList = () => {
-    document.title = "Kullanıcı Listesi | CRM v2 Randevu Takip";
-    const [modal_AddUserModals, setmodal_AddUserModals] = useState<boolean>(false);
-    const [modal_EditUserModals, setmodal_EditUserModals] = useState<boolean>(false);
-    const [modal_DeleteUserModals, setmodal_DeleteUserModals] = useState<boolean>(false);
+    document.title = "Müşteri Listesi | CRM v2 Randevu Takip";
+    const [modal_AddCustomerModals, setmodal_AddCustomerModals] = useState<boolean>(false);
+    const [modal_EditCustomerModals, setmodal_EditCustomerModals] = useState<boolean>(false);
+    const [modal_DeleteCustomerModals, setmodal_DeleteCustomerModals] = useState<boolean>(false);
     const [isMultiDeleteButton, setIsMultiDeleteButton] = useState<boolean>(false);
-    const [selectedUser, setSelectedUser] = useState<any>(null);
-    function tog_AddUserModals() {
-        setmodal_AddUserModals(!modal_AddUserModals);
+    const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
+    function tog_AddCustomerModals() {
+        setmodal_AddCustomerModals(!modal_AddCustomerModals);
     }
 
-    function tog_EditUserModals() {
-        setmodal_EditUserModals(!modal_EditUserModals);
+    function tog_EditCustomerModals() {
+        setmodal_EditCustomerModals(!modal_EditCustomerModals);
     }
 
-    function tog_DeleteUserModals() {
-        setmodal_DeleteUserModals(!modal_DeleteUserModals);
+    function tog_DeleteCustomerModals() {
+        setmodal_DeleteCustomerModals(!modal_DeleteCustomerModals);
     }
 
-    function handleEditUser(user: any) {
-        setSelectedUser(user);
-        tog_EditUserModals();
+    function handleEditCustomer(customer: any) {
+        setSelectedCustomer(customer);
+        tog_EditCustomerModals();
     }
 
-    function handleDeleteUser(user: any) {
-        setSelectedUser(user);
-        tog_DeleteUserModals();
+    function handleDeleteCustomer(customer: any) {
+        setSelectedCustomer(customer);
+        tog_DeleteCustomerModals();
     }
 
     // Checked All
@@ -74,7 +74,7 @@ const UsersList = () => {
                 id: '#',
             },
             {
-                Header: "Kullanıcı Adı",
+                Header: "Müşteri Adı",
                 disableFilters: true,
                 filterable: true,
                 accessor: "user_name"
@@ -128,24 +128,24 @@ const UsersList = () => {
                     return (
                         <div className="d-flex gap-2">
                             <div className="edit">
-                                <Button variant="ghost-info" size="sm" className="btn-ghost-info btn-icon edit-item-btn" onClick={() => handleEditUser(cellProps)}><i className="ph-pencil-line"></i></Button>
+                                <Button variant="ghost-info" size="sm" className="btn-ghost-info btn-icon edit-item-btn" onClick={() => handleEditCustomer(cellProps)}><i className="ph-pencil-line"></i></Button>
                             </div>
                             <div className="remove">
-                                <Button variant="ghost-danger" size="sm" className="btn-ghost-danger btn-icon remove-item-btn" onClick={() => handleDeleteUser(cellProps)}><i className="ph-trash"></i></Button>
+                                <Button variant="ghost-danger" size="sm" className="btn-ghost-danger btn-icon remove-item-btn" onClick={() => handleDeleteCustomer(cellProps)}><i className="ph-trash"></i></Button>
                             </div>
                         </div>
                     )
                 },
             },
         ],
-        [checkedAll]
+        [checkedAll, handleDeleteCustomer, handleEditCustomer]
     );
 
     return (
         <React.Fragment>
             <div className="page-content">
                 <Container fluid={true}>
-                    <Breadcrumb title="Kullanıcı Listesi" pageTitle="Kullanıcı Yönetimi" />
+                    <Breadcrumb title="Müşteri Listesi" pageTitle="Müşteri Yönetimi" />
 
                     <Row>
                         <Col xxl={3} md={6}>
@@ -185,7 +185,7 @@ const UsersList = () => {
                                 </div>
                                 <Card.Body className="p-4 z-1 position-relative">
                                     <h4 className="fs-22 fw-semibold mb-3"><CountUp end={7845102} separator=','/> </h4>
-                                    <p className="mb-0 fw-medium fs-14">Toplam Kullanıcı</p>
+                                    <p className="mb-0 fw-medium fs-14">Toplam Müşteri</p>
                                 </Card.Body>
                             </Card>
                         </Col>
@@ -226,7 +226,7 @@ const UsersList = () => {
                                 </div>
                                 <Card.Body className="p-4 z-1 position-relative">
                                     <h4 className="fs-22 fw-semibold mb-3"><CountUp end={559.25} decimals={2} suffix="k" /></h4>
-                                    <p className="mb-0 fw-medium fs-14">Aktif Kullanıcı</p>
+                                    <p className="mb-0 fw-medium fs-14">Aktif Müşteri</p>
                                 </Card.Body>
                             </Card>
                         </Col>
@@ -267,7 +267,7 @@ const UsersList = () => {
                                 </div>
                                 <Card.Body className="p-4 z-1 position-relative">
                                     <h4 className="fs-22 fw-semibold mb-3"><CountUp end={559.25} decimals={2} suffix="k" /></h4>
-                                    <p className="mb-0 fw-medium fs-14">Pasif Kullanıcı</p>
+                                    <p className="mb-0 fw-medium fs-14">Pasif Müşteri</p>
                                 </Card.Body>
                             </Card>
                         </Col>
@@ -284,8 +284,8 @@ const UsersList = () => {
                                                 </div>
                                             </div>
                                             <div className="flex-grow-1">
-                                                <Link to="#" className="stretched-link"><h6 className="fs-17">Kullanıcı Davet Et</h6></Link>
-                                                <p className="text-muted mb-0">Yeni kullanıcıları sisteme davet et</p>
+                                                <Link to="#" className="stretched-link"><h6 className="fs-17">Müşteri Ekle</h6></Link>
+                                                <p className="text-muted mb-0">Yeni müşterileri sisteme ekle</p>
                                             </div>
                                         </div>
                                     </div>
@@ -301,7 +301,7 @@ const UsersList = () => {
                                     <Row className="g-lg-2 g-4">
                                         <Col lg={3}>
                                             <div className="search-box">
-                                                <input type="text" className="form-control search" placeholder="Kullanıcı ara..." />
+                                                <input type="text" className="form-control search" placeholder="Müşteri ara..." />
                                                 <i className="ri-search-line search-icon"></i>
                                             </div>
                                         </Col>
@@ -309,8 +309,8 @@ const UsersList = () => {
                                         {isMultiDeleteButton && <Button variant="danger" className="btn-icon"><i className="ri-delete-bin-2-line"></i></Button>}
 
                                         <Col sm={3} className="col-lg-auto ms-auto">
-                                            <Button onClick={() => tog_AddUserModals()} variant='primary' type="button" className="w-100 add-btn">
-                                                Kullanıcı Ekle
+                                            <Button onClick={() => tog_AddCustomerModals()} variant='primary' type="button" className="w-100 add-btn">
+                                                Müşteri Ekle
                                             </Button>
                                         </Col>
                                     </Row>
@@ -329,12 +329,12 @@ const UsersList = () => {
                                             className="custom-header-css table align-middle table-nowrap"
                                             tableClass="table-centered align-middle table-nowrap mb-0"
                                             theadClass="text-muted table-light"
-                                            SearchPlaceholder='Kullanıcı Ara...'
+                                            SearchPlaceholder='Müşteri Ara...'
                                         />
                                         <div className="noresult" style={{ display: "none" }}>
                                             <div className="text-center">
                                                 <h5 className="mt-2">Üzgünüz! Sonuç Bulunamadı</h5>
-                                                <p className="text-muted mb-0">150'den fazla kullanıcı aradık ancak aramanız için herhangi bir kullanıcı bulamadık.</p>
+                                                <p className="text-muted mb-0">150'den fazla müşteri aradık ancak aramanız için herhangi bir müşteri bulamadık.</p>
                                             </div>
                                         </div>
                                     
@@ -343,7 +343,7 @@ const UsersList = () => {
                         </Col>
                     </Row>
 
-                    <Modal className="fade" show={modal_AddUserModals} onHide={() => { tog_AddUserModals(); }} centered>
+                    <Modal className="fade" show={modal_AddCustomerModals} onHide={() => { tog_AddCustomerModals(); }} centered>
                         <Modal.Header className="px-4 pt-4" closeButton>
                             <h5 className="modal-title" id="exampleModalLabel">Add User</h5>
                         </Modal.Header>
@@ -394,7 +394,7 @@ const UsersList = () => {
                             </Modal.Body>
                             <div className="modal-footer">
                                 <div className="hstack gap-2 justify-content-end">
-                                    <Button className="btn-ghost-danger" onClick={() => { tog_AddUserModals(); }}>Kapat</Button>
+                                    <Button className="btn-ghost-danger" onClick={() => { tog_AddCustomerModals(); }}>Kapat</Button>
                                     <Button variant='success' id="add-btn">Kullanıcı Ekle</Button>
                                 </div>
                             </div>
@@ -402,7 +402,7 @@ const UsersList = () => {
                     </Modal>
 
                     {/* Edit User Modal */}
-                    <Modal className="fade" show={modal_EditUserModals} onHide={() => { tog_EditUserModals(); }} centered>
+                    <Modal className="fade" show={modal_EditCustomerModals} onHide={() => { tog_EditCustomerModals(); }} centered>
                         <Modal.Header className="px-4 pt-4" closeButton>
                             <h5 className="modal-title" id="editModalLabel">Kullanıcı Düzenle</h5>
                         </Modal.Header>
@@ -417,7 +417,7 @@ const UsersList = () => {
                                         type="text" 
                                         id="edit-user-name-field" 
                                         placeholder="Kullanıcı Adını Girin" 
-                                        defaultValue={selectedUser?.user_name || ''} 
+                                        defaultValue={selectedCustomer?.user_name || ''} 
                                         required 
                                     />
                                 </div>
@@ -427,7 +427,7 @@ const UsersList = () => {
                                         type="email" 
                                         id="edit-email-field" 
                                         placeholder="E-posta Adresini Girin" 
-                                        defaultValue={selectedUser?.email_id || ''} 
+                                        defaultValue={selectedCustomer?.email_id || ''} 
                                         required 
                                     />
                                 </div>
@@ -437,7 +437,7 @@ const UsersList = () => {
                                     <Flatpickr
                                         className="form-control flatpickr-input"
                                         placeholder='Tarih Seç'
-                                        defaultValue={selectedUser?.date || ''}
+                                        defaultValue={selectedCustomer?.date || ''}
                                         options={{
                                             dateFormat: "d.m.Y",
                                             locale: {
@@ -456,7 +456,7 @@ const UsersList = () => {
 
                                 <div>
                                     <label htmlFor="edit-account-status" className="form-label">Hesap Durumu</label>
-                                    <select className="form-select" required id="edit-account-status-field" defaultValue={selectedUser?.status || ''}>
+                                    <select className="form-select" required id="edit-account-status-field" defaultValue={selectedCustomer?.status || ''}>
                                         <option value="">Hesap Durumu</option>
                                         <option value="Active">Aktif</option>
                                         <option value="Inactive">Pasif</option>
@@ -465,7 +465,7 @@ const UsersList = () => {
                             </Modal.Body>
                             <div className="modal-footer">
                                 <div className="hstack gap-2 justify-content-end">
-                                    <Button className="btn-ghost-danger" onClick={() => { tog_EditUserModals(); }}>İptal</Button>
+                                    <Button className="btn-ghost-danger" onClick={() => { tog_EditCustomerModals(); }}>İptal</Button>
                                     <Button variant='success' id="edit-btn">Güncelle</Button>
                                 </div>
                             </div>
@@ -473,7 +473,7 @@ const UsersList = () => {
                     </Modal>
 
                     {/* Delete Confirmation Modal */}
-                    <Modal className="fade" show={modal_DeleteUserModals} onHide={() => { tog_DeleteUserModals(); }} centered>
+                    <Modal className="fade" show={modal_DeleteCustomerModals} onHide={() => { tog_DeleteCustomerModals(); }} centered>
                         <Modal.Header className="px-4 pt-4" closeButton>
                             <h5 className="modal-title" id="deleteModalLabel">Kullanıcıyı Sil</h5>
                         </Modal.Header>
@@ -486,13 +486,13 @@ const UsersList = () => {
                                 </div>
                                 <h4 className="text-danger">Emin misiniz?</h4>
                                 <p className="text-muted fs-15 mb-4">
-                                    <strong>{selectedUser?.user_name}</strong> kullanıcısını silmek istediğinizden emin misiniz? Bu işlem geri alınamaz!
+                                    <strong>{selectedCustomer?.user_name}</strong> kullanıcısını silmek istediğinizden emin misiniz? Bu işlem geri alınamaz!
                                 </p>
                             </div>
                         </Modal.Body>
                         <div className="modal-footer">
                             <div className="hstack gap-2 justify-content-center">
-                                <Button className="btn-light" onClick={() => { tog_DeleteUserModals(); }}>İptal</Button>
+                                <Button className="btn-light" onClick={() => { tog_DeleteCustomerModals(); }}>İptal</Button>
                                 <Button variant='danger' id="delete-btn">Evet, Sil</Button>
                             </div>
                         </div>

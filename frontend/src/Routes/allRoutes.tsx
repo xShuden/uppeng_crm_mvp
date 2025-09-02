@@ -14,8 +14,7 @@ import SubCategories from "pages/Products/SubCategories";
 import OrdersListView from "pages/Orders/ListView"
 import OrdersOverview from "pages/Orders/Overview"
 
-// Calender
-import Calendar from "pages/Calendar"
+// Rezervasyon
 import Rezervasyon from "pages/Rezervasyon"
 
 
@@ -62,13 +61,12 @@ const authProtectedRoutes = [
 
 
     // User List
-    { path: "/users-list", component: <UsersList /> },
+    { path: "/customers", component: <UsersList /> },
     { path: "/personnel-list", component: <PersonnelList /> },
     { path: "/tenant-list", component: <TenantList /> },
 
 
 
-    { path: "/calendar", component: <Calendar /> },
     { path: "/rezervasyon", component: <Rezervasyon /> },
 
 

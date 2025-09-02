@@ -40,6 +40,24 @@ const Rezervasyon = () => {
         { id: 4, name: "Merve Öztürk", profession: "Kuaför" },
     ]);
 
+    // Müşteri listesi ve arama
+    const [customerList] = useState([
+        { id: 1, name: "Ahmet Yılmaz", phone: "0532 123 4567", email: "ahmet@email.com" },
+        { id: 2, name: "Fatma Özkan", phone: "0533 234 5678", email: "fatma@email.com" },
+        { id: 3, name: "Mehmet Kaya", phone: "0534 345 6789", email: "mehmet@email.com" },
+        { id: 4, name: "Ayşe Demir", phone: "0535 456 7890", email: "ayse@email.com" },
+    ]);
+    const [customerSearchTerm, setCustomerSearchTerm] = useState("");
+    const [showCustomerDropdown, setShowCustomerDropdown] = useState(false);
+    const [filteredCustomers, setFilteredCustomers] = useState(customerList);
+    const [showNewCustomerForm, setShowNewCustomerForm] = useState(false);
+    const [newCustomerData, setNewCustomerData] = useState({
+        name: "",
+        surname: "",
+        phone: "",
+        email: ""
+    });
+
     const selectProperties = createSelector(
         (state: any) => state.Calendar,
         (calendar) => ({
@@ -49,6 +67,151 @@ const Rezervasyon = () => {
     );
 
     const { events, isEventUpdated } = useSelector(selectProperties);
+
+    // Müşteri arama fonksiyonu
+    const handleCustomerSearch = (searchTerm: string) => {
+        setCustomerSearchTerm(searchTerm);
+        if (searchTerm.trim() === "") {
+            setFilteredCustomers(customerList);
+            setShowCustomerDropdown(false);
+        } else {
+            const filtered = customerList.filter(customer => 
+                customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                customer.phone.includes(searchTerm) ||
+                customer.email.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            setFilteredCustomers(filtered);
+            setShowCustomerDropdown(true);
+        }
+    };
+
+    // Müşteri seçme fonksiyonu
+    const handleCustomerSelect = (customer: any) => {
+        validation.setFieldValue('title', customer.name);
+        setCustomerSearchTerm(customer.name);
+        setShowCustomerDropdown(false);
+    };
+
+    // Yeni müşteri ekleme fonksiyonu
+    const handleAddNewCustomer = () => {
+        const searchTerm = customerSearchTerm.trim();
+        if (searchTerm) {
+            setNewCustomerData({
+                name: searchTerm,
+                surname: "",
+                phone: "",
+                email: ""
+            });
+            setShowNewCustomerForm(true);
+            setShowCustomerDropdown(false);
+        }
+    };
+
+    // Yeni müşteri kaydetme fonksiyonu
+    const handleSaveNewCustomer = () => {
+        if (newCustomerData.name.trim() && newCustomerData.surname.trim() && newCustomerData.phone.trim()) {
+            const newCustomer = {
+                id: customerList.length + 1,
+                name: `${newCustomerData.name} ${newCustomerData.surname}`,
+                phone: newCustomerData.phone,
+                email: newCustomerData.email || `${newCustomerData.name.toLowerCase()}@email.com`
+            };
+            
+            // Müşteriyi listeye ekle (gerçek uygulamada API'ye gönderilecek)
+            customerList.push(newCustomer);
+            
+            // Formu seç ve kapat
+            validation.setFieldValue('title', newCustomer.name);
+            setCustomerSearchTerm(newCustomer.name);
+            setShowNewCustomerForm(false);
+            setNewCustomerData({
+                name: "",
+                surname: "",
+                phone: "",
+                email: ""
+            });
+        }
+    };
+
+    // Yeni müşteri formu iptal etme
+    const handleCancelNewCustomer = () => {
+        setShowNewCustomerForm(false);
+        setNewCustomerData({
+            name: "",
+            surname: "",
+            phone: "",
+            email: ""
+        });
+    };
+
+    // Dinamik randevu listesi - süre ve zaman destekli
+    const [appointmentsList, setAppointmentsList] = useState([
+        {
+            id: 1,
+            staffId: 1,
+            date: '2025-09-02',
+            startTime: '10:00',
+            duration: 120, // dakika cinsinden
+            customerName: 'Ayşe Yılmaz',
+            service: 'Saç Kesimi + Boyama',
+            payment: 250
+        },
+        {
+            id: 2,
+            staffId: 3,
+            date: '2025-09-02',
+            startTime: '14:30',
+            duration: 90, // dakika cinsinden
+            customerName: 'Mehmet Demir',
+            service: 'Cilt Bakımı',
+            payment: 180
+        }
+    ]);
+
+    // Belirli bir zamanda randevu var mı kontrol et
+    const getAppointmentAt = (staffId: number, date: string, hour: number, minute: number) => {
+        const timeString = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+        const currentTime = hour * 60 + minute; // dakikaya çevir
+        
+        return appointmentsList.find(appointment => {
+            if (appointment.staffId !== staffId || appointment.date !== date) {
+                return false;
+            }
+            
+            const [appointmentHour, appointmentMinute] = appointment.startTime.split(':').map(Number);
+            const appointmentStartTime = appointmentHour * 60 + appointmentMinute;
+            const appointmentEndTime = appointmentStartTime + appointment.duration;
+            
+            return currentTime >= appointmentStartTime && currentTime < appointmentEndTime;
+        });
+    };
+
+    // Randevu başlangıç saati mi kontrol et
+    const isAppointmentStart = (staffId: number, date: string, hour: number, minute: number) => {
+        const timeString = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+        return appointmentsList.some(appointment => 
+            appointment.staffId === staffId && 
+            appointment.date === date && 
+            appointment.startTime === timeString
+        );
+    };
+
+    // Randevu bitiş saati mi kontrol et
+    const isAppointmentEnd = (staffId: number, date: string, hour: number, minute: number) => {
+        const currentTime = hour * 60 + minute;
+        
+        return appointmentsList.some(appointment => {
+            if (appointment.staffId !== staffId || appointment.date !== date) {
+                return false;
+            }
+            
+            const [appointmentHour, appointmentMinute] = appointment.startTime.split(':').map(Number);
+            const appointmentStartTime = appointmentHour * 60 + appointmentMinute;
+            const appointmentEndTime = appointmentStartTime + appointment.duration;
+            
+            return currentTime === appointmentEndTime - 15; // Son 15 dakikalık dilim
+        });
+    };
 
     useEffect(() => {
         dispatch(onGetEvents());
@@ -193,20 +356,20 @@ const Rezervasyon = () => {
             title: (event && event.title) || "",
             category: (event && event.category) || "",
             payment: (event && event.payment) || "",
-            location: (event && event.location) || "",
             description: (event && event.description) || "",
             defaultDate: (event && event.defaultDate) || "",
             datetag: (event && event.datetag) || "",
             staff: (event && event.staff && event.staff.id) || "",
+            duration: (event && event.duration) || "30",
         },
 
         validationSchema: Yup.object({
             title: Yup.string().required("Lütfen müşteri adını girin"),
             category: Yup.string().required("Lütfen kategori seçin"),
             payment: Yup.string().required("Lütfen ödeme tutarını girin"),
-            location: Yup.string().required("Lütfen konum ekleyin"),
             description: Yup.string().required("Lütfen açıklama ekleyin"),
             staff: Yup.string().required("Lütfen çalışan seçin"),
+            duration: Yup.string().required("Lütfen randevu süresini seçin"),
         }),
         onSubmit: (values) => {
             var updatedDay: any = "";
@@ -222,7 +385,6 @@ const Rezervasyon = () => {
                     className: values.category,
                     start: selectedNewDay ? selectedNewDay[0] : event.start,
                     end: selectedNewDay ? updatedDay : event.end,
-                    location: values.location,
                     payment: values.payment,
                     description: values.description,
                 };
@@ -236,7 +398,6 @@ const Rezervasyon = () => {
                     start: selectedDay ? selectedNewDay[0] : new Date(),
                     end: selectedDay ? updatedDay : new Date(),
                     className: values.category,
-                    location: values["location"],
                     payment: values["payment"],
                     description: values["description"],
                 };
@@ -372,16 +533,23 @@ const Rezervasyon = () => {
                                             <Table className="scheduler-table" style={{ minWidth: '800px' }}>
                                                 <thead>
                                                     <tr>
-                                                        <th className="staff-column" style={{ width: '200px', position: 'sticky', left: 0, backgroundColor: '#fff', zIndex: 10 }}>
+                                                        <th className="staff-column" style={{ width: '200px', position: 'sticky', left: 0, backgroundColor: '#fff', zIndex: 25 }}>
                                                             Çalışanlar
                                                         </th>
                                                         {/* Saat sütunları */}
-                                                        {Array.from({ length: 48 }, (_, i) => {
-                                                            const hour = Math.floor(i / 2);
-                                                            const minute = i % 2 === 0 ? '00' : '30';
+                                                        {Array.from({ length: 96 }, (_, i) => {
+                                                            const hour = Math.floor(i / 4);
+                                                            const minute = (i % 4) * 15;
+                                                            const showLabel = minute === 0; // Sadece tam saatlerde etiket göster
                                                             return (
-                                                                <th key={i} className="time-slot" style={{ minWidth: '50px', textAlign: 'center', fontSize: '11px' }}>
-                                                                    {`${hour.toString().padStart(2, '0')}:${minute}`}
+                                                                <th key={i} className="time-slot" style={{ 
+                                                                    minWidth: '25px', 
+                                                                    textAlign: 'center', 
+                                                                    fontSize: showLabel ? '11px' : '9px',
+                                                                    padding: '2px',
+                                                                    borderRight: minute === 45 ? '2px solid #dee2e6' : '1px solid #e9ecef'
+                                                                }}>
+                                                                    {showLabel ? `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}` : ''}
                                                                 </th>
                                                             );
                                                         })}
@@ -389,12 +557,12 @@ const Rezervasyon = () => {
                                                 </thead>
                                                 <tbody>
                                                     {staffList.map((staff, staffIndex) => (
-                                                        <tr key={staff.id}>
+                                                        <tr key={staff.id} style={{ borderBottom: '2px solid #dee2e6' }}>
                                                             <td className="staff-info" style={{ 
                                                                 position: 'sticky', 
                                                                 left: 0, 
                                                                 backgroundColor: '#fff', 
-                                                                zIndex: 9,
+                                                                zIndex: 20,
                                                                 borderRight: '2px solid #dee2e6'
                                                             }}>
                                                                 <div className="px-1 py-1">
@@ -403,49 +571,46 @@ const Rezervasyon = () => {
                                                                 </div>
                                                             </td>
                                                             {/* Saat blokları */}
-                                                            {Array.from({ length: 48 }, (_, timeIndex) => {
-                                                                const hour = Math.floor(timeIndex / 2);
-                                                                const minute = timeIndex % 2 === 0 ? 0 : 30;
+                                                            {Array.from({ length: 96 }, (_, timeIndex) => {
+                                                                const hour = Math.floor(timeIndex / 4);
+                                                                const minute = (timeIndex % 4) * 15;
                                                                 
-                                                                // Sabit randevu kontrolü (demo için)
-                                                                const hasAppointment = (
-                                                                    (staff.id === 1 && hour === 10 && minute === 0) || // Ayşe Demir - 10:00
-                                                                    (staff.id === 3 && hour === 14 && minute === 0)    // Zeynep Kaya - 14:00
-                                                                );
-                                                                const appointmentData = hasAppointment ? {
-                                                                    customerName: staff.id === 1 ? 'Ayşe Yılmaz' : 'Mehmet Demir',
-                                                                    service: staff.id === 1 ? 'Saç Kesimi + Boyama' : 'Cilt Bakımı',
-                                                                    duration: 2
-                                                                } : null;
+                                                                // Dinamik randevu kontrolü
+                                                                const currentDateStr = selectedDate.toISOString().split('T')[0];
+                                                                const appointment = getAppointmentAt(staff.id, currentDateStr, hour, minute);
+                                                                const hasAppointment = !!appointment;
+                                                                const isStart = isAppointmentStart(staff.id, currentDateStr, hour, minute);
+                                                                const isEnd = isAppointmentEnd(staff.id, currentDateStr, hour, minute);
                                                                 
                                                                 return (
                                                                     <td 
                                                                         key={timeIndex} 
                                                                         className="time-cell" 
                                                                         style={{ 
-                                                                            height: '35px', 
-                                                                            borderLeft: '1px solid #e9ecef',
-                                                                            borderBottom: '1px solid #e9ecef',
+                                                                            height: '18px', 
+                                                                            borderLeft: minute === 0 ? '2px solid #dee2e6' : hasAppointment ? 'none' : '1px dotted #e9ecef',
+                                                                            borderBottom: hasAppointment ? 'none' : (minute === 0 ? '1px solid #dee2e6' : '1px dotted rgba(233, 236, 239, 0.4)'),
                                                                             cursor: 'pointer',
-                                                                            position: 'relative'
+                                                                            position: 'relative',
+                                                                            backgroundColor: 'transparent'
                                                                         }}
                                                                         onClick={() => {
                                                                             const clickTime = new Date(selectedDate);
                                                                             clickTime.setHours(hour, minute, 0, 0);
                                                                             
                                                                             // Eğer randevu varsa detayları göster, yoksa yeni randevu oluştur
-                                                                            if (hasAppointment && appointmentData) {
+                                                                            if (hasAppointment && appointment) {
                                                                                 const mockEvent = {
                                                                                     event: {
-                                                                                        id: `${staff.id}-${timeIndex}`,
-                                                                                        title: appointmentData.customerName,
+                                                                                        id: appointment.id,
+                                                                                        title: appointment.customerName,
                                                                                         start: clickTime,
                                                                                         classNames: ['bg-primary'],
                                                                                         _def: {
                                                                                             extendedProps: {
                                                                                                 location: 'Salon',
-                                                                                                description: appointmentData.service,
-                                                                                                payment: '250'
+                                                                                                description: appointment.service,
+                                                                                                payment: appointment.payment.toString()
                                                                                             }
                                                                                         }
                                                                                     }
@@ -468,31 +633,37 @@ const Rezervasyon = () => {
                                                                     >
                                                                         {hasAppointment && (
                                                                             <div 
-                                                                                className="appointment-block bg-primary" 
+                                                                                className="appointment-block"
                                                                                 style={{ 
-                                                                                    width: '85%',
-                                                                                    height: '70%',
-                                                                                    cursor: 'pointer',
                                                                                     position: 'absolute',
-                                                                                    top: '15%',
-                                                                                    left: '7.5%',
-                                                                                    borderRadius: '3px',
-                                                                                    opacity: 0.9
+                                                                                    top: '0px',
+                                                                                    left: '0px',
+                                                                                    right: '0px',
+                                                                                    bottom: '0px',
+                                                                                    backgroundColor: 'rgba(13, 110, 253, 0.85)',
+                                                                                    borderRadius: isStart && isEnd ? '3px' : (isStart ? '3px 3px 0px 0px' : (isEnd ? '0px 0px 3px 3px' : '0px')),
+                                                                                    border: 'none',
+                                                                                    zIndex: 15,
+                                                                                    cursor: 'pointer',
+                                                                                    display: 'flex',
+                                                                                    alignItems: 'center',
+                                                                                    justifyContent: 'center',
+                                                                                    overflow: 'hidden'
                                                                                 }}
                                                                                 onClick={(e) => {
                                                                                     e.stopPropagation();
-                                                                                    if (appointmentData) {
+                                                                                    if (appointment) {
                                                                                         const mockEvent = {
                                                                                             event: {
-                                                                                                id: `${staff.id}-${timeIndex}`,
-                                                                                                title: appointmentData.customerName,
+                                                                                                id: appointment.id,
+                                                                                                title: appointment.customerName,
                                                                                                 start: new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate(), hour, minute),
                                                                                                 classNames: ['bg-primary'],
                                                                                                 _def: {
                                                                                                     extendedProps: {
                                                                                                         location: 'Salon',
-                                                                                                        description: appointmentData.service,
-                                                                                                        payment: '250'
+                                                                                                        description: appointment.service,
+                                                                                                        payment: appointment.payment.toString()
                                                                                                     }
                                                                                                 }
                                                                                             }
@@ -573,19 +744,6 @@ const Rezervasyon = () => {
                                     <h6 className="d-block fw-semibold mb-0"> <span id="event-payment-tag">₺{event && event.payment !== undefined ? event.payment : " Ödeme Yok"}</span></h6>
                                 </div>
                             </div>
-                            <div className="d-flex align-items-center mb-2">
-                                <div className="flex-shrink-0 me-3">
-                                    <i className="ri-map-pin-line text-muted fs-16"></i>
-                                </div>
-                                <div className="flex-grow-1">
-                                    <h6 className="d-block fw-semibold mb-0">
-                                        {" "}
-                                        <span id="event-location-tag">
-                                            {event && event.location !== undefined ? event.location : "Konum Yok"}
-                                        </span>
-                                    </h6>
-                                </div>
-                            </div>
                             <div className="d-flex mb-3">
                                 <div className="flex-shrink-0 me-3">
                                     <i className="ri-discuss-line text-muted fs-16"></i>
@@ -635,9 +793,216 @@ const Rezervasyon = () => {
                             <Col xs={12}>
                                 <div className="mb-3">
                                     <Form.Label className="form-label">Müşteri Adı</Form.Label>
-                                    <Form.Control className={!!isEdit ? "form-control d-none" : "form-control d-block"} placeholder="Müşteri adını girin" type="text" name="title" id="event-title" onChange={validation.handleChange} onBlur={validation.handleBlur} value={validation.values.title || ""}
-                                        isInvalid={validation.touched.title && validation.errors.title ? true : false}
-                                    />
+                                    <div className="position-relative">
+                                        <Form.Control 
+                                            className={!!isEdit ? "form-control d-none" : "form-control d-block"} 
+                                            placeholder="Müşteri ara veya yeni müşteri adını girin..." 
+                                            type="text" 
+                                            name="title" 
+                                            id="event-title" 
+                                            onChange={(e) => {
+                                                validation.handleChange(e);
+                                                handleCustomerSearch(e.target.value);
+                                            }}
+                                            onBlur={(e) => {
+                                                validation.handleBlur(e);
+                                                // Dropdown'u hemen kapatmamak için gecikme ekle
+                                                setTimeout(() => setShowCustomerDropdown(false), 200);
+                                            }}
+                                            onFocus={() => {
+                                                if (customerSearchTerm) {
+                                                    handleCustomerSearch(customerSearchTerm);
+                                                }
+                                            }}
+                                            value={validation.values.title || ""}
+                                            isInvalid={validation.touched.title && validation.errors.title ? true : false}
+                                        />
+                                        
+                                        {/* Müşteri dropdown menüsü - Enhanced styling */}
+                                        {showCustomerDropdown && (
+                                            <div 
+                                                className="position-absolute w-100 bg-white border rounded-2 shadow-lg" 
+                                                style={{ 
+                                                    top: 'calc(100% + 2px)', 
+                                                    left: '0',
+                                                    zIndex: 1050, 
+                                                    maxHeight: '250px', 
+                                                    overflowY: 'auto',
+                                                    border: '1px solid #dee2e6',
+                                                    boxShadow: '0 0.5rem 1rem rgba(0, 0, 0, 0.15)'
+                                                }}
+                                            >
+                                                {filteredCustomers.length > 0 ? (
+                                                    <>
+                                                        <div className="px-3 py-2 bg-light border-bottom">
+                                                            <small className="text-muted fw-medium">Mevcut Müşteriler</small>
+                                                        </div>
+                                                        {filteredCustomers.map(customer => (
+                                                            <div 
+                                                                key={customer.id} 
+                                                                className="px-3 py-2 border-bottom cursor-pointer" 
+                                                                style={{ 
+                                                                    cursor: 'pointer',
+                                                                    transition: 'background-color 0.15s ease-in-out'
+                                                                }}
+                                                                onMouseDown={() => handleCustomerSelect(customer)}
+                                                                onMouseEnter={(e) => {
+                                                                    e.currentTarget.style.backgroundColor = '#f8f9fa';
+                                                                }}
+                                                                onMouseLeave={(e) => {
+                                                                    e.currentTarget.style.backgroundColor = 'transparent';
+                                                                }}
+                                                            >
+                                                                <div className="d-flex align-items-center">
+                                                                    <div className="flex-shrink-0 me-2">
+                                                                        <i className="ri-user-line text-primary"></i>
+                                                                    </div>
+                                                                    <div className="flex-grow-1">
+                                                                        <div className="fw-semibold text-dark">{customer.name}</div>
+                                                                        <div className="text-muted small">
+                                                                            <i className="ri-phone-line me-1"></i>{customer.phone} 
+                                                                            <span className="mx-1">•</span>
+                                                                            <i className="ri-mail-line me-1"></i>{customer.email}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="flex-shrink-0">
+                                                                        <i className="ri-arrow-right-s-line text-muted"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        ))}
+                                                    </>
+                                                ) : (
+                                                    customerSearchTerm.trim() && (
+                                                        <>
+                                                            <div className="px-3 py-2 bg-light border-bottom">
+                                                                <small className="text-muted fw-medium">Müşteri Bulunamadı</small>
+                                                            </div>
+                                                            <div 
+                                                                className="px-3 py-3 text-center cursor-pointer" 
+                                                                style={{ 
+                                                                    cursor: 'pointer',
+                                                                    transition: 'background-color 0.15s ease-in-out'
+                                                                }}
+                                                                onMouseDown={handleAddNewCustomer}
+                                                                onMouseEnter={(e) => {
+                                                                    e.currentTarget.style.backgroundColor = '#f0f8ff';
+                                                                }}
+                                                                onMouseLeave={(e) => {
+                                                                    e.currentTarget.style.backgroundColor = 'transparent';
+                                                                }}
+                                                            >
+                                                                <div className="d-flex align-items-center justify-content-center text-primary">
+                                                                    <i className="ri-add-circle-line me-2 fs-5"></i>
+                                                                    <div>
+                                                                        <div className="fw-medium">Yeni Müşteri Ekle</div>
+                                                                        <div className="small">
+                                                                            "<strong className="text-dark">{customerSearchTerm}</strong>" adında müşteri oluştur
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </>
+                                                    )
+                                                )}
+                                            </div>
+                                        )}
+                                        
+                                        {/* Yeni Müşteri Ekleme Formu */}
+                                        {showNewCustomerForm && (
+                                            <div 
+                                                className="position-absolute w-100 bg-white border rounded-2 shadow-lg p-3"
+                                                style={{ 
+                                                    top: 'calc(100% + 2px)', 
+                                                    left: '0',
+                                                    zIndex: 1060
+                                                }}
+                                            >
+                                                <div className="d-flex align-items-center justify-content-between mb-3">
+                                                    <h6 className="mb-0">Yeni Müşteri Ekle</h6>
+                                                    <button 
+                                                        type="button" 
+                                                        className="btn-close" 
+                                                        onClick={handleCancelNewCustomer}
+                                                    ></button>
+                                                </div>
+                                                
+                                                <div className="row g-2">
+                                                    <div className="col-6">
+                                                        <Form.Label className="form-label small">Ad *</Form.Label>
+                                                        <Form.Control
+                                                            size="sm"
+                                                            type="text"
+                                                            placeholder="Ad"
+                                                            value={newCustomerData.name}
+                                                            onChange={(e) => setNewCustomerData({
+                                                                ...newCustomerData,
+                                                                name: e.target.value
+                                                            })}
+                                                        />
+                                                    </div>
+                                                    <div className="col-6">
+                                                        <Form.Label className="form-label small">Soyad *</Form.Label>
+                                                        <Form.Control
+                                                            size="sm"
+                                                            type="text"
+                                                            placeholder="Soyad"
+                                                            value={newCustomerData.surname}
+                                                            onChange={(e) => setNewCustomerData({
+                                                                ...newCustomerData,
+                                                                surname: e.target.value
+                                                            })}
+                                                        />
+                                                    </div>
+                                                    <div className="col-6">
+                                                        <Form.Label className="form-label small">Telefon *</Form.Label>
+                                                        <Form.Control
+                                                            size="sm"
+                                                            type="tel"
+                                                            placeholder="0532 123 4567"
+                                                            value={newCustomerData.phone}
+                                                            onChange={(e) => setNewCustomerData({
+                                                                ...newCustomerData,
+                                                                phone: e.target.value
+                                                            })}
+                                                        />
+                                                    </div>
+                                                    <div className="col-6">
+                                                        <Form.Label className="form-label small">E-posta</Form.Label>
+                                                        <Form.Control
+                                                            size="sm"
+                                                            type="email"
+                                                            placeholder="ornek@email.com"
+                                                            value={newCustomerData.email}
+                                                            onChange={(e) => setNewCustomerData({
+                                                                ...newCustomerData,
+                                                                email: e.target.value
+                                                            })}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                
+                                                <div className="d-flex gap-2 mt-3">
+                                                    <button 
+                                                        type="button" 
+                                                        className="btn btn-primary btn-sm flex-fill"
+                                                        onClick={handleSaveNewCustomer}
+                                                        disabled={!newCustomerData.name.trim() || !newCustomerData.surname.trim() || !newCustomerData.phone.trim()}
+                                                    >
+                                                        <i className="ri-save-line me-1"></i>
+                                                        Kaydet
+                                                    </button>
+                                                    <button 
+                                                        type="button" 
+                                                        className="btn btn-secondary btn-sm"
+                                                        onClick={handleCancelNewCustomer}
+                                                    >
+                                                        İptal
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
                                     {validation.touched.title && validation.errors.title ? (<Form.Control.Feedback type="invalid">{validation.errors.title}</Form.Control.Feedback>) : null}
                                 </div>
                             </Col>
@@ -656,7 +1021,18 @@ const Rezervasyon = () => {
                                                 enableTime: true,
                                                 dateFormat: "Y-m-d H:i",
                                                 time_24hr: true,
-                                                minuteIncrement: 30
+                                                minuteIncrement: 15,
+                                                locale: {
+                                                    firstDayOfWeek: 1,
+                                                    weekdays: {
+                                                        shorthand: ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"],
+                                                        longhand: ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"]
+                                                    },
+                                                    months: {
+                                                        shorthand: ["Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara"],
+                                                        longhand: ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"]
+                                                    }
+                                                }
                                             }}
                                             onChange={(date: any) => {
                                                 if (date && date.length > 0) {
@@ -670,21 +1046,46 @@ const Rezervasyon = () => {
                                     </div>
                                 </div>
                             </Col>
+                            <Col xs={12}>
+                                <div className="mb-3">
+                                    <Form.Label className="form-label">Randevu Süresi</Form.Label>
+                                    <div className={!!isEdit ? "input-group d-none" : "input-group"}>
+                                        <Form.Control 
+                                            as="select" 
+                                            name="duration"
+                                            id="event-duration"
+                                            onChange={(e) => {
+                                                validation.handleChange(e);
+                                                // Süre değiştiğinde bitiş saatini güncelle
+                                                if (validation.values.defaultDate) {
+                                                    const startTime = new Date(validation.values.defaultDate);
+                                                    const endTime = new Date(startTime);
+                                                    endTime.setMinutes(endTime.getMinutes() + parseInt(e.target.value));
+                                                    setSelectedNewDay([startTime, endTime]);
+                                                }
+                                            }}
+                                            onBlur={validation.handleBlur}
+                                            value={validation.values.duration || "30"}
+                                        >
+                                            <option value="15">15 dakika</option>
+                                            <option value="30">30 dakika</option>
+                                            <option value="45">45 dakika</option>
+                                            <option value="60">1 saat</option>
+                                            <option value="90">1 saat 30 dakika</option>
+                                            <option value="120">2 saat</option>
+                                            <option value="150">2 saat 30 dakika</option>
+                                            <option value="180">3 saat</option>
+                                        </Form.Control>
+                                        <span className="input-group-text"> <i className="ri-time-line"></i> </span>
+                                    </div>
+                                </div>
+                            </Col>
                             <Col className="col-12">
                                 <div className="mb-3">
                                     <label className="form-label" htmlFor="event-payment">Ödeme (₺)</label>
                                     <div>
                                         <Form.Control type="text" className={!!isEdit ? "form-control d-none" : "form-control d-block"} name="payment" id="event-payment" placeholder="Ödeme tutarı" onChange={validation.handleChange} onBlur={validation.handleBlur} value={validation.values.payment} isInvalid={validation.touched.payment && validation.errors.payment ? true : false} />
                                         {validation.touched.payment && validation.errors.payment ? (<Form.Control.Feedback type="invalid">{validation.errors.payment}</Form.Control.Feedback>) : null}
-                                    </div>
-                                </div>
-                            </Col>
-                            <Col xs={12}>
-                                <div className="mb-3">
-                                    <Form.Label htmlFor="event-location">Konum</Form.Label>
-                                    <div>
-                                        <Form.Control type="text" className={!!isEdit ? "form-control d-none" : "form-control d-block"} name="location" id="event-location" placeholder="Konum" onChange={validation.handleChange} onBlur={validation.handleBlur} value={validation.values.location} isInvalid={validation.touched.location && validation.errors.location ? true : false} />
-                                        {validation.touched.location && validation.errors.location ? (<Form.Control.Feedback type="invalid">{validation.errors.location}</Form.Control.Feedback>) : null}
                                     </div>
                                 </div>
                             </Col>
@@ -708,7 +1109,7 @@ const Rezervasyon = () => {
                         </Row>
                         <div className="hstack gap-2 justify-content-end">
                             {!!isEdit && (<Button variant="soft-danger" type="button" id="btn-delete-event" onClick={() => handleDeleteEvent()}> <i className="ri-close-line align-bottom"></i> Sil </Button>)}
-                            {isEditButton && <Button variant="success" type="submit" id="btn-save-event" > {!!isEdit ? "Rezervasyonu Düzenle" : "Rezervasyon Ekle"} </Button>}
+                            {isEditButton && <Button variant="success" type="submit" id="btn-save-event" > {!!isEdit ? "Kaydet" : "Rezervasyon Ekle"} </Button>}
                         </div>
                     </Form>
                 </Modal.Body>
