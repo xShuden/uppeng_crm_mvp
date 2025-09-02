@@ -26,15 +26,15 @@ const UsersList = () => {
         setmodal_DeleteCustomerModals(!modal_DeleteCustomerModals);
     }
 
-    function handleEditCustomer(customer: any) {
+    const handleEditCustomer = useCallback((customer: any) => {
         setSelectedCustomer(customer);
         tog_EditCustomerModals();
-    }
+    }, []);
 
-    function handleDeleteCustomer(customer: any) {
+    const handleDeleteCustomer = useCallback((customer: any) => {
         setSelectedCustomer(customer);
         tog_DeleteCustomerModals();
-    }
+    }, []);
 
     // Checked All
     const checkedAll = useCallback(() => {

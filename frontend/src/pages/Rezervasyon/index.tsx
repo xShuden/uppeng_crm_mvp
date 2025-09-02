@@ -33,12 +33,29 @@ const Rezervasyon = () => {
     const [isEditButton, setIsEditButton] = useState<boolean>(true);
     const [upcommingevents, setUpcommingevents] = useState<any>([]);
     const [selectedDate, setSelectedDate] = useState(new Date());
-    const [staffList, setStaffList] = useState([
+    const [staffList] = useState([
         { id: 1, name: "Ayşe Demir", profession: "Protez Uzmanı" },
         { id: 2, name: "Fatma Yılmaz", profession: "Makijöz" },
         { id: 3, name: "Zeynep Kaya", profession: "Estetisyen" },
         { id: 4, name: "Merve Öztürk", profession: "Kuaför" },
     ]);
+
+    // Hizmet listesi
+    const [serviceList] = useState([
+        { id: 1, name: "Protez Takılması", duration: 120, price: 500, staffIds: [1] },
+        { id: 2, name: "Protez Kontrol", duration: 30, price: 100, staffIds: [1] },
+        { id: 3, name: "Makyaj", duration: 60, price: 200, staffIds: [2] },
+        { id: 4, name: "Gelin Makyajı", duration: 90, price: 350, staffIds: [2] },
+        { id: 5, name: "Cilt Bakımı", duration: 90, price: 250, staffIds: [3] },
+        { id: 6, name: "Kaş Alımı", duration: 30, price: 50, staffIds: [3] },
+        { id: 7, name: "Saç Kesimi", duration: 45, price: 100, staffIds: [4] },
+        { id: 8, name: "Saç Boyama", duration: 120, price: 300, staffIds: [4] },
+        { id: 9, name: "Saç Kesimi + Boyama", duration: 150, price: 380, staffIds: [4] },
+    ]);
+
+    // Seçilen personele göre hizmetleri filtrele
+    const [availableServices, setAvailableServices] = useState<any[]>([]);
+    const [, setSelectedService] = useState("");
 
     // Müşteri listesi ve arama
     const [customerList] = useState([
@@ -144,8 +161,49 @@ const Rezervasyon = () => {
         });
     };
 
+    // Personel seçildiğinde hizmetleri filtrele
+    const handleStaffChange = (staffId: string) => {
+        validation.setFieldValue('staff', staffId);
+        
+        if (staffId) {
+            const filteredServices = serviceList.filter(service => 
+                service.staffIds.includes(parseInt(staffId))
+            );
+            setAvailableServices(filteredServices);
+        } else {
+            setAvailableServices([]);
+        }
+        
+        // Hizmet seçimini sıfırla
+        setSelectedService("");
+        validation.setFieldValue('service', "");
+        validation.setFieldValue('duration', "30");
+    };
+
+    // Hizmet seçildiğinde süre ve fiyatı otomatik ayarla
+    const handleServiceChange = (serviceId: string) => {
+        setSelectedService(serviceId);
+        validation.setFieldValue('service', serviceId);
+        
+        if (serviceId) {
+            const service = serviceList.find(s => s.id === parseInt(serviceId));
+            if (service) {
+                validation.setFieldValue('duration', service.duration.toString());
+                validation.setFieldValue('payment', service.price.toString());
+                
+                // Süre değiştiğinde bitiş saatini güncelle
+                if (validation.values.defaultDate) {
+                    const startTime = new Date(validation.values.defaultDate);
+                    const endTime = new Date(startTime);
+                    endTime.setMinutes(endTime.getMinutes() + service.duration);
+                    setSelectedNewDay([startTime, endTime]);
+                }
+            }
+        }
+    };
+
     // Dinamik randevu listesi - süre ve zaman destekli
-    const [appointmentsList, setAppointmentsList] = useState([
+    const [appointmentsList] = useState([
         {
             id: 1,
             staffId: 1,
@@ -170,7 +228,7 @@ const Rezervasyon = () => {
 
     // Belirli bir zamanda randevu var mı kontrol et
     const getAppointmentAt = (staffId: number, date: string, hour: number, minute: number) => {
-        const timeString = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+        // const timeString = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
         const currentTime = hour * 60 + minute; // dakikaya çevir
         
         return appointmentsList.find(appointment => {
@@ -360,6 +418,7 @@ const Rezervasyon = () => {
             defaultDate: (event && event.defaultDate) || "",
             datetag: (event && event.datetag) || "",
             staff: (event && event.staff && event.staff.id) || "",
+            service: (event && event.service) || "",
             duration: (event && event.duration) || "30",
         },
 
@@ -369,6 +428,7 @@ const Rezervasyon = () => {
             payment: Yup.string().required("Lütfen ödeme tutarını girin"),
             description: Yup.string().required("Lütfen açıklama ekleyin"),
             staff: Yup.string().required("Lütfen çalışan seçin"),
+            service: Yup.string().required("Lütfen hizmet seçin"),
             duration: Yup.string().required("Lütfen randevu süresini seçin"),
         }),
         onSubmit: (values) => {
@@ -432,40 +492,40 @@ const Rezervasyon = () => {
     };
 
     // On calendar drop event
-    const onDrop = (event: any) => {
-        const date = event["date"];
-        const day = date.getDate();
-        const month = date.getMonth();
-        const year = date.getFullYear();
+    // const onDrop = (event: any) => {
+    //     const date = event["date"];
+    //     const day = date.getDate();
+    //     const month = date.getMonth();
+    //     const year = date.getFullYear();
 
-        const currectDate = new Date();
-        const currentHour = currectDate.getHours();
-        const currentMin = currectDate.getMinutes();
-        const currentSec = currectDate.getSeconds();
-        const modifiedDate = new Date(
-            year,
-            month,
-            day,
-            currentHour,
-            currentMin,
-            currentSec
-        );
+    //     const currectDate = new Date();
+    //     const currentHour = currectDate.getHours();
+    //     const currentMin = currectDate.getMinutes();
+    //     const currentSec = currectDate.getSeconds();
+    //     const modifiedDate = new Date(
+    //         year,
+    //         month,
+    //         day,
+    //         currentHour,
+    //         currentMin,
+    //         currentSec
+    //     );
 
-        const draggedEl = event.draggedEl;
-        const draggedElclass = draggedEl.className;
-        if (
-            draggedEl.classList.contains("external-event") &&
-            draggedElclass.indexOf("fc-event-draggable") === -1
-        ) {
-            const modifiedData = {
-                id: Math.floor(Math.random() * 1000),
-                title: draggedEl.innerText,
-                start: modifiedDate,
-                className: draggedEl.className,
-            };
-            dispatch(onAddNewEvent(modifiedData));
-        }
-    };
+    //     const draggedEl = event.draggedEl;
+    //     const draggedElclass = draggedEl.className;
+    //     if (
+    //         draggedEl.classList.contains("external-event") &&
+    //         draggedElclass.indexOf("fc-event-draggable") === -1
+    //     ) {
+    //         const modifiedData = {
+    //             id: Math.floor(Math.random() * 1000),
+    //             title: draggedEl.innerText,
+    //             start: modifiedDate,
+    //             className: draggedEl.className,
+    //         };
+    //         dispatch(onAddNewEvent(modifiedData));
+    //     }
+    // };
 
     //Search Functionality for Upcomming Events
     const [UpcommingEventList, setUpcommingEventList] = useState<any[]>([]);
@@ -766,15 +826,48 @@ const Rezervasyon = () => {
                                         className={!!isEdit ? "form-select d-none" : "form-select d-block"} 
                                         name="staff" 
                                         id="event-staff" 
-                                        onChange={validation.handleChange} 
+                                        onChange={(e) => {
+                                            handleStaffChange(e.target.value);
+                                        }}
                                         onBlur={validation.handleBlur} 
                                         value={validation.values.staff || ""}
+                                        isInvalid={validation.touched.staff && validation.errors.staff ? true : false}
                                     >
                                         <option value="">Çalışan Seçin</option>
                                         {staffList.map(staff => (
                                             <option key={staff.id} value={staff.id}>{staff.name} - {staff.profession}</option>
                                         ))}
                                     </Form.Control>
+                                    {validation.touched.staff && validation.errors.staff ? (
+                                        <Form.Control.Feedback type="invalid">{validation.errors.staff}</Form.Control.Feedback>
+                                    ) : null}
+                                </div>
+                            </Col>
+                            <Col xs={12}>
+                                <div className="mb-3">
+                                    <Form.Label className="form-label">Hizmet</Form.Label>
+                                    <Form.Control as="select"
+                                        className={!!isEdit ? "form-select d-none" : "form-select d-block"} 
+                                        name="service" 
+                                        id="event-service" 
+                                        onChange={(e) => {
+                                            handleServiceChange(e.target.value);
+                                        }}
+                                        onBlur={validation.handleBlur} 
+                                        value={validation.values.service || ""}
+                                        isInvalid={validation.touched.service && validation.errors.service ? true : false}
+                                        disabled={!validation.values.staff}
+                                    >
+                                        <option value="">{validation.values.staff ? "Hizmet Seçin" : "Önce çalışan seçin"}</option>
+                                        {availableServices.map(service => (
+                                            <option key={service.id} value={service.id}>
+                                                {service.name} - {service.duration}dk - ₺{service.price}
+                                            </option>
+                                        ))}
+                                    </Form.Control>
+                                    {validation.touched.service && validation.errors.service ? (
+                                        <Form.Control.Feedback type="invalid">{validation.errors.service}</Form.Control.Feedback>
+                                    ) : null}
                                 </div>
                             </Col>
                             <Col xs={12}>
