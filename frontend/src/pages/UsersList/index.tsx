@@ -4,7 +4,6 @@ import Breadcrumb from 'Common/BreadCrumb';
 import CountUp from 'react-countup';
 import TableContainer from "Common/TableContainer";
 import { userList } from "Common/data";
-import Flatpickr from "react-flatpickr";
 import { Link } from 'react-router-dom';
 
 const UsersList = () => {
@@ -74,51 +73,28 @@ const UsersList = () => {
                 id: '#',
             },
             {
-                Header: "Müşteri Adı",
+                Header: "Ad",
                 disableFilters: true,
                 filterable: true,
                 accessor: "user_name"
+            },
+            {
+                Header: "Soyad",
+                disableFilters: true,
+                filterable: true,
+                accessor: "surname"
+            },
+            {
+                Header: "Telefon",
+                accessor: "phone",
+                disableFilters: true,
+                filterable: true,
             },
             {
                 Header: "E-posta",
                 accessor: "email_id",
                 disableFilters: true,
                 filterable: true,
-            },
-            {
-                Header: "Oluşturma Tarihi",
-                disableFilters: true,
-                filterable: true,
-                accessor: (cellProps: any) => {
-                    const dateStr = cellProps.date;
-                    if (dateStr) {
-                        try {
-                            const date = new Date(dateStr);
-                            const day = date.getDate().toString().padStart(2, '0');
-                            const month = (date.getMonth() + 1).toString().padStart(2, '0');
-                            const year = date.getFullYear();
-                            return `${day}.${month}.${year}`;
-                        } catch {
-                            return dateStr;
-                        }
-                    }
-                    return dateStr;
-                }
-            },
-            {
-                Header: "Hesap Durumu",
-                disableFilters: true,
-                filterable: true,
-                accessor: (cellProps: any) => {
-                    switch (cellProps.status) {
-                        case "Active":
-                            return (<span className="badge bg-success-subtle text-success"> Aktif</span>)
-                        case "Inactive":
-                            return (<span className="badge bg-danger-subtle text-danger"> Pasif</span>)
-                        default:
-                            return (<span className="badge bg-success-subtle text-success"> Aktif</span>)
-                    }
-                },
             },
             {
                 Header: "İşlem",
@@ -382,7 +358,7 @@ const UsersList = () => {
                     {/* Edit User Modal */}
                     <Modal className="fade" show={modal_EditCustomerModals} onHide={() => { tog_EditCustomerModals(); }} centered>
                         <Modal.Header className="px-4 pt-4" closeButton>
-                            <h5 className="modal-title" id="editModalLabel">Kullanıcı Düzenle</h5>
+                            <h5 className="modal-title" id="editModalLabel">Müşteri Düzenle</h5>
                         </Modal.Header>
                         <Form className="tablelist-form">
                             <Modal.Body className="p-4">
@@ -390,55 +366,43 @@ const UsersList = () => {
                                 <input type="hidden" id="edit-id-field" />
 
                                 <div className="mb-3">
-                                    <Form.Label htmlFor="edit-user-name">Kullanıcı Adı</Form.Label>
+                                    <Form.Label htmlFor="edit-customer-name">Ad</Form.Label>
                                     <Form.Control 
                                         type="text" 
-                                        id="edit-user-name-field" 
-                                        placeholder="Kullanıcı Adını Girin" 
+                                        id="edit-customer-name-field" 
+                                        placeholder="Adını Girin" 
                                         defaultValue={selectedCustomer?.user_name || ''} 
                                         required 
                                     />
                                 </div>
                                 <div className="mb-3">
-                                    <Form.Label htmlFor="edit-email-field">E-posta Adresi</Form.Label>
+                                    <Form.Label htmlFor="edit-customer-surname">Soyad</Form.Label>
                                     <Form.Control 
-                                        type="email" 
-                                        id="edit-email-field" 
-                                        placeholder="E-posta Adresini Girin" 
-                                        defaultValue={selectedCustomer?.email_id || ''} 
+                                        type="text" 
+                                        id="edit-customer-surname-field" 
+                                        placeholder="Soyadını Girin" 
+                                        defaultValue={selectedCustomer?.surname || ''} 
                                         required 
                                     />
                                 </div>
-
                                 <div className="mb-3">
-                                    <Form.Label htmlFor="edit-date-field">Oluşturma Tarihi</Form.Label>
-                                    <Flatpickr
-                                        className="form-control flatpickr-input"
-                                        placeholder='Tarih Seç'
-                                        defaultValue={selectedCustomer?.date || ''}
-                                        options={{
-                                            dateFormat: "d.m.Y",
-                                            locale: {
-                                                weekdays: {
-                                                    shorthand: ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'],
-                                                    longhand: ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi']
-                                                },
-                                                months: {
-                                                    shorthand: ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'],
-                                                    longhand: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık']
-                                                }
-                                            }
-                                        }}
+                                    <Form.Label htmlFor="edit-customer-phone">Telefon</Form.Label>
+                                    <Form.Control 
+                                        type="tel" 
+                                        id="edit-customer-phone-field" 
+                                        placeholder="Telefon Numarası" 
+                                        defaultValue={selectedCustomer?.phone || ''} 
+                                        required 
                                     />
                                 </div>
-
-                                <div>
-                                    <label htmlFor="edit-account-status" className="form-label">Hesap Durumu</label>
-                                    <select className="form-select" required id="edit-account-status-field" defaultValue={selectedCustomer?.status || ''}>
-                                        <option value="">Hesap Durumu</option>
-                                        <option value="Active">Aktif</option>
-                                        <option value="Inactive">Pasif</option>
-                                    </select>
+                                <div className="mb-3">
+                                    <Form.Label htmlFor="edit-customer-email">E-posta (Opsiyonel)</Form.Label>
+                                    <Form.Control 
+                                        type="email" 
+                                        id="edit-customer-email-field" 
+                                        placeholder="E-posta Adresi" 
+                                        defaultValue={selectedCustomer?.email_id || ''} 
+                                    />
                                 </div>
                             </Modal.Body>
                             <div className="modal-footer">

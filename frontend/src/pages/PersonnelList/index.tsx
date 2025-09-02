@@ -4,7 +4,6 @@ import Breadcrumb from 'Common/BreadCrumb';
 import CountUp from 'react-countup';
 import TableContainer from "Common/TableContainer";
 import { userList } from "Common/data";
-import Flatpickr from "react-flatpickr";
 import { Link } from 'react-router-dom';
 
 const PersonnelList = () => {
@@ -14,27 +13,121 @@ const PersonnelList = () => {
     const [modal_DeletePersonnelModals, setmodal_DeletePersonnelModals] = useState<boolean>(false);
     const [isMultiDeleteButton, setIsMultiDeleteButton] = useState<boolean>(false);
     const [selectedPersonnel, setSelectedPersonnel] = useState<any>(null);
+    
+    // Görev ve hizmet yönetimi (Add Modal)
+    const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
+    const [availableServices, setAvailableServices] = useState<any[]>([]);
+    
+    // Görev ve hizmet yönetimi (Edit Modal)
+    const [editSelectedRoles, setEditSelectedRoles] = useState<string[]>([]);
+    const [editAvailableServices, setEditAvailableServices] = useState<any[]>([]);
+    
+    // Görev-hizmet mapping
+    const roleServiceMapping: { [key: string]: any[] } = {
+        'protez-uzmani': [
+            { id: 'protez-takilmasi', name: 'Protez Takılması' },
+            { id: 'protez-kontrol', name: 'Protez Kontrol' },
+            { id: 'tedavi-bakimi', name: 'Tedavi Bakımı' }
+        ],
+        'makijoz': [
+            { id: 'makyaj', name: 'Makyaj' },
+            { id: 'cilt-bakimi', name: 'Cilt Bakımı' }
+        ],
+        'estetisyen': [
+            { id: 'cilt-bakimi', name: 'Cilt Bakımı' },
+            { id: 'tedavi-bakimi', name: 'Tedavi Bakımı' }
+        ],
+        'kuafor': [
+            { id: 'sac-kesim', name: 'Saç Kesim' },
+            { id: 'sac-boyama', name: 'Saç Boyama' }
+        ],
+        'masaj-terapisti': [
+            { id: 'masaj', name: 'Masaj' },
+            { id: 'tedavi-bakimi', name: 'Tedavi Bakımı' }
+        ],
+        'hasta-bakim': [
+            { id: 'tedavi-bakimi', name: 'Tedavi Bakımı' },
+            { id: 'hasta-bakim-hizmet', name: 'Hasta Bakım Hizmetleri' }
+        ]
+    };
+
+    const handleRoleChange = (roleId: string) => {
+        let newRoles: string[];
+        if (selectedRoles.includes(roleId)) {
+            newRoles = selectedRoles.filter(r => r !== roleId);
+        } else {
+            newRoles = [...selectedRoles, roleId];
+        }
+        setSelectedRoles(newRoles);
+        
+        // Seçili görevlere göre hizmetleri filtrele
+        const services: any[] = [];
+        newRoles.forEach(role => {
+            if (roleServiceMapping[role]) {
+                roleServiceMapping[role].forEach(service => {
+                    if (!services.find(s => s.id === service.id)) {
+                        services.push(service);
+                    }
+                });
+            }
+        });
+        setAvailableServices(services);
+    };
+
+    const handleEditRoleChange = (roleId: string) => {
+        let newRoles: string[];
+        if (editSelectedRoles.includes(roleId)) {
+            newRoles = editSelectedRoles.filter(r => r !== roleId);
+        } else {
+            newRoles = [...editSelectedRoles, roleId];
+        }
+        setEditSelectedRoles(newRoles);
+        
+        // Seçili görevlere göre hizmetleri filtrele
+        const services: any[] = [];
+        newRoles.forEach(role => {
+            if (roleServiceMapping[role]) {
+                roleServiceMapping[role].forEach(service => {
+                    if (!services.find(s => s.id === service.id)) {
+                        services.push(service);
+                    }
+                });
+            }
+        });
+        setEditAvailableServices(services);
+    };
+
     function tog_AddPersonnelModals() {
         setmodal_AddPersonnelModals(!modal_AddPersonnelModals);
+        // Modal açıldığında state'leri sıfırla
+        if (!modal_AddPersonnelModals) {
+            setSelectedRoles([]);
+            setAvailableServices([]);
+        }
     }
 
     function tog_EditPersonnelModals() {
         setmodal_EditPersonnelModals(!modal_EditPersonnelModals);
+        // Modal açıldığında state'leri sıfırla
+        if (!modal_EditPersonnelModals) {
+            setEditSelectedRoles([]);
+            setEditAvailableServices([]);
+        }
     }
 
     function tog_DeletePersonnelModals() {
         setmodal_DeletePersonnelModals(!modal_DeletePersonnelModals);
     }
 
-    function handleEditPersonnel(personnel: any) {
+    const handleEditPersonnel = useCallback((personnel: any) => {
         setSelectedPersonnel(personnel);
         tog_EditPersonnelModals();
-    }
+    }, []);
 
-    function handleDeletePersonnel(personnel: any) {
+    const handleDeletePersonnel = useCallback((personnel: any) => {
         setSelectedPersonnel(personnel);
         tog_DeletePersonnelModals();
-    }
+    }, []);
 
     // Checked All
     const checkedAll = useCallback(() => {
@@ -84,26 +177,6 @@ const PersonnelList = () => {
                 accessor: "email_id",
                 disableFilters: true,
                 filterable: true,
-            },
-            {
-                Header: "İşe Giriş Tarihi",
-                disableFilters: true,
-                filterable: true,
-                accessor: (cellProps: any) => {
-                    const dateStr = cellProps.date;
-                    if (dateStr) {
-                        try {
-                            const date = new Date(dateStr);
-                            const day = date.getDate().toString().padStart(2, '0');
-                            const month = (date.getMonth() + 1).toString().padStart(2, '0');
-                            const year = date.getFullYear();
-                            return `${day}.${month}.${year}`;
-                        } catch {
-                            return dateStr;
-                        }
-                    }
-                    return dateStr;
-                }
             },
             {
                 Header: "Durum",
@@ -350,42 +423,110 @@ const PersonnelList = () => {
 
 
                                 <div className="mb-3">
-                                    <Form.Label htmlFor="personnel-name">Personel Adı</Form.Label>
+                                    <Form.Label htmlFor="personnel-name">Ad</Form.Label>
                                     <Form.Control type="text" id="personnel-name-field" placeholder="Adını Girin" required />
                                 </div>
                                 <div className="mb-3">
-                                    <Form.Label htmlFor="email-field">Personel E-postası</Form.Label>
-                                    <Form.Control type="email" id="email-field" placeholder="E-posta Girin" required />
+                                    <Form.Label htmlFor="personnel-surname">Soyad</Form.Label>
+                                    <Form.Control type="text" id="personnel-surname-field" placeholder="Soyadını Girin" required />
                                 </div>
-
                                 <div className="mb-3">
-                                    <Form.Label htmlFor="date-field">İşe Giriş Tarihi</Form.Label>
-                                    <Flatpickr
-                                        className="form-control flatpickr-input"
-                                        placeholder='Tarih Seç'
-                                        options={{
-                                            dateFormat: "d.m.Y",
-                                            locale: {
-                                                weekdays: {
-                                                    shorthand: ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'],
-                                                    longhand: ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi']
-                                                },
-                                                months: {
-                                                    shorthand: ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'],
-                                                    longhand: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık']
-                                                }
-                                            }
-                                        }}
-                                    />
+                                    <Form.Label htmlFor="personnel-phone">Telefon</Form.Label>
+                                    <Form.Control type="tel" id="personnel-phone-field" placeholder="Telefon Numarası" required />
                                 </div>
-
-                                <div>
-                                    <label htmlFor="personnel-status" className="form-label">Durum</label>
-                                    <select className="form-select" required id="personnel-status-field">
-                                        <option defaultValue="">Personel Durumu</option>
-                                        <option value="Active">Aktif</option>
-                                        <option value="Inactive">Pasif</option>
-                                    </select>
+                                <div className="mb-3">
+                                    <Form.Label htmlFor="personnel-email">E-posta</Form.Label>
+                                    <Form.Control type="email" id="personnel-email-field" placeholder="E-posta Adresi" required />
+                                </div>
+                                <div className="mb-3">
+                                    <Form.Label className="form-label">Görevler</Form.Label>
+                                    <Row>
+                                        <Col md={6}>
+                                            <div className="form-check form-switch form-switch-success mb-3">
+                                                <Form.Check 
+                                                    type="checkbox" 
+                                                    role="switch" 
+                                                    id="role-protez-uzmani" 
+                                                    onChange={() => handleRoleChange('protez-uzmani')}
+                                                    checked={selectedRoles.includes('protez-uzmani')}
+                                                />
+                                                <Form.Label htmlFor="role-protez-uzmani">Protez Uzmanı</Form.Label>
+                                            </div>
+                                            <div className="form-check form-switch form-switch-info mb-3">
+                                                <Form.Check 
+                                                    type="checkbox" 
+                                                    role="switch" 
+                                                    id="role-makijoz" 
+                                                    onChange={() => handleRoleChange('makijoz')}
+                                                    checked={selectedRoles.includes('makijoz')}
+                                                />
+                                                <Form.Label htmlFor="role-makijoz">Makijöz</Form.Label>
+                                            </div>
+                                            <div className="form-check form-switch form-switch-warning mb-3">
+                                                <Form.Check 
+                                                    type="checkbox" 
+                                                    role="switch" 
+                                                    id="role-estetisyen" 
+                                                    onChange={() => handleRoleChange('estetisyen')}
+                                                    checked={selectedRoles.includes('estetisyen')}
+                                                />
+                                                <Form.Label htmlFor="role-estetisyen">Estetisyen</Form.Label>
+                                            </div>
+                                        </Col>
+                                        <Col md={6}>
+                                            <div className="form-check form-switch form-switch-danger mb-3">
+                                                <Form.Check 
+                                                    type="checkbox" 
+                                                    role="switch" 
+                                                    id="role-kuafor" 
+                                                    onChange={() => handleRoleChange('kuafor')}
+                                                    checked={selectedRoles.includes('kuafor')}
+                                                />
+                                                <Form.Label htmlFor="role-kuafor">Kuaför</Form.Label>
+                                            </div>
+                                            <div className="form-check form-switch form-switch-secondary mb-3">
+                                                <Form.Check 
+                                                    type="checkbox" 
+                                                    role="switch" 
+                                                    id="role-masaj-terapisti" 
+                                                    onChange={() => handleRoleChange('masaj-terapisti')}
+                                                    checked={selectedRoles.includes('masaj-terapisti')}
+                                                />
+                                                <Form.Label htmlFor="role-masaj-terapisti">Masaj Terapisti</Form.Label>
+                                            </div>
+                                            <div className="form-check form-switch form-switch-dark mb-3">
+                                                <Form.Check 
+                                                    type="checkbox" 
+                                                    role="switch" 
+                                                    id="role-hasta-bakim" 
+                                                    onChange={() => handleRoleChange('hasta-bakim')}
+                                                    checked={selectedRoles.includes('hasta-bakim')}
+                                                />
+                                                <Form.Label htmlFor="role-hasta-bakim">Hasta Bakım Uzmanı</Form.Label>
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                </div>
+                                <div className="mb-3">
+                                    <Form.Label className="form-label">Hizmetler</Form.Label>
+                                    {availableServices.length === 0 ? (
+                                        <div className="text-muted p-3 border rounded">
+                                            Önce görev seçiniz, hizmetler otomatik olarak gösterilecektir.
+                                        </div>
+                                    ) : (
+                                        <div className="border rounded p-3">
+                                            {availableServices.map((service, index) => (
+                                                <div key={service.id} className="form-check form-switch mb-2">
+                                                    <Form.Check 
+                                                        type="checkbox" 
+                                                        role="switch" 
+                                                        id={`service-${service.id}`}
+                                                    />
+                                                    <Form.Label htmlFor={`service-${service.id}`}>{service.name}</Form.Label>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                             </Modal.Body>
                             <div className="modal-footer">
@@ -408,55 +549,134 @@ const PersonnelList = () => {
                                 <input type="hidden" id="edit-id-field" />
 
                                 <div className="mb-3">
-                                    <Form.Label htmlFor="edit-personnel-name">Personel Adı</Form.Label>
+                                    <Form.Label htmlFor="edit-personnel-name">Ad</Form.Label>
                                     <Form.Control 
                                         type="text" 
                                         id="edit-personnel-name-field" 
-                                        placeholder="Personel Adını Girin" 
+                                        placeholder="Adını Girin" 
                                         defaultValue={selectedPersonnel?.user_name || ''} 
                                         required 
                                     />
                                 </div>
                                 <div className="mb-3">
-                                    <Form.Label htmlFor="edit-email-field">Personel E-postası</Form.Label>
+                                    <Form.Label htmlFor="edit-personnel-surname">Soyad</Form.Label>
+                                    <Form.Control 
+                                        type="text" 
+                                        id="edit-personnel-surname-field" 
+                                        placeholder="Soyadını Girin" 
+                                        defaultValue={selectedPersonnel?.surname || ''} 
+                                        required 
+                                    />
+                                </div>
+                                <div className="mb-3">
+                                    <Form.Label htmlFor="edit-personnel-phone">Telefon</Form.Label>
+                                    <Form.Control 
+                                        type="tel" 
+                                        id="edit-personnel-phone-field" 
+                                        placeholder="Telefon Numarası" 
+                                        defaultValue={selectedPersonnel?.phone || ''} 
+                                        required 
+                                    />
+                                </div>
+                                <div className="mb-3">
+                                    <Form.Label htmlFor="edit-personnel-email">E-posta</Form.Label>
                                     <Form.Control 
                                         type="email" 
-                                        id="edit-email-field" 
-                                        placeholder="E-posta Adresini Girin" 
+                                        id="edit-personnel-email-field" 
+                                        placeholder="E-posta Adresi" 
                                         defaultValue={selectedPersonnel?.email_id || ''} 
                                         required 
                                     />
                                 </div>
-
                                 <div className="mb-3">
-                                    <Form.Label htmlFor="edit-date-field">İşe Giriş Tarihi</Form.Label>
-                                    <Flatpickr
-                                        className="form-control flatpickr-input"
-                                        placeholder='Tarih Seç'
-                                        defaultValue={selectedPersonnel?.date || ''}
-                                        options={{
-                                            dateFormat: "d.m.Y",
-                                            locale: {
-                                                weekdays: {
-                                                    shorthand: ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'],
-                                                    longhand: ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi']
-                                                },
-                                                months: {
-                                                    shorthand: ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'],
-                                                    longhand: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık']
-                                                }
-                                            }
-                                        }}
-                                    />
+                                    <Form.Label className="form-label">Görevler</Form.Label>
+                                    <Row>
+                                        <Col md={6}>
+                                            <div className="form-check form-switch form-switch-success mb-3">
+                                                <Form.Check 
+                                                    type="checkbox" 
+                                                    role="switch" 
+                                                    id="edit-role-protez-uzmani" 
+                                                    onChange={() => handleEditRoleChange('protez-uzmani')}
+                                                    checked={editSelectedRoles.includes('protez-uzmani')}
+                                                />
+                                                <Form.Label htmlFor="edit-role-protez-uzmani">Protez Uzmanı</Form.Label>
+                                            </div>
+                                            <div className="form-check form-switch form-switch-info mb-3">
+                                                <Form.Check 
+                                                    type="checkbox" 
+                                                    role="switch" 
+                                                    id="edit-role-makijoz" 
+                                                    onChange={() => handleEditRoleChange('makijoz')}
+                                                    checked={editSelectedRoles.includes('makijoz')}
+                                                />
+                                                <Form.Label htmlFor="edit-role-makijoz">Makijöz</Form.Label>
+                                            </div>
+                                            <div className="form-check form-switch form-switch-warning mb-3">
+                                                <Form.Check 
+                                                    type="checkbox" 
+                                                    role="switch" 
+                                                    id="edit-role-estetisyen" 
+                                                    onChange={() => handleEditRoleChange('estetisyen')}
+                                                    checked={editSelectedRoles.includes('estetisyen')}
+                                                />
+                                                <Form.Label htmlFor="edit-role-estetisyen">Estetisyen</Form.Label>
+                                            </div>
+                                        </Col>
+                                        <Col md={6}>
+                                            <div className="form-check form-switch form-switch-danger mb-3">
+                                                <Form.Check 
+                                                    type="checkbox" 
+                                                    role="switch" 
+                                                    id="edit-role-kuafor" 
+                                                    onChange={() => handleEditRoleChange('kuafor')}
+                                                    checked={editSelectedRoles.includes('kuafor')}
+                                                />
+                                                <Form.Label htmlFor="edit-role-kuafor">Kuaför</Form.Label>
+                                            </div>
+                                            <div className="form-check form-switch form-switch-secondary mb-3">
+                                                <Form.Check 
+                                                    type="checkbox" 
+                                                    role="switch" 
+                                                    id="edit-role-masaj-terapisti" 
+                                                    onChange={() => handleEditRoleChange('masaj-terapisti')}
+                                                    checked={editSelectedRoles.includes('masaj-terapisti')}
+                                                />
+                                                <Form.Label htmlFor="edit-role-masaj-terapisti">Masaj Terapisti</Form.Label>
+                                            </div>
+                                            <div className="form-check form-switch form-switch-dark mb-3">
+                                                <Form.Check 
+                                                    type="checkbox" 
+                                                    role="switch" 
+                                                    id="edit-role-hasta-bakim" 
+                                                    onChange={() => handleEditRoleChange('hasta-bakim')}
+                                                    checked={editSelectedRoles.includes('hasta-bakim')}
+                                                />
+                                                <Form.Label htmlFor="edit-role-hasta-bakim">Hasta Bakım Uzmanı</Form.Label>
+                                            </div>
+                                        </Col>
+                                    </Row>
                                 </div>
-
-                                <div>
-                                    <label htmlFor="edit-personnel-status" className="form-label">Durum</label>
-                                    <select className="form-select" required id="edit-personnel-status-field" defaultValue={selectedPersonnel?.status || ''}>
-                                        <option value="">Personel Durumu</option>
-                                        <option value="Active">Aktif</option>
-                                        <option value="Inactive">Pasif</option>
-                                    </select>
+                                <div className="mb-3">
+                                    <Form.Label className="form-label">Hizmetler</Form.Label>
+                                    {editAvailableServices.length === 0 ? (
+                                        <div className="text-muted p-3 border rounded">
+                                            Önce görev seçiniz, hizmetler otomatik olarak gösterilecektir.
+                                        </div>
+                                    ) : (
+                                        <div className="border rounded p-3">
+                                            {editAvailableServices.map((service, index) => (
+                                                <div key={service.id} className="form-check form-switch mb-2">
+                                                    <Form.Check 
+                                                        type="checkbox" 
+                                                        role="switch" 
+                                                        id={`edit-service-${service.id}`}
+                                                    />
+                                                    <Form.Label htmlFor={`edit-service-${service.id}`}>{service.name}</Form.Label>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                             </Modal.Body>
                             <div className="modal-footer">
