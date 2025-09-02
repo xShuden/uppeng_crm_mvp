@@ -18,23 +18,23 @@ const UsersList = () => {
         setmodal_AddCustomerModals(!modal_AddCustomerModals);
     }
 
-    function tog_EditCustomerModals() {
+    const tog_EditCustomerModals = useCallback(() => {
         setmodal_EditCustomerModals(!modal_EditCustomerModals);
-    }
+    }, [modal_EditCustomerModals]);
 
-    function tog_DeleteCustomerModals() {
+    const tog_DeleteCustomerModals = useCallback(() => {
         setmodal_DeleteCustomerModals(!modal_DeleteCustomerModals);
-    }
+    }, [modal_DeleteCustomerModals]);
 
     const handleEditCustomer = useCallback((customer: any) => {
         setSelectedCustomer(customer);
         tog_EditCustomerModals();
-    }, []);
+    }, [tog_EditCustomerModals]);
 
     const handleDeleteCustomer = useCallback((customer: any) => {
         setSelectedCustomer(customer);
         tog_DeleteCustomerModals();
-    }, []);
+    }, [tog_DeleteCustomerModals]);
 
     // Checked All
     const checkedAll = useCallback(() => {
@@ -345,7 +345,7 @@ const UsersList = () => {
 
                     <Modal className="fade" show={modal_AddCustomerModals} onHide={() => { tog_AddCustomerModals(); }} centered>
                         <Modal.Header className="px-4 pt-4" closeButton>
-                            <h5 className="modal-title" id="exampleModalLabel">Add User</h5>
+                            <h5 className="modal-title" id="exampleModalLabel">Müşteri Ekle</h5>
                         </Modal.Header>
                         <Form className="tablelist-form">
                             <Modal.Body className="p-4">
@@ -354,48 +354,26 @@ const UsersList = () => {
 
 
                                 <div className="mb-3">
-                                    <Form.Label htmlFor="user-name">Kullanıcı Adı</Form.Label>
-                                    <Form.Control type="text" id="user-name-field" placeholder="Adını Girin" required />
+                                    <Form.Label htmlFor="customer-name">Ad</Form.Label>
+                                    <Form.Control type="text" id="customer-name-field" placeholder="Adını Girin" required />
                                 </div>
                                 <div className="mb-3">
-                                    <Form.Label htmlFor="email-field">E-posta Adresi</Form.Label>
-                                    <Form.Control type="email" id="email-field" placeholder="E-posta Adresini Girin" required />
+                                    <Form.Label htmlFor="customer-surname">Soyad</Form.Label>
+                                    <Form.Control type="text" id="customer-surname-field" placeholder="Soyadını Girin" required />
                                 </div>
-
                                 <div className="mb-3">
-                                    <Form.Label htmlFor="date-field">Oluşturma Tarihi</Form.Label>
-                                    <Flatpickr
-                                        className="form-control flatpickr-input"
-                                        placeholder='Tarih Seç'
-                                        options={{
-                                            dateFormat: "d.m.Y",
-                                            locale: {
-                                                weekdays: {
-                                                    shorthand: ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'],
-                                                    longhand: ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi']
-                                                },
-                                                months: {
-                                                    shorthand: ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'],
-                                                    longhand: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık']
-                                                }
-                                            }
-                                        }}
-                                    />
+                                    <Form.Label htmlFor="customer-phone">Telefon</Form.Label>
+                                    <Form.Control type="tel" id="customer-phone-field" placeholder="Telefon Numarası" required />
                                 </div>
-
-                                <div>
-                                    <label htmlFor="account-status" className="form-label">Hesap Durumu</label>
-                                    <select className="form-select" required id="account-status-field">
-                                        <option defaultValue="">Hesap Durumu</option>
-                                        <option value="Active">Aktif</option>
-                                        <option value="Inactive">Pasif</option>
-                                    </select>
+                                <div className="mb-3">
+                                    <Form.Label htmlFor="customer-email">E-posta (Opsiyonel)</Form.Label>
+                                    <Form.Control type="email" id="customer-email-field" placeholder="E-posta Adresi" />
                                 </div>
                             </Modal.Body>
                             <div className="modal-footer">
                                 <div className="hstack gap-2 justify-content-end">
                                     <Button className="btn-ghost-danger" onClick={() => { tog_AddCustomerModals(); }}>Kapat</Button>
-                                    <Button variant='success' id="add-btn">Kullanıcı Ekle</Button>
+                                    <Button variant='success' id="add-btn">Müşteri Ekle</Button>
                                 </div>
                             </div>
                         </Form>
