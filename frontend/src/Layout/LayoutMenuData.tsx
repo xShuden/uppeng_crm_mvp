@@ -126,12 +126,6 @@ const Navdata = () => {
                     link: "/orders-list-view",
                     parentId: "orders",
                 },
-                {
-                    id: "overview",
-                    label: "Overview",
-                    link: "/orders-overview",
-                    parentId: "orders",
-                },
             ],
         },
         {

@@ -21,7 +21,7 @@ const ListViewTable = () => {
                 id: '#',
             },
             {
-                Header: "Order ID",
+                Header: "Rezervasyon ID",
                 disableFilters: true,
                 filterable: true,
                 accessor: (cellProps: any) => {
@@ -29,64 +29,70 @@ const ListViewTable = () => {
                 },
             },
             {
-                Header: "Customer",
+                Header: "Müşteri Adı",
                 accessor: "customer_name",
                 disableFilters: true,
                 filterable: true,
             },
             {
-                Header: "Product Name",
+                Header: "Hizmet",
                 accessor: "product_name",
                 disableFilters: true,
                 filterable: true,
             },
             {
-                Header: "Amount",
+                Header: "Personel",
+                accessor: "staff_name",
+                disableFilters: true,
+                filterable: true,
+            },
+            {
+                Header: "Ücret",
                 accessor: "amount",
                 disableFilters: true,
                 filterable: true,
             },
             {
-                Header: "Order Date",
+                Header: "Rezervasyon Tarihi",
                 accessor: "order_date",
                 disableFilters: true,
                 filterable: true,
             },
             {
-                Header: "Delivery Date",
-                accessor: "delivery_date",
+                Header: "Randevu Saati",
+                accessor: "appointment_time",
                 disableFilters: true,
                 filterable: true,
             },
             {
-                Header: "Payment Method",
+                Header: "Ödeme Yöntemi",
                 accessor: "payment_method",
                 disableFilters: true,
                 filterable: true,
             },
             {
-                Header: "Status",
+                Header: "Durum",
                 disableFilters: true,
                 filterable: true,
                 accessor: (cellProps: any) => {
                     switch (cellProps.status) {
-                        case "Delivered":
-                            return (<span className="badge bg-success-subtle text-success text-uppercase"> {cellProps.status}</span>)
+                        case "Completed":
+                            return (<span className="badge bg-success-subtle text-success text-uppercase">Tamamlandı</span>)
                         case "Cancelled":
-                            return (<span className="badge bg-danger-subtle text-danger text-uppercase"> {cellProps.status}</span>)
+                            return (<span className="badge bg-danger-subtle text-danger text-uppercase">İptal Edildi</span>)
                         case "Pending":
-                            return (<span className="badge bg-warning-subtle text-warning text-uppercase"> {cellProps.status}</span>)
-                        case "Inprogress":
-                            return (<span className="badge bg-secondary-subtle text-secondary text-uppercase"> {cellProps.status}</span>)
-                        case "Returns":
-                            return (<span className="badge bg-primary-subtle text-primary text-uppercase"> {cellProps.status}</span>)
+                            return (<span className="badge bg-warning-subtle text-warning text-uppercase">Beklemede</span>)
+                        case "Confirmed":
+                            return (<span className="badge bg-info-subtle text-info text-uppercase">Onaylandı</span>)
+                        case "In-Progress":
+                            return (<span className="badge bg-secondary-subtle text-secondary text-uppercase">Devam Ediyor</span>)
                         default:
-                            return (<span className="badge bg-success-subtle text-success text-uppercase"> {cellProps.status}</span>)
+                            return (<span className="badge bg-warning-subtle text-warning text-uppercase">Beklemede</span>)
                     }
                 },
             },
             {
-                Header: "Action",
+                Header: "İşlem",
                 disableFilters: true,
                 filterable: true,
                 accessor: (cellProps: any) => {
@@ -98,13 +104,18 @@ const ListViewTable = () => {
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu as="ul" className="dropdown-menu-end">
                                     <li>
-                                        <Dropdown.Item href="/orders-overview">
-                                            <i className="ri-eye-fill align-bottom me-2 text-muted" /> View
+                                        <Dropdown.Item href="/rezervasyon">
+                                            <i className="ri-eye-fill align-bottom me-2 text-muted" /> Görüntüle
+                                        </Dropdown.Item>
+                                    </li>
+                                    <li>
+                                        <Dropdown.Item href="#" className="edit-item">
+                                            <i className="ri-pencil-fill align-bottom me-2 text-muted" />Düzenle
                                         </Dropdown.Item>
                                     </li>
                                     <li>
                                         <Dropdown.Item href="#" className="remove-list">
-                                            <i className="ri-delete-bin-fill align-bottom me-2 text-muted" />Delete
+                                            <i className="ri-delete-bin-fill align-bottom me-2 text-muted" />İptal Et
                                         </Dropdown.Item>
                                     </li>
                                 </Dropdown.Menu>

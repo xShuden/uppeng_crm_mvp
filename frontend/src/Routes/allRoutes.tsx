@@ -12,7 +12,6 @@ import SubCategories from "pages/Products/SubCategories";
 
 // Orders
 import OrdersListView from "pages/Orders/ListView"
-import OrdersOverview from "pages/Orders/Overview"
 
 // Rezervasyon
 import Rezervasyon from "pages/Rezervasyon"
@@ -56,7 +55,6 @@ const authProtectedRoutes = [
 
     // Orders
     { path: "/orders-list-view", component: <OrdersListView /> },
-    { path: "/orders-overview", component: <OrdersOverview /> },
 
 
 

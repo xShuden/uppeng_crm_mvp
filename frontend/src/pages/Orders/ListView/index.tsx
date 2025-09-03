@@ -7,7 +7,7 @@ import Flatpickr from "react-flatpickr";
 
 const OrdersListView = () => {
 
-    document.title = "List View - Orders | Toner eCommerce + Admin React Template";
+    document.title = "Rezervasyon Listesi | CRM v2 Randevu Takip";
 
     const [modal_AddOrderModals, setmodal_AddOrderModals] = useState<boolean>(false);
     function tog_AddOrderModals() {
@@ -18,7 +18,7 @@ const OrdersListView = () => {
         <React.Fragment>
             <div className="page-content">
                 <Container fluid={true}>
-                    <Breadcrumb title="List View" pageTitle="Orders" />
+                    <Breadcrumb title="Rezervasyon Listesi" pageTitle="Rezervasyonlar" />
                     <Row className="row-cols-xxl-5 row-cols-lg-3 row-cols-md-2 row-cols-1">
                         <Col>
                             <Card className="shadow-sm border-0 overflow-hidden card-animate">
@@ -59,14 +59,14 @@ const OrdersListView = () => {
                                     <div className="d-flex align-items-center gap-3">
                                         <div className="flex-shrink-0 avatar-sm">
                                             <div className="avatar-title bg-primary-subtle text-primary fs-3 rounded">
-                                                <i className="ph-anchor-simple"></i>
+                                                <i className="bi bi-calendar-check"></i>
                                             </div>
                                         </div>
                                         <div>
                                             <h4 className="fs-22 fw-semibold mb-1">
-                                                <CountUp start={0} end={200.32} duration={3} decimals={2} suffix="k" />
+                                                <CountUp start={0} end={147} duration={3} />
                                             </h4>
-                                            <p className="mb-0 fw-medium text-uppercase fs-14">New Orders</p>
+                                            <p className="mb-0 fw-medium text-uppercase fs-14">Toplam Rezervasyon</p>
                                         </div>
                                     </div>
                                 </Card.Body>
@@ -111,14 +111,14 @@ const OrdersListView = () => {
                                     <div className="d-flex align-items-center gap-3">
                                         <div className="flex-shrink-0 avatar-sm">
                                             <div className="avatar-title bg-warning-subtle text-warning fs-3 rounded">
-                                                <i className="ph-clock-clockwise"></i>
+                                                <i className="bi bi-clock-history"></i>
                                             </div>
                                         </div>
                                         <div>
                                             <h4 className="fs-22 fw-semibold mb-1">
-                                                <CountUp start={0} end={35.21} duration={3} decimals={2} suffix="k" />
+                                                <CountUp start={0} end={23} duration={3} />
                                             </h4>
-                                            <p className="mb-0 fw-medium text-uppercase fs-14">Pending Orders</p>
+                                            <p className="mb-0 fw-medium text-uppercase fs-14">Bekleyen Rezervasyon</p>
                                         </div>
                                     </div>
                                 </Card.Body>
@@ -163,14 +163,14 @@ const OrdersListView = () => {
                                     <div className="d-flex align-items-center gap-3">
                                         <div className="flex-shrink-0 avatar-sm">
                                             <div className="avatar-title bg-success-subtle text-success fs-3 rounded">
-                                                <i className="ph-truck"></i>
+                                                <i className="bi bi-check-circle"></i>
                                             </div>
                                         </div>
                                         <div>
                                             <h4 className="fs-22 fw-semibold mb-1">
-                                                <CountUp start={0} end={647.32} duration={3} decimals={2} suffix="k" />
+                                                <CountUp start={0} end={89} duration={3} />
                                             </h4>
-                                            <p className="mb-0 fw-medium text-uppercase fs-14">Delivered Orders</p>
+                                            <p className="mb-0 fw-medium text-uppercase fs-14">Tamamlanan Rezervasyon</p>
                                         </div>
                                     </div>
                                 </Card.Body>
@@ -217,14 +217,14 @@ const OrdersListView = () => {
                                     <div className="d-flex align-items-center gap-3">
                                         <div className="flex-shrink-0 avatar-sm">
                                             <div className="avatar-title bg-secondary-subtle text-secondary fs-3 rounded">
-                                                <i className="ph-cube"></i>
+                                                <i className="bi bi-calendar-event"></i>
                                             </div>
                                         </div>
                                         <div>
                                             <h4 className="fs-22 fw-semibold mb-1">
-                                                <CountUp start={0} end={215.36} duration={3} decimals={2} suffix="k" />
+                                                <CountUp start={0} end={35} duration={3} />
                                             </h4>
-                                            <p className="mb-0 fw-medium text-uppercase fs-14">Pickups Orders</p>
+                                            <p className="mb-0 fw-medium text-uppercase fs-14">Bugünkü Rezervasyon</p>
                                         </div>
                                     </div>
                                 </Card.Body>
@@ -269,14 +269,14 @@ const OrdersListView = () => {
                                     <div className="d-flex align-items-center gap-3">
                                         <div className="flex-shrink-0 avatar-sm">
                                             <div className="avatar-title bg-danger-subtle text-danger fs-3 rounded">
-                                                <i className="ph-trash"></i>
+                                                <i className="bi bi-x-circle"></i>
                                             </div>
                                         </div>
                                         <div>
                                             <h4 className="fs-22 fw-semibold mb-1">
-                                                <CountUp start={0} end={8649} duration={3} separator="," />
+                                                <CountUp start={0} end={12} duration={3} />
                                             </h4>
-                                            <p className="mb-0 fw-medium text-uppercase fs-14">Cancelled Orders</p>
+                                            <p className="mb-0 fw-medium text-uppercase fs-14">İptal Edilen Rezervasyon</p>
                                         </div>
                                     </div>
                                 </Card.Body>
@@ -291,7 +291,7 @@ const OrdersListView = () => {
                                     <Row className="g-3">
                                         <Col xxl={4} sm={6}>
                                             <div className="search-box">
-                                                <input type="text" className="form-control search" placeholder="Search for order ID, customer, order status or something..." />
+                                                <input type="text" className="form-control search" placeholder="Rezervasyon ID, müşteri adı, personel veya durum ara..." />
                                                 <i className="ri-search-line search-icon"></i>
                                             </div>
                                         </Col>
@@ -311,27 +311,26 @@ const OrdersListView = () => {
                                         <Col xxl={2} sm={6}>
                                             <div>
                                                 <select className="form-select" name="choices-single-default" id="idStatus">
-                                                    <option value="">Status</option>
-                                                    <option value="all" defaultValue="All">All</option>
-                                                    <option value="Pending">Pending</option>
-                                                    <option value="Inprogress">Inprogress</option>
-                                                    <option value="Cancelled">Cancelled</option>
-                                                    <option value="Pickups">Pickups</option>
-                                                    <option value="Returns">Returns</option>
-                                                    <option value="Delivered">Delivered</option>
+                                                    <option value="">Durum</option>
+                                                    <option value="all" defaultValue="All">Tümü</option>
+                                                    <option value="Confirmed">Onaylandı</option>
+                                                    <option value="Pending">Beklemede</option>
+                                                    <option value="In-Progress">Devam Ediyor</option>
+                                                    <option value="Completed">Tamamlandı</option>
+                                                    <option value="Cancelled">İptal Edildi</option>
                                                 </select>
                                             </div>
                                         </Col>
 
                                         <Col xxl={2} sm={6}>
                                             <div>
-                                                <select className="form-select" name="choices-single-default" id="idPayment">
-                                                    <option value="">Select Payment</option>
-                                                    <option value="all" defaultValue="All">All</option>
-                                                    <option value="Mastercard">Mastercard</option>
-                                                    <option value="Paypal">Paypal</option>
-                                                    <option value="Visa">Visa</option>
-                                                    <option value="COD">COD</option>
+                                                <select className="form-select" name="choices-single-default" id="idReservationType">
+                                                    <option value="">Rezervasyon Tipi</option>
+                                                    <option value="all" defaultValue="All">Tümü</option>
+                                                    <option value="ongoing">Devam Eden</option>
+                                                    <option value="past">Geçmiş</option>
+                                                    <option value="today">Bugünkü</option>
+                                                    <option value="upcoming">Yaklaşan</option>
                                                 </select>
                                             </div>
                                         </Col>
@@ -342,7 +341,7 @@ const OrdersListView = () => {
                                                     <i className="bi bi-filter me-1"></i> Filter
                                                 </Button>
                                                 <Button variant='success' onClick={() => tog_AddOrderModals()} className="w-100 add-btn" data-bs-toggle="modal" data-bs-target="#showModal">
-                                                    Add Order
+                                                    <i className="bi bi-plus-circle me-1"></i> Yeni Rezervasyon
                                                 </Button>
                                             </div>
                                         </Col>
@@ -360,48 +359,44 @@ const OrdersListView = () => {
                                             <i className="bi bi-search"></i>
                                         </div>
                                     </div>
-                                    <h5 className="mt-2">Sorry! No Result Found</h5>
-                                    <p className="text-muted mb-0">We've searched more than 150+ Orders We did not find any orders for you search.</p>
+                                    <h5 className="mt-2">Üzgünüz! Sonuç Bulunamadı</h5>
+                                    <p className="text-muted mb-0">150+ rezervasyondan aramanızla eşleşen bir sonuç bulunamadı.</p>
                                 </div>
                             </div>
 
                             <Modal show={modal_AddOrderModals} onHide={() => { tog_AddOrderModals(); }} centered>
                                 <Modal.Header className="px-4 pt-4" closeButton>
-                                    <h5 className="modal-title" id="exampleModalLabel">Add Order</h5>
+                                    <h5 className="modal-title" id="exampleModalLabel">Yeni Rezervasyon Ekle</h5>
                                 </Modal.Header>
                                 <Form className="tablelist-form" >
                                     <Modal.Body className="p-4">
                                         <div id="alert-error-msg" className="d-none alert alert-danger py-2"></div>
                                         <input type="hidden" id="id-field"/>
                                         <div className="mb-3">
-                                            <label htmlFor="customername-field" className="form-label">Customer Name</label>
-                                            <input type="text" id="customername-field" className="form-control" placeholder="Enter name" required/>
+                                            <label htmlFor="customername-field" className="form-label">Müşteri Adı</label>
+                                            <input type="text" id="customername-field" className="form-control" placeholder="Müşteri adını girin" required/>
                                         </div>
                             
                                         <div className="mb-3">
-                                            <label htmlFor="productname-field" className="form-label">Product</label>
+                                            <label htmlFor="productname-field" className="form-label">Hizmet</label>
                                             <div>
                                                 <select className="form-select" id="productname-field" required>
-                                                    <option value="">Product</option>
-                                                    <option value="World's Most Expensive T-Shirt">World's Most Expensive T-Shirt</option>
-                                                    <option value="Ninja Pro Max Smartwatch">Ninja Pro Max Smartwatch</option>
-                                                    <option value="Carven Lounge Chair Red">Carven Lounge Chair Red</option>
-                                                    <option value="American egale outfitters Shirt">American egale outfitters Shirt</option>
-                                                    <option value="Like Style Women Black Handbag">Like Style Women Black Handbag</option>
-                                                    <option value="Funky Prints T-shirt">Funky Prints T-shirt</option>
-                                                    <option value="Innovative Education Book">Innovative Education Book</option>
-                                                    <option value="Leather band Smartwatches">Leather band Smartwatches</option>
-                                                    <option value="Oxford Button-Down Shirt">Oxford Button-Down Shirt</option>
-                                                    <option value="Apple Headphone">Apple Headphone</option>
-                                                    <option value="Borosil Paper Cup">Borosil Paper Cup</option>
-                                                    <option value="Evolve Smartwatch">Evolve Smartwatch</option>
+                                                    <option value="">Hizmet Seçin</option>
+                                                    <option value="Protez Takılması">Protez Takılması</option>
+                                                    <option value="Protez Kontrol">Protez Kontrol</option>
+                                                    <option value="Makyaj">Makyaj</option>
+                                                    <option value="Saç Kesimi">Saç Kesimi</option>
+                                                    <option value="Saç Boyama">Saç Boyama</option>
+                                                    <option value="Cilt Bakımı">Cilt Bakımı</option>
+                                                    <option value="Masaj">Masaj</option>
+                                                    <option value="Tedavi Bakımı">Tedavi Bakımı</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <Row className="gy-4 mb-3">
                                             <Col md={6}>
                                                 <div>
-                                                    <Form.Label htmlFor="createdate-field">Order Date</Form.Label>
+                                                    <Form.Label htmlFor="createdate-field">Rezervasyon Tarihi</Form.Label>
                                                     <Flatpickr
                                                         className="form-control flatpickr-input"
                                                         placeholder='Select Date'
@@ -413,7 +408,7 @@ const OrdersListView = () => {
                                             </Col>
                                             <Col md={6}>
                                                 <div>
-                                                    <Form.Label htmlFor="deliverydate-field">Delivery Date</Form.Label>
+                                                    <Form.Label htmlFor="deliverydate-field">Randevu Saati</Form.Label>
                                                     <Flatpickr
                                                         className="form-control flatpickr-input"
                                                         placeholder='Select Date'
@@ -428,20 +423,19 @@ const OrdersListView = () => {
                                         <Row className="gy-4 mb-3">
                                             <Col md={6}>
                                                 <div>
-                                                    <Form.Label htmlFor="amount-field">Amount</Form.Label>
-                                                    <Form.Control type="number" id="amount-field" placeholder="Total amount" required/>
+                                                    <Form.Label htmlFor="amount-field">Ücret</Form.Label>
+                                                    <Form.Control type="number" id="amount-field" placeholder="Toplam ücret" required/>
                                                 </div>
                                             </Col>
                                             <Col md={6}>
                                                 <div>
-                                                    <Form.Label htmlFor="payment-field">Payment Method</Form.Label>
+                                                    <Form.Label htmlFor="payment-field">Ödeme Yöntemi</Form.Label>
                                                     <div>
                                                         <select className="form-select"  required id="payment-field">
-                                                            <option value="">Payment Method</option>
-                                                            <option value="Mastercard">Mastercard</option>
-                                                            <option value="Visa">Visa</option>
-                                                            <option value="COD">COD</option>
-                                                            <option value="Paypal">Paypal</option>
+                                                            <option value="">Ödeme Yöntemi</option>
+                                                            <option value="Kredi Kartı">Kredi Kartı</option>
+                                                            <option value="Nakit">Nakit</option>
+                                                            <option value="Havale">Havale</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -449,24 +443,23 @@ const OrdersListView = () => {
                                         </Row>
                             
                                         <div>
-                                            <Form.Label htmlFor="delivered-status">Delivery Status</Form.Label>
+                                            <Form.Label htmlFor="delivered-status">Rezervasyon Durumu</Form.Label>
                                             <div>
                                                 <select className="form-select" required id="delivered-status">
-                                                    <option value="">Delivery Status</option>
-                                                    <option value="Pending">Pending</option>
-                                                    <option value="Inprogress">Inprogress</option>
-                                                    <option value="Cancelled">Cancelled</option>
-                                                    <option value="Pickups">Pickups</option>
-                                                    <option value="Delivered">Delivered</option>
-                                                    <option value="Returns">Returns</option>
+                                                    <option value="">Rezervasyon Durumu</option>
+                                                    <option value="Confirmed">Onaylandı</option>
+                                                    <option value="Pending">Beklemede</option>
+                                                    <option value="In-Progress">Devam Ediyor</option>
+                                                    <option value="Completed">Tamamlandı</option>
+                                                    <option value="Cancelled">İptal Edildi</option>
                                                 </select>
                                             </div>
                                         </div>
                                     </Modal.Body>
                                     <div className="modal-footer">
                                         <div className="hstack gap-2 justify-content-end">
-                                            <Button className="btn-ghost-danger" onClick={() => { tog_AddOrderModals(); }} >Close</Button>
-                                            <Button variant='success' id="add-btn">Add Order</Button>
+                                            <Button className="btn-ghost-danger" onClick={() => { tog_AddOrderModals(); }} >Kapat</Button>
+                                            <Button variant='success' id="add-btn">Rezervasyon Ekle</Button>
                                         </div>
                                     </div>
                                 </Form>
