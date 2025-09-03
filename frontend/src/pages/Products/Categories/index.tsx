@@ -6,7 +6,7 @@ import { categoryListData } from 'Common/data';
 
 const Categories = () => {
 
-    document.title = "Categories | Toner eCommerce + Admin React Template";
+    document.title = "Görevler | Uppeng CRM + Admin React Template";
 
     const [show, setShow] = useState<boolean>(false);
     const [info, setInfo] = useState<any>([]);
@@ -68,12 +68,12 @@ const Categories = () => {
         <React.Fragment>
             <div className="page-content">
                 <Container fluid={true}>
-                    <Breadcrumb title="Categories" pageTitle="Products" />
+                    <Breadcrumb title="Görevler" pageTitle="Hizmetler" />
                     <Row>
                         <Col xxl={3}>
                             <Card>
                                 <Card.Header>
-                                    <h6 className="card-title mb-0">Create Categories</h6>
+                                    <h6 className="card-title mb-0">Görev Oluştur</h6>
                                 </Card.Header>
                                 <Card.Body>
                                     <form autoComplete="off" className="needs-validation createCategory-form" id="createCategory-form" noValidate>
@@ -81,53 +81,46 @@ const Categories = () => {
                                         <Row>
                                             <Col xxl={12} lg={6}>
                                                 <div className="mb-3">
-                                                    <label htmlFor="categoryTitle" className="form-label">Category Title<span className="text-danger">*</span></label>
-                                                    <input type="text" className="form-control" id="categoryTitle" placeholder="Enter title" required />
-                                                    <div className="invalid-feedback">Please enter a category title.</div>
+                                                    <label htmlFor="categoryTitle" className="form-label">Görev Başlığı<span className="text-danger">*</span></label>
+                                                    <input type="text" className="form-control" id="categoryTitle" placeholder="Görev başlığını girin" required />
+                                                    <div className="invalid-feedback">Lütfen bir görev başlığı girin.</div>
                                                 </div>
                                             </Col>
                                             <Col xxl={12} lg={6}>
                                                 <div className="mb-3">
-                                                    <label htmlFor="slugInput" className="form-label">Slug <span className="text-danger">*</span></label>
-                                                    <input type="text" className="form-control" id="slugInput" placeholder="Enter slug" />
+                                                    <label htmlFor="assignedStaff" className="form-label">Atanan Personel <span className="text-danger">*</span></label>
+                                                    <select className="form-control" id="assignedStaff">
+                                                        <option value="">Personel Seçin</option>
+                                                        <option value="mehmet-yilmaz">Dr. Mehmet Yılmaz</option>
+                                                        <option value="fatma-sahin">Fatma Şahin</option>
+                                                        <option value="esra-yildiz">Esra Yıldız</option>
+                                                        <option value="ali-vural">Dr. Ali Vural</option>
+                                                        <option value="cemile-aydin">Cemile Aydın</option>
+                                                    </select>
                                                 </div>
                                             </Col>
                                             <Col xxl={12} lg={6}>
                                                 <div className="mb-3">
-                                                    <label htmlFor="category-image-input" className="form-label d-block">Image <span className="text-danger">*</span></label>
-
-                                                    <div className="position-relative d-inline-block">
-                                                        <div className="position-absolute top-100 start-100 translate-middle">
-                                                            <label htmlFor="category-image-input" className="mb-0" data-bs-toggle="tooltip" data-bs-placement="right" title="Select Category Image">
-                                                                <span className="avatar-xs d-inline-block">
-                                                                    <span className="avatar-title bg-light border rounded-circle text-muted cursor-pointer">
-                                                                        <i className="ri-image-fill"></i>
-                                                                    </span>
-                                                                </span>
-                                                            </label>
-                                                            <input className="form-control d-none" id="category-image-input" type="file" accept="image/png, image/gif, image/jpeg" />
-                                                        </div>
-                                                        <div className="avatar-lg">
-                                                            <div className="avatar-title bg-light rounded-3">
-                                                                <img src="#" alt="" id="category-img" className="avatar-md h-auto rounded-3 object-fit-cover" />
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-
-                                                    <div className="error-msg mt-1">Please add a category images.</div>
+                                                    <label htmlFor="priority" className="form-label">Öncelik Seviyesi <span className="text-danger">*</span></label>
+                                                    <select className="form-control" id="priority">
+                                                        <option value="">Öncelik Seçin</option>
+                                                        <option value="low">Düşük</option>
+                                                        <option value="medium">Orta</option>
+                                                        <option value="high">Yüksek</option>
+                                                        <option value="urgent">Acil</option>
+                                                    </select>
                                                 </div>
                                             </Col>
                                             <Col xxl={12} lg={6}>
                                                 <div className="mb-3">
-                                                    <label htmlFor="descriptionInput" className="form-label">Description</label>
-                                                    <textarea className="form-control" id="descriptionInput" rows={3} placeholder="Description" required></textarea>
-                                                    <div className="invalid-feedback">Please enter a description.</div>
+                                                    <label htmlFor="descriptionInput" className="form-label">Açıklama</label>
+                                                    <textarea className="form-control" id="descriptionInput" rows={3} placeholder="Görev açıklaması" required></textarea>
+                                                    <div className="invalid-feedback">Lütfen bir açıklama girin.</div>
                                                 </div>
                                             </Col>
                                             <Col xxl={12}>
                                                 <div className="text-end">
-                                                    <Button variant='success' type="submit">Add Category</Button>
+                                                    <Button variant='success' type="submit">Görev Ekle</Button>
                                                 </div>
                                             </Col>
                                         </Row>
@@ -139,20 +132,18 @@ const Categories = () => {
                             <Row className="justify-content-between mb-4">
                                 <Col xxl={3} lg={6}>
                                     <div className="search-box mb-3 mb-lg-0">
-                                        <Form.Control type="text" id="searchInputList" placeholder="Search Category..." onChange={(e) => searchTeamMember(e)} />
+                                        <Form.Control type="text" id="searchInputList" placeholder="Görev Ara..." onChange={(e) => searchTeamMember(e)} />
                                         <i className="ri-search-line search-icon"></i>
                                     </div>
                                 </Col>
                                 <Col xxl={2} lg={6}>
                                     <select className="form-select" data-choices data-choices-search-false name="choices-single-default" id="idStatus">
-                                        <option value="">Status</option>
-                                        <option defaultValue="all">All</option>
-                                        <option value="Today">Today</option>
-                                        <option value="Yesterday">Yesterday</option>
-                                        <option value="Last 7 Days">Last 7 Days</option>
-                                        <option value="Last 30 Days">Last 30 Days</option>
-                                        <option value="This Month">This Month</option>
-                                        <option value="Last Month">Last Month</option>
+                                        <option value="">Durum</option>
+                                        <option defaultValue="all">Tümü</option>
+                                        <option value="pending">Beklemede</option>
+                                        <option value="in-progress">Devam Ediyor</option>
+                                        <option value="completed">Tamamlandı</option>
+                                        <option value="cancelled">İptal Edildi</option>
                                     </select>
                                 </Col>
                             </Row>
@@ -164,15 +155,15 @@ const Categories = () => {
                                             <div className="d-flex align-items-center mb-3">
                                                 <h5 className="flex-grow-1 mb-0">{item.categoryTitle}</h5>
                                                 <ul className="flex-shrink-0 list-unstyled hstack gap-1 mb-0">
-                                                    <li><Link to="#" className="badge bg-info-subtle text-info">Edit</Link></li>
-                                                    <li><Link to="#" data-bs-toggle="modal" className="badge bg-danger-subtle text-danger">Delete</Link></li>
+                                                    <li><Link to="#" className="badge bg-info-subtle text-info">Düzenle</Link></li>
+                                                    <li><Link to="#" data-bs-toggle="modal" className="badge bg-danger-subtle text-danger">Sil</Link></li>
                                                 </ul>
                                             </div>
                                             <ul className="list-unstyled vstack gap-2 mb-0">
                                                 {(item.subCategory || []).map((item: any, key: number) => (key < 4 && <li key={key}><Link to="#" className="text-muted">{item}</Link></li>))}
                                             </ul>
                                             <div className="mt-3">
-                                                <Link to="#" className="fw-medium link-effect" onClick={() => { setShow(true); setInfo(item) }}>Read More <i className="ri-arrow-right-line align-bottom ms-1"></i></Link>
+                                                <Link to="#" className="fw-medium link-effect" onClick={() => { setShow(true); setInfo(item) }}>Detayları Gör <i className="ri-arrow-right-line align-bottom ms-1"></i></Link>
                                             </div>
                                             <img src={item.categoryImg} alt="" className="img-fluid category-img object-fit-cover" />
                                         </Card.Body>
@@ -225,10 +216,10 @@ const Categories = () => {
                         <p className="text-muted">by <Link to="#" className="text-reset">Admin</Link></p>
                     </div>
 
-                    <h6 className="fs-14">Description</h6>
+                    <h6 className="fs-14">Açıklama</h6>
                     <p className="text-muted overview-desc">{info.description}</p>
 
-                    <h6 className="fs-14 mb-3">Sub Categories</h6>
+                    <h6 className="fs-14 mb-3">Alt Görevler</h6>
                     <ul className="vstack gap-2 mb-0 subCategory" style={{ listStyleType: "circle" }}>
                         {(info.subCategory || []).map((item: any, key: number) => (key < 4 && <li key={key}><Link to="#" className="text-reset">{item}</Link></li>))}
                     </ul>
@@ -237,11 +228,11 @@ const Categories = () => {
                     <Row>
                         <Col sm={6}>
                             <div data-bs-dismiss="offcanvas">
-                                <Button variant="danger" type="button" className="btn btn-danger w-100 remove-list" data-bs-toggle="modal" data-bs-target="#delteModal" data-remove-id="12"><i className="ri-delete-bin-line me-1 align-bottom"></i> Delete</Button>
+                                <Button variant="danger" type="button" className="btn btn-danger w-100 remove-list" data-bs-toggle="modal" data-bs-target="#delteModal" data-remove-id="12"><i className="ri-delete-bin-line me-1 align-bottom"></i> Sil</Button>
                             </div>
                         </Col>
                         <Col sm={6}>
-                            <Button variant="secondary" type="button" className="w-100 edit-list" data-bs-dismiss="offcanvas" data-edit-id="12"><i className="ri-pencil-line me-1 align-bottom"></i> Edit</Button>
+                            <Button variant="secondary" type="button" className="w-100 edit-list" data-bs-dismiss="offcanvas" data-edit-id="12"><i className="ri-pencil-line me-1 align-bottom"></i> Düzenle</Button>
                         </Col>
                     </Row>
                 </div>

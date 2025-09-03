@@ -187,87 +187,66 @@ const productList = [
 const categoryListData = [
     {
         id: 1,
-        categoryImg: headphone,
-        categoryTitle: "Headphone",
-        subCategory: ["Wireless", "Gaming", "Circumaural (over-ear)", "Supra-aural (on-ear)", "Over-Ear Headphones", "On-Ear Headphones", "True Wireless Earbuds"],
-        description: "Headphones are a pair of small speakers used for listening to sound from a computer, music player or other such electronic device."
+        categoryImg: cosmetics,
+        categoryTitle: "Cilt Bakım Hizmetleri",
+        subCategory: ["Yüz Temizliği", "Peeling Uygulaması", "Nemlendirme", "Anti-aging Tedavi", "Akne Tedavisi", "Leke Giderme"],
+        description: "Cilt bakım hizmetleri, cildin sağlıklı ve güzel görünmesi için uygulanan profesyonel tedavi süreçlerini kapsamaktadır."
     },
     {
         id: 2,
-        categoryImg: smartwatch,
-        categoryTitle: "Watch",
-        subCategory: ["Digital Watches", "Dive Watches", "Pilot's Watches", "Field Watches", "Analog Watches", "Quartz Watches"],
-        description: "A watch is a symbol of time and wearing a watch implies that you respect the importance of time."
+        categoryImg: cosmetics,
+        categoryTitle: "Makyaj Hizmetleri",
+        subCategory: ["Günlük Makyaj", "Gece Makyajı", "Gelin Makyajı", "Özel Etkinlik Makyajı", "Kaş Şekillendirme", "Kirpik Uygulaması"],
+        description: "Profesyonel makyaj hizmetleri ile özel günlerinizde ve günlük yaşamda mükemmel görünüm sağlanır."
     },
     {
         id: 3,
-        categoryImg: sofa,
-        categoryTitle: "Furniture",
-        subCategory: ["Beds", "Cabinets", "Chairs & Seating", "Desks"],
-        description: "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores"
+        categoryImg: cosmetics,
+        categoryTitle: "Saç Bakım Hizmetleri",
+        subCategory: ["Saç Kesimi", "Saç Boyama", "Saç Şekillendirme", "Saç Bakım Maskeleri", "Keratin Tedavisi", "Saç Uzatma"],
+        description: "Saç bakım hizmetleri ile saçlarınızın sağlıklı, parlak ve istediğiniz şekilde olması sağlanır."
     },
     {
         id: 4,
-        categoryImg: clothes,
-        categoryTitle: "Clothing",
-        subCategory: ["Casual Wear", "Formal Wear", "Business Attire", "Sportswear", "Jackets and coats", "Suits"],
-        description: "In enim justo rhoncus ut imperdiet a venenatis vitae justo. Nullam dictum felis eu pede mollis pretium integer tincidunt aenean vulputate eleifend tellus."
+        categoryImg: cosmetics,
+        categoryTitle: "Protez Tırnak Hizmetleri",
+        subCategory: ["Nail Art", "Protez Tırnak Takma", "Tırnak Bakımı", "Jel Oje Uygulaması", "Tırnak Tamiri", "Özel Tasarım"],
+        description: "Profesyonel protez tırnak ve nail art hizmetleri ile ellerinizin güzelliğini ön plana çıkarın."
     },
     {
         id: 5,
-        categoryImg: babyshoe,
-        categoryTitle: "Footwear",
-        subCategory: ["Athletic Shoes", "Leather Shoes", "Figure Shoes", "Crocs"],
-        description: "It will be as simple as Occidental; in fact, it will be Occidental. To an English person, it will seem like simplified English, as a skeptical Cambridge friend"
+        categoryImg: cosmetics,
+        categoryTitle: "Diş Hekimliği Hizmetleri",
+        subCategory: ["Diş Temizliği", "Dolgu Tedavisi", "Kök Kanal Tedavisi", "Protez Diş", "İmplant Tedavisi", "Ortodonti"],
+        description: "Diş sağlığı ve estetik diş hekimliği hizmetleri ile sağlıklı ve güzel gülümseyin."
     },
     {
         id: 6,
-        categoryImg: lightbulb,
-        categoryTitle: "Lighting",
-        subCategory: ["Ambient Lighting", "Task Lighting", "Accent Lighting", "Track Light"],
-        description: "To achieve this, it would be necessary to have uniform grammar, pronunciation and more common words. If several languages coalesce, the grammar of the resulting."
+        categoryImg: cosmetics,
+        categoryTitle: "Masaj Terapisi",
+        subCategory: ["Klasik Masaj", "Aromaterapi Masajı", "Taş Terapisi", "Refleksoloji", "Spor Masajı", "Rahatlama Masajı"],
+        description: "Profesyonel masaj terapisi ile vücudunuzdaki gerginliği atın ve rahatlayın."
     },
     {
         id: 7,
         categoryImg: cosmetics,
-        categoryTitle: "Beauty & Personal Care",
-        subCategory: ["Baby Care", "Deodorants", "Feminine Care", "Fragrances"],
-        description: "Beauty Care is basically the science of beauty treatment that involves skin Care, hair Care, manicure, pedicure, Anti- aging treatments, facials, styling and so on."
+        categoryTitle: "Kaş ve Kirpik Hizmetleri",
+        subCategory: ["Kaş Alma", "Kaş Boyama", "Kirpik Perması", "Kirpik Ekstansiyonu", "Kaş Laminasyonu", "İpek Kirpik"],
+        description: "Kaş ve kirpik hizmetleri ile gözlerinizin doğal güzelliğini ortaya çıkarın."
     },
     {
         id: 8,
-        categoryImg: book,
-        categoryTitle: "Books",
-        subCategory: ["Fantasy", "Horror", "Mystery", "Romance", "Classics", "Poetry", "Short stories"],
-        description: "Books are portable and compact, and thus have an advantage over other media forms. Unlike other print media, books most often deal with a single subject."
+        categoryImg: cosmetics,
+        categoryTitle: "Cilt Tedavileri",
+        subCategory: ["Lazer Epilasyon", "Cilt Yenileme", "Botoks", "Dolgu", "Karboksi Terapi", "Mezoterapia"],
+        description: "Modern cilt tedavi yöntemleri ile cildinizi yenileyin ve gençleştirin."
     },
     {
         id: 9,
-        categoryImg: smartwatch,
-        categoryTitle: "Other Accessories",
-        subCategory: ["Bags", "Eyewear", "Belts", "Hair accessories"],
-        description: "For science, music, sport, etc, Europe uses the same vocabulary. The languages only differ in their grammar, their pronunciation and their most common words."
-    },
-    {
-        id: 10,
         categoryImg: cosmetics,
-        categoryTitle: "Beauty & Personal Care",
-        subCategory: ["Baby Care", "Deodorants", "Feminine Care", "Fragrances"],
-        description: "Beauty Care is basically the science of beauty treatment that involves skin Care, hair Care, manicure, pedicure, Anti- aging treatments, facials, styling and so on."
-    },
-    {
-        id: 11,
-        categoryImg: book,
-        categoryTitle: "Books",
-        subCategory: ["Fantasy", "Horror", "Mystery", "Romance", "Classics", "Poetry", "Short stories"],
-        description: "Books are portable and compact, and thus have an advantage over other media forms. Unlike other print media, books most often deal with a single subject."
-    },
-    {
-        id: 12,
-        categoryImg: smartwatch,
-        categoryTitle: "Other Accessories",
-        subCategory: ["Bags", "Eyewear", "Belts", "Hair accessories"],
-        description: "For science, music, sport, etc, Europe uses the same vocabulary. The languages only differ in their grammar, their pronunciation and their most common words."
+        categoryTitle: "Ayak Bakım Hizmetleri",
+        subCategory: ["Pedikür", "Ayak Masajı", "Nasır Temizliği", "Ayak Bakım Maskesi", "Ayak SPA", "Oje Uygulaması"],
+        description: "Ayak bakım hizmetleri ile ayaklarınızın sağlığını ve güzelliğini koruyun."
     }
 ];
 

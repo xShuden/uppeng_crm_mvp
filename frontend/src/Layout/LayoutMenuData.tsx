@@ -92,8 +92,8 @@ const Navdata = () => {
                     parentId: "products",
                 },
                 {
-                    id: "categories",
-                    label: "Categories",
+                    id: "tasks",
+                    label: "Görevler",
                     link: "/categories",
                     parentId: "products",
                 },
