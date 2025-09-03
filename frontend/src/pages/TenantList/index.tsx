@@ -141,7 +141,7 @@ const TenantList = () => {
                 },
             },
         ],
-        [checkedAll]
+        [checkedAll, handleEditTenant, handleDeleteTenant]
     );
 
     return (

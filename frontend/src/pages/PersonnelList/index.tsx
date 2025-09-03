@@ -122,12 +122,12 @@ const PersonnelList = () => {
     const handleEditPersonnel = useCallback((personnel: any) => {
         setSelectedPersonnel(personnel);
         tog_EditPersonnelModals();
-    }, []);
+    }, [tog_EditPersonnelModals]);
 
     const handleDeletePersonnel = useCallback((personnel: any) => {
         setSelectedPersonnel(personnel);
         tog_DeletePersonnelModals();
-    }, []);
+    }, [tog_DeletePersonnelModals]);
 
     // Checked All
     const checkedAll = useCallback(() => {
@@ -211,7 +211,7 @@ const PersonnelList = () => {
                 },
             },
         ],
-        [checkedAll]
+        [checkedAll, handleEditPersonnel, handleDeletePersonnel]
     );
 
     return (
