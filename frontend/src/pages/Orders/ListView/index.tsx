@@ -316,23 +316,8 @@ const OrdersListView = () => {
                                                     <option value="">Durum</option>
                                                     <option value="all" defaultValue="All">Tümü</option>
                                                     <option value="Confirmed">Onaylandı</option>
-                                                    <option value="Pending">Beklemede</option>
-                                                    <option value="In-Progress">Devam Ediyor</option>
                                                     <option value="Completed">Tamamlandı</option>
-                                                    <option value="Cancelled">İptal Edildi</option>
-                                                </select>
-                                            </div>
-                                        </Col>
-
-                                        <Col xxl={2} sm={6}>
-                                            <div>
-                                                <select className="form-select" name="choices-single-default" id="idReservationType">
-                                                    <option value="">Rezervasyon Tipi</option>
-                                                    <option value="all" defaultValue="All">Tümü</option>
-                                                    <option value="ongoing">Devam Eden</option>
-                                                    <option value="past">Geçmiş</option>
-                                                    <option value="today">Bugünkü</option>
-                                                    <option value="upcoming">Yaklaşan</option>
+                                                    <option value="Cancelled">İptal</option>
                                                 </select>
                                             </div>
                                         </Col>
