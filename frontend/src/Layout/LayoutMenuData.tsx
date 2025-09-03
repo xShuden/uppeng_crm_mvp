@@ -6,6 +6,7 @@ const Navdata = () => {
     const [isOrder, setIsOrder] = useState(false);
     const [isRezervation, setIsRezervation] = useState(false);
     const [isAuth, setIsAuth] = useState(false);
+    const [isTenantSwitch, setIsTenantSwitch] = useState(false);
 
     const [iscurrentState, setIscurrentState] = useState('Dashboard');
 
@@ -40,12 +41,16 @@ const Navdata = () => {
         if (iscurrentState !== 'Auth') {
             setIsAuth(false);
         }
+        if (iscurrentState !== 'TenantSwitch') {
+            setIsTenantSwitch(false);
+        }
     }, [
         iscurrentState,
         isEcommerce,
         isOrder,
         isRezervation,
-        isAuth
+        isAuth,
+        isTenantSwitch
     ]);
 
     const menuItems: any = [
@@ -128,13 +133,13 @@ const Navdata = () => {
                 {
                     id: "reservation-calendar",
                     label: "Rezervasyon Çizelgesi",
-                    link: "/rezervasyon-cizelgesi",
+                    link: "/reservation-calendar",
                     parentId: "rezervasyon",
                 },
                 {
                     id: "reservation-list",
                     label: "Rezervasyon Listesi",
-                    link: "/rezervasyon-listesi",
+                    link: "/reservation-list",
                     parentId: "rezervasyon",
                 },
             ],

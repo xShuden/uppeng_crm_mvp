@@ -200,6 +200,9 @@ const PersonnelList = () => {
                 accessor: (cellProps: any) => {
                     return (
                         <div className="d-flex gap-2">
+                            <div className="view">
+                                <Button variant="ghost-primary" size="sm" className="btn-ghost-primary btn-icon view-item-btn" onClick={() => window.location.href = `/personnel-detail/${cellProps.id}`}><i className="ph-eye"></i></Button>
+                            </div>
                             <div className="edit">
                                 <Button variant="ghost-info" size="sm" className="btn-ghost-info btn-icon edit-item-btn" onClick={() => handleEditPersonnel(cellProps)}><i className="ph-pencil-line"></i></Button>
                             </div>

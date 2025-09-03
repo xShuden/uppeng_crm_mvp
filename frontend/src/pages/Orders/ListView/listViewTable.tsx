@@ -38,10 +38,24 @@ const ListViewTable = () => {
                 },
             },
             {
-                Header: "Müşteri Adı",
-                accessor: "customer_name",
+                Header: "İsim",
                 disableFilters: true,
                 filterable: true,
+                accessor: (cellProps: any) => {
+                    const fullName = cellProps.customer_name || "";
+                    const firstName = fullName.split(" ")[0] || "";
+                    return firstName;
+                },
+            },
+            {
+                Header: "Soyisim",
+                disableFilters: true,
+                filterable: true,
+                accessor: (cellProps: any) => {
+                    const fullName = cellProps.customer_name || "";
+                    const lastName = fullName.split(" ").slice(1).join(" ") || "";
+                    return lastName;
+                },
             },
             {
                 Header: "Hizmet",

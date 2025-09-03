@@ -5,7 +5,6 @@ import CountUp from 'react-countup';
 import TableContainer from "Common/TableContainer";
 import { userList } from "Common/data";
 import Flatpickr from "react-flatpickr";
-import { Link } from 'react-router-dom';
 
 const TenantList = () => {
     document.title = "Kiracı Listesi | CRM v2 Randevu Takip";
@@ -14,27 +13,27 @@ const TenantList = () => {
     const [modal_DeleteTenantModals, setmodal_DeleteTenantModals] = useState<boolean>(false);
     const [isMultiDeleteButton, setIsMultiDeleteButton] = useState<boolean>(false);
     const [selectedTenant, setSelectedTenant] = useState<any>(null);
-    function tog_AddTenantModals() {
+    const tog_AddTenantModals = useCallback(() => {
         setmodal_AddTenantModals(!modal_AddTenantModals);
-    }
+    }, [modal_AddTenantModals]);
 
-    function tog_EditTenantModals() {
+    const tog_EditTenantModals = useCallback(() => {
         setmodal_EditTenantModals(!modal_EditTenantModals);
-    }
+    }, [modal_EditTenantModals]);
 
-    function tog_DeleteTenantModals() {
+    const tog_DeleteTenantModals = useCallback(() => {
         setmodal_DeleteTenantModals(!modal_DeleteTenantModals);
-    }
+    }, [modal_DeleteTenantModals]);
 
-    function handleEditTenant(tenant: any) {
+    const handleEditTenant = useCallback((tenant: any) => {
         setSelectedTenant(tenant);
         tog_EditTenantModals();
-    }
+    }, [tog_EditTenantModals]);
 
-    function handleDeleteTenant(tenant: any) {
+    const handleDeleteTenant = useCallback((tenant: any) => {
         setSelectedTenant(tenant);
         tog_DeleteTenantModals();
-    }
+    }, [tog_DeleteTenantModals]);
 
     // Checked All
     const checkedAll = useCallback(() => {

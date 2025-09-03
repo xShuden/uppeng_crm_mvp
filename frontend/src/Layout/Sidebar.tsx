@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import SimpleBar from "simplebar-react";
 //import logo
@@ -9,10 +9,33 @@ import logoLight from "assets/images/logo-light.png";
 //Import Components
 import VerticalLayout from "./VerticalLayouts/index";
 import TwoColumnLayout from "./TwoColumnLayout";
-import { Button, Container } from "react-bootstrap";
+import { Button, Container, Dropdown } from "react-bootstrap";
 import HorizontalLayout from "./HorizontalLayout";
 
 const Sidebar = ({ layoutType }: any) => {
+  const [currentTenant, setCurrentTenant] = useState("Dental Klinik");
+  const [searchTenant, setSearchTenant] = useState("");
+
+  const tenants = [
+    { id: "dental", name: "Dental Klinik" },
+    { id: "beauty", name: "Beauty Salon" },
+    { id: "spa", name: "Spa Center" },
+    { id: "hair", name: "Hair Studio" },
+    { id: "clinic1", name: "Medical Clinic" },
+    { id: "gym1", name: "Fitness Center" },
+    { id: "restaurant1", name: "Restaurant Elite" },
+    { id: "hotel1", name: "Hotel Paradise" }
+  ];
+
+  const filteredTenants = tenants.filter(tenant => 
+    tenant.name.toLowerCase().includes(searchTenant.toLowerCase())
+  );
+
+  const handleTenantSwitch = (tenantName: string) => {
+    setCurrentTenant(tenantName);
+    setSearchTenant("");
+    // Burada tenant değiştirme işlemleri yapılacak
+  };
 
   useEffect(() => {
     var verticalOverlay = document.getElementsByClassName("vertical-overlay");
@@ -90,6 +113,68 @@ const Sidebar = ({ layoutType }: any) => {
                 </ul>
               </Container>
             </SimpleBar>
+            
+            {/* Tenant Switcher - Fixed at bottom of sidebar */}
+            <div className="tenant-switcher p-3 border-top bg-white position-absolute bottom-0 start-0 end-0">
+              <Dropdown>
+                <Dropdown.Toggle 
+                  variant="outline-secondary"
+                  className="w-100 text-start d-flex align-items-center justify-content-between"
+                  style={{fontSize: '14px', padding: '8px 12px'}}
+                >
+                  <div className="d-flex align-items-center">
+                    <i className="bi bi-building me-2" style={{fontSize: '16px'}}></i>
+                    <span className="text-truncate">{currentTenant}</span>
+                  </div>
+                  <i className="bi bi-chevron-down ms-2"></i>
+                </Dropdown.Toggle>
+                <Dropdown.Menu className="w-100" style={{maxHeight: '300px', overflowY: 'auto'}}>
+                  <div className="p-2 border-bottom">
+                    <div className="position-relative">
+                      <i className="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-2 text-muted"></i>
+                      <input
+                        type="text"
+                        className="form-control form-control-sm ps-4"
+                        placeholder="Tenant ara..."
+                        value={searchTenant}
+                        onChange={(e) => setSearchTenant(e.target.value)}
+                        onClick={(e) => e.stopPropagation()}
+                      />
+                    </div>
+                  </div>
+                  <Dropdown.Header>Tenant Seçin</Dropdown.Header>
+                  {filteredTenants.length > 0 ? (
+                    filteredTenants.map((tenant) => (
+                      <Dropdown.Item 
+                        key={tenant.id}
+                        onClick={() => handleTenantSwitch(tenant.name)}
+                        className={currentTenant === tenant.name ? "active" : ""}
+                      >
+                        <div className="d-flex align-items-center justify-content-between">
+                          <div className="d-flex align-items-center">
+                            <i className="bi bi-building me-2"></i>
+                            {tenant.name}
+                          </div>
+                          {currentTenant === tenant.name && (
+                            <i className="bi bi-check-circle-fill text-success"></i>
+                          )}
+                        </div>
+                      </Dropdown.Item>
+                    ))
+                  ) : (
+                    <Dropdown.Item disabled>
+                      <i className="bi bi-search me-2"></i>
+                      Tenant bulunamadı
+                    </Dropdown.Item>
+                  )}
+                  <Dropdown.Divider />
+                  <Dropdown.Item as={Link} to="/tenant-list">
+                    <i className="bi bi-gear me-2"></i>
+                    Tenant Yönetimi
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </div>
             <div className="sidebar-background"></div>
           </React.Fragment>
         )}

@@ -24,6 +24,10 @@ import UsersList from "pages/UsersList"
 import PersonnelList from "pages/PersonnelList"
 import TenantList from "pages/TenantList"
 
+// Detail Pages
+import PersonnelDetail from "pages/PersonnelDetail"
+import CustomerDetail from "pages/CustomerDetail"
+
 
 
 
@@ -54,7 +58,7 @@ const authProtectedRoutes = [
     { path: "/sub-categories", component: <SubCategories /> },
 
     // Rezervasyon
-    { path: "/rezervasyon-listesi", component: <OrdersListView /> },
+    { path: "/reservation-list", component: <OrdersListView /> },
 
 
 
@@ -63,9 +67,12 @@ const authProtectedRoutes = [
     { path: "/personnel-list", component: <PersonnelList /> },
     { path: "/tenant-list", component: <TenantList /> },
 
+    // Detail Pages
+    { path: "/personnel-detail/:id", component: <PersonnelDetail /> },
+    { path: "/customer-detail/:id", component: <CustomerDetail /> },
 
 
-    { path: "/rezervasyon-cizelgesi", component: <Rezervasyon /> },
+    { path: "/reservation-calendar", component: <Rezervasyon /> },
 
 
 
