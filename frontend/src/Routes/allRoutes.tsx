@@ -53,8 +53,8 @@ const authProtectedRoutes = [
     { path: "/categories", component: <Categories /> },
     { path: "/sub-categories", component: <SubCategories /> },
 
-    // Orders
-    { path: "/orders-list-view", component: <OrdersListView /> },
+    // Rezervasyon
+    { path: "/rezervasyon-listesi", component: <OrdersListView /> },
 
 
 
@@ -65,7 +65,7 @@ const authProtectedRoutes = [
 
 
 
-    { path: "/rezervasyon", component: <Rezervasyon /> },
+    { path: "/rezervasyon-cizelgesi", component: <Rezervasyon /> },
 
 
 

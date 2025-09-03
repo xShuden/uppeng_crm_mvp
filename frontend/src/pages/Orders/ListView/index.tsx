@@ -4,6 +4,7 @@ import Breadcrumb from 'Common/BreadCrumb';
 import CountUp from "react-countup";
 import ListViewTable from './listViewTable';
 import Flatpickr from "react-flatpickr";
+import { Turkish } from "flatpickr/dist/l10n/tr.js";
 
 const OrdersListView = () => {
 
@@ -300,9 +301,10 @@ const OrdersListView = () => {
                                             <div>
                                                 <Flatpickr
                                                 className="form-control flatpickr-input"
-                                                placeholder='Select Date'
+                                                placeholder='Tarih Seçin'
                                                     options={{
-                                                    dateFormat: "d M, Y",
+                                                    dateFormat: "d.m.Y",
+                                                    locale: Turkish,
                                                     }}
                                                 />
                                             </div>
@@ -335,16 +337,6 @@ const OrdersListView = () => {
                                             </div>
                                         </Col>
 
-                                        <Col xxl={2} sm={12}>
-                                            <div className="hstack gap-2">
-                                                <Button variant='primary' className="w-100">
-                                                    <i className="bi bi-filter me-1"></i> Filter
-                                                </Button>
-                                                <Button variant='success' onClick={() => tog_AddOrderModals()} className="w-100 add-btn" data-bs-toggle="modal" data-bs-target="#showModal">
-                                                    <i className="bi bi-plus-circle me-1"></i> Yeni Rezervasyon
-                                                </Button>
-                                            </div>
-                                        </Col>
                                     </Row>
                                 </Card.Body>
                             </Card>
@@ -399,9 +391,10 @@ const OrdersListView = () => {
                                                     <Form.Label htmlFor="createdate-field">Rezervasyon Tarihi</Form.Label>
                                                     <Flatpickr
                                                         className="form-control flatpickr-input"
-                                                        placeholder='Select Date'
+                                                        placeholder='Tarih Seçin'
                                                         options={{
-                                                            dateFormat: "d M, Y",
+                                                            dateFormat: "d.m.Y",
+                                                            locale: Turkish,
                                                         }}
                                                     />
                                                 </div>
@@ -411,9 +404,12 @@ const OrdersListView = () => {
                                                     <Form.Label htmlFor="deliverydate-field">Randevu Saati</Form.Label>
                                                     <Flatpickr
                                                         className="form-control flatpickr-input"
-                                                        placeholder='Select Date'
+                                                        placeholder='Saat Seçin'
                                                         options={{
-                                                            dateFormat: "d M, Y",
+                                                            enableTime: true,
+                                                            noCalendar: true,
+                                                            dateFormat: "H:i",
+                                                            locale: Turkish,
                                                         }}
                                                     />
                                                 </div>

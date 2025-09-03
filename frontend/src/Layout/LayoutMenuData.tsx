@@ -4,6 +4,7 @@ const Navdata = () => {
     //state data
     const [isEcommerce, setIsEcommerce] = useState(false);
     const [isOrder, setIsOrder] = useState(false);
+    const [isRezervation, setIsRezervation] = useState(false);
     const [isAuth, setIsAuth] = useState(false);
 
     const [iscurrentState, setIscurrentState] = useState('Dashboard');
@@ -31,6 +32,9 @@ const Navdata = () => {
         if (iscurrentState !== 'Orders') {
             setIsOrder(false);
         }
+        if (iscurrentState !== 'Reservation') {
+            setIsRezervation(false);
+        }
         if (iscurrentState !== 'Sellers') {
         }
         if (iscurrentState !== 'Auth') {
@@ -40,6 +44,7 @@ const Navdata = () => {
         iscurrentState,
         isEcommerce,
         isOrder,
+        isRezervation,
         isAuth
     ]);
 
@@ -108,31 +113,31 @@ const Navdata = () => {
             ],
         },
         {
-            id: "orders",
-            label: "Orders",
-            icon: "bi bi-cart4",
-            link: "/#",
-            click: function (e: any) {
-                e.preventDefault();
-                setIsOrder(!isOrder);
-                setIscurrentState('Orders');
-                updateIconSidebar(e);
-            },
-            stateVariables: isOrder,
-            subItems: [
-                {
-                    id: "listview",
-                    label: "List View",
-                    link: "/orders-list-view",
-                    parentId: "orders",
-                },
-            ],
-        },
-        {
             id: "rezervasyon",
             label: "Rezervasyon",
             icon: "bi bi-calendar-check",
-            link: "/rezervasyon",
+            link: "/#",
+            click: function (e: any) {
+                e.preventDefault();
+                setIsRezervation(!isRezervation);
+                setIscurrentState('Reservation');
+                updateIconSidebar(e);
+            },
+            stateVariables: isRezervation,
+            subItems: [
+                {
+                    id: "reservation-calendar",
+                    label: "Rezervasyon Çizelgesi",
+                    link: "/rezervasyon-cizelgesi",
+                    parentId: "rezervasyon",
+                },
+                {
+                    id: "reservation-list",
+                    label: "Rezervasyon Listesi",
+                    link: "/rezervasyon-listesi",
+                    parentId: "rezervasyon",
+                },
+            ],
         },
         {
             id: "userslist",

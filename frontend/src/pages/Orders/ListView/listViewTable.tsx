@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import TableContainer from "Common/TableContainer";
 
 import { ordersList } from "Common/data";
@@ -6,6 +6,15 @@ import { Link } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
 
 const ListViewTable = () => {
+    const [orders, setOrders] = useState(ordersList);
+
+    const handleStatusChange = (orderId: number, newStatus: string) => {
+        setOrders(prevOrders => 
+            prevOrders.map(order => 
+                order.id === orderId ? { ...order, status: newStatus } : order
+            )
+        );
+    };
 
     const columns = useMemo(
         () => [
@@ -65,30 +74,53 @@ const ListViewTable = () => {
                 filterable: true,
             },
             {
-                Header: "Ödeme Yöntemi",
-                accessor: "payment_method",
-                disableFilters: true,
-                filterable: true,
-            },
-            {
                 Header: "Durum",
                 disableFilters: true,
                 filterable: true,
                 accessor: (cellProps: any) => {
-                    switch (cellProps.status) {
-                        case "Completed":
-                            return (<span className="badge bg-success-subtle text-success text-uppercase">Tamamlandı</span>)
-                        case "Cancelled":
-                            return (<span className="badge bg-danger-subtle text-danger text-uppercase">İptal Edildi</span>)
-                        case "Pending":
-                            return (<span className="badge bg-warning-subtle text-warning text-uppercase">Beklemede</span>)
-                        case "Confirmed":
-                            return (<span className="badge bg-info-subtle text-info text-uppercase">Onaylandı</span>)
-                        case "In-Progress":
-                            return (<span className="badge bg-secondary-subtle text-secondary text-uppercase">Devam Ediyor</span>)
-                        default:
-                            return (<span className="badge bg-warning-subtle text-warning text-uppercase">Beklemede</span>)
-                    }
+                    const getStatusDisplay = (status: string) => {
+                        switch (status) {
+                            case "Completed":
+                                return { text: "TAMAMLANDI", class: "bg-success-subtle text-success" };
+                            case "Cancelled":
+                                return { text: "İPTAL", class: "bg-danger-subtle text-danger" };
+                            case "Confirmed":
+                                return { text: "ONAYLANDI", class: "bg-info-subtle text-info" };
+                            default:
+                                return { text: "ONAYLANDI", class: "bg-info-subtle text-info" };
+                        }
+                    };
+
+                    const currentStatus = getStatusDisplay(cellProps.status);
+                    
+                    return (
+                        <Dropdown>
+                            <Dropdown.Toggle 
+                                variant="link" 
+                                className={`badge ${currentStatus.class} text-uppercase border-0 p-2`}
+                                style={{ textDecoration: 'none' }}
+                            >
+                                {currentStatus.text}
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                                <Dropdown.Item 
+                                    onClick={() => handleStatusChange(cellProps.id, "Confirmed")}
+                                >
+                                    ONAYLANDI
+                                </Dropdown.Item>
+                                <Dropdown.Item 
+                                    onClick={() => handleStatusChange(cellProps.id, "Completed")}
+                                >
+                                    TAMAMLANDI
+                                </Dropdown.Item>
+                                <Dropdown.Item 
+                                    onClick={() => handleStatusChange(cellProps.id, "Cancelled")}
+                                >
+                                    İPTAL
+                                </Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    );
                 },
             },
             {
@@ -113,11 +145,6 @@ const ListViewTable = () => {
                                             <i className="ri-pencil-fill align-bottom me-2 text-muted" />Düzenle
                                         </Dropdown.Item>
                                     </li>
-                                    <li>
-                                        <Dropdown.Item href="#" className="remove-list">
-                                            <i className="ri-delete-bin-fill align-bottom me-2 text-muted" />İptal Et
-                                        </Dropdown.Item>
-                                    </li>
                                 </Dropdown.Menu>
                             </Dropdown>
                         </React.Fragment>
@@ -125,14 +152,14 @@ const ListViewTable = () => {
                 },
             },
         ],
-        []
+        [handleStatusChange]
     );
 
     return (
         <React.Fragment>
             <TableContainer
                 columns={(columns || [])}
-                data={(ordersList || [])}
+                data={(orders || [])}
                 // isGlobalFilter={false}
                 iscustomPageSize={false}
                 isBordered={false}
