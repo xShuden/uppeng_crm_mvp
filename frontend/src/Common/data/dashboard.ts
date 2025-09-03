@@ -23,105 +23,105 @@ import productImg9 from "assets/images/products/img-9.png"
 const recentOrders = [
     {
         id: 1,
-        purchaseID: "#TB010338",
-        customerName: "Macbook Pro",
+        purchaseID: "#RZ010338",
+        customerName: "Ayşe Demir",
         productImage: avatar2,
-        productName: "Terry White",
-        amount: "$658.00",
-        orderDate: "28 Oct, 2022",
-        deliveryDate: '26 Jan, 2023',
-        vendor: "Brazil",
-        rating: 4.5,
-        status: "Paid"
-    },
-    {
-        id: 2,
-        purchaseID: "#TB010337",
-        customerName: "Macbook Pro",
-        productImage: avatar2,
-        productName: "Terry White",
-        amount: "$658.00",
-        orderDate: "30 Oct, 2022",
-        deliveryDate: '28 Jan, 2023',
-        vendor: "Brazil",
+        productName: "Protez Takılması",
+        amount: "₺850.00",
+        orderDate: "28 Eki, 2024",
+        deliveryDate: '15 Ara, 2024',
+        vendor: "Dr. Mehmet Yılmaz",
         rating: 4.8,
         status: "Paid"
     },
     {
+        id: 2,
+        purchaseID: "#RZ010337",
+        customerName: "Zeynep Kaya",
+        productImage: avatar1,
+        productName: "Makyaj",
+        amount: "₺300.00",
+        orderDate: "30 Eki, 2024",
+        deliveryDate: '18 Ara, 2024',
+        vendor: "Fatma Şahin",
+        rating: 4.9,
+        status: "Paid"
+    },
+    {
         id: 3,
-        purchaseID: "#TB010336",
-        customerName: "Smart Watch for Man's",
+        purchaseID: "#RZ010336",
+        customerName: "Merve Özkan",
         productImage: avatar8,
-        productName: "Heather Jimenez",
-        amount: "$741.98",
-        orderDate: "02 Nov, 2022",
-        deliveryDate: '29 Dec, 2022',
-        vendor: "Spain",
-        rating: 4.3,
+        productName: "Cilt Bakımı",
+        amount: "₺250.00",
+        orderDate: "02 Kas, 2024",
+        deliveryDate: '20 Ara, 2024',
+        vendor: "Esra Yıldız",
+        rating: 4.7,
         status: "Paid"
     },
     {
         id: 4,
-        purchaseID: "#TB010335",
-        customerName: "Apple Headphone",
+        purchaseID: "#RZ010335",
+        customerName: "Elif Arslan",
         productImage: avatar9,
-        productName: "Scott Wilson",
-        amount: "$264.37",
-        orderDate: "01 Nov, 2022",
-        deliveryDate: '13 Dec, 2022',
-        vendor: "Jersey",
-        rating: 3.9,
+        productName: "Diş Temizliği",
+        amount: "₺180.00",
+        orderDate: "01 Kas, 2024",
+        deliveryDate: '22 Ara, 2024',
+        vendor: "Dr. Ali Vural",
+        rating: 4.5,
         status: "Unpaid"
     }, {
         id: 5,
-        purchaseID: "#TB010334",
-        customerName: "Bentwood Chair",
+        purchaseID: "#RZ010334",
+        customerName: "Selin Güneş",
         productImage: avatar10,
-        productName: "Ashley Silva",
-        amount: "$349.99",
-        orderDate: "31 Oct, 2022",
-        deliveryDate: '03 Dec, 2022',
-        vendor: "Argentina",
-        rating: 4.7,
+        productName: "Saç Boyası",
+        amount: "₺450.00",
+        orderDate: "31 Eki, 2024",
+        deliveryDate: '25 Ara, 2024',
+        vendor: "Cemile Aydın",
+        rating: 4.6,
         status: "Pending"
     },
     {
         id: 6,
-        purchaseID: "#TB010333",
-        customerName: "Stillbird Helmet",
+        purchaseID: "#RZ010333",
+        customerName: "Büşra Çelik",
         productImage: avatar3,
-        productName: "Stephen Bird",
-        amount: "$80.00",
-        orderDate: "30 Oct, 2022",
-        deliveryDate: '12 Nov, 2022',
-        vendor: "USA",
-        rating: 4.4,
+        productName: "Nail Art",
+        amount: "₺120.00",
+        orderDate: "30 Eki, 2024",
+        deliveryDate: '28 Ara, 2024',
+        vendor: "Nazlı Koç",
+        rating: 4.8,
         status: "Paid"
     },
     {
         id: 7,
-        purchaseID: "#TB010332",
-        customerName: "Borosil Paper Cup",
+        purchaseID: "#RZ010332",
+        customerName: "Gülşah Yıldırım",
         productImage: avatar4,
-        productName: "Daniel Gonzalez",
-        amount: "$345.00",
-        orderDate: "29 Oct, 2022",
-        deliveryDate: '11 Nov, 2022',
-        vendor: "Namibia",
-        rating: 4.4,
+        productName: "Masaj Terapi",
+        amount: "₺400.00",
+        orderDate: "29 Eki, 2024",
+        deliveryDate: '30 Ara, 2024',
+        vendor: "Pınar Özkan",
+        rating: 4.9,
         status: "Unpaid"
     },
     {
         id: 8,
-        purchaseID: "#TB010331",
-        customerName: "Macbook Pro",
-        productImage: avatar2,
-        productName: "Terry White",
-        amount: "$658.00",
-        orderDate: "28 Oct, 2022",
-        deliveryDate: '09 Nov, 2022',
-        vendor: "Brazil",
-        rating: 4.7,
+        purchaseID: "#RZ010331",
+        customerName: "Cansu Akgül",
+        productImage: avatar5,
+        productName: "Kaş Düzenleme",
+        amount: "₺80.00",
+        orderDate: "28 Eki, 2024",
+        deliveryDate: '02 Oca, 2025',
+        vendor: "Sevgi Kara",
+        rating: 4.4,
         status: "Paid"
     }
 ];
@@ -278,65 +278,65 @@ const newcustomers = [
 ];
 
 const allRevenueChartData = [{
-    name: "Orders",
+    name: "Randevular",
     type: 'line',
     data: [180, 274, 346, 290, 370, 420, 490, 542, 510, 580, 636, 745]
 },
 {
-    name: "Refunds",
+    name: "İptal Edilen",
     type: 'area',
     data: [100, 154, 302, 411, 300, 284, 273, 232, 187, 174, 152, 122]
 },
 {
-    name: "Earnings",
+    name: "Tamamlanan",
     type: 'line',
     data: [260, 360, 320, 345, 436, 527, 641, 715, 832, 794, 865, 933]
 }]
 
 const monthRevenueChartData = [{
-    name: "Orders",
+    name: "Randevular",
     type: 'line',
     data: [170, 254, 326, 260, 350, 400, 470, 522, 500, 570, 606, 725]
 },
 {
-    name: "Refunds",
+    name: "İptal Edilen",
     type: 'area',
     data: [90, 124, 152, 371, 290, 244, 253, 232, 167, 154, 132, 112]
 },
 {
-    name: "Earnings",
+    name: "Tamamlanan",
     type: 'line',
     data: [250, 350, 310, 335, 426, 517, 631, 705, 822, 774, 835, 923]
 }]
 
 const halfYearRevenueChartData = [{
-    name: "Orders",
+    name: "Randevular",
     type: 'line',
     data: [160, 254, 336, 310, 390, 450, 510, 572, 540, 600, 656, 765]
 },
 {
-    name: "Refunds",
+    name: "İptal Edilen",
     type: 'area',
     data: [120, 157, 322, 491, 320, 324, 293, 262, 207, 194, 172, 132]
 },
 {
-    name: "Earnings",
+    name: "Tamamlanan",
     type: 'line',
     data: [290, 310, 380, 345, 456, 547, 631, 735, 852, 824, 895, 953]
 }]
 
 const yearRevenueChartData = [{
-    name: "Orders",
+    name: "Randevular",
     type: 'line',
     data: [230, 344, 346, 310, 450, 470, 510, 642, 550, 600, 646, 765]
 },
 {
-    name: "Refunds",
+    name: "İptal Edilen",
     type: 'area',
     data: [120, 174, 342, 431, 320, 344, 293, 262, 217, 214, 172, 142]
 },
 {
-    name: "Earnings",
+    name: "Tamamlanan",
     type: 'line',
     data: [290, 390, 350, 375, 456, 547, 671, 745, 852, 814, 885, 953]
 }]

@@ -1,11 +1,5 @@
 import React from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
-import CustomerSatisfaction from './CustomerSatisfaction';
-import NewCustomers from './NewCustomers';
-import ProductDelivery from './ProductDelivery';
-import StockReport from './StockReport';
-import TopCategories from './TopCategories';
-import TopProducts from './TopProducts';
 import Widgets from './Widgets';
 import RecentOrders from './RecentOrders';
 import Revenue from './Revenue';
@@ -28,14 +22,6 @@ const Dashboard = () => {
                     </Row>
                     <Row>
                         <RecentOrders />
-                    </Row>
-                    <Row className='widget-responsive-fullscreen'>
-                        <CustomerSatisfaction />
-                        <StockReport />
-                        <ProductDelivery />
-                        <TopCategories />
-                        <NewCustomers />
-                        <TopProducts />
                     </Row>
                 </Container>
             </div>

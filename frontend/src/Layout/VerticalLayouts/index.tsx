@@ -22,7 +22,7 @@ const VerticalLayout = (props: any) => {
             let itemsArray = [...items]; // converts NodeList to Array
             removeActivation(itemsArray);
             let matchingMenuItem = itemsArray.find((x) => {
-                return x.pathname === pathName;
+                return x.pathname === pathName && !x.href?.startsWith('http');
             });
             if (matchingMenuItem) {
                 activateParentDropdown(matchingMenuItem);
@@ -172,27 +172,41 @@ const VerticalLayout = (props: any) => {
                                     </li>
                                 ) : (
                                     <li className="nav-item">
-                                        <Link to={item.link ? item.link : "/"} className="nav-link menu-link">
-                                            <i className={item.icon}></i> <span>{props.t(item.label)}</span>
-                                            {item.badgeName && (
-                                                <>
-                                                    {item.isBadgeColorCustom ? (
-                                                        <span className={"badge badge-pill bg-" + item.badgeColor} data-key="t-new">
+                                        {item.link && item.link.startsWith('http') ? (
+                                            <a href={item.link} target="_blank" rel="noopener noreferrer" className="nav-link menu-link">
+                                                <i className={item.icon}></i> <span>{props.t(item.label)}</span>
+                                                {item.badgeName && (
+                                                    <>
+                                                        {item.isBadgeColorCustom ? (
+                                                            <span className={"badge badge-pill bg-" + item.badgeColor} data-key="t-new">
+                                                                {item.badgeName}
+                                                            </span>
+                                                        ) : 
+                                                        <span className={"badge badge-pill bg-" + item.badgeColor + "-subtle text-" + item.badgeColor} data-key="t-new">
                                                             {item.badgeName}
                                                         </span>
-                                                    ) : 
-                                                    <span className={"badge badge-pill bg-" + item.badgeColor + "-subtle text-" + item.badgeColor} data-key="t-new">
-                                                        {item.badgeName}
-                                                    </span>
-                                                    }
-                                                </>
-                                            )}
-
-                                                {/* <span className={"badge badge-pill bg-" + item.badgeColor + "-subtle text-" + item.badgeColor} data-key="t-new">{item.badgeName}</span> */}
-                                                {/* // : */}
-                                                {/* // <span className={"badge badge-pill bg-" + item.badgeColor } data-key="t-new">{item.badgeName}</span>  */}
-                                                
-                                        </Link>
+                                                        }
+                                                    </>
+                                                )}
+                                            </a>
+                                        ) : (
+                                            <Link to={item.link ? item.link : "/"} className="nav-link menu-link">
+                                                <i className={item.icon}></i> <span>{props.t(item.label)}</span>
+                                                {item.badgeName && (
+                                                    <>
+                                                        {item.isBadgeColorCustom ? (
+                                                            <span className={"badge badge-pill bg-" + item.badgeColor} data-key="t-new">
+                                                                {item.badgeName}
+                                                            </span>
+                                                        ) : 
+                                                        <span className={"badge badge-pill bg-" + item.badgeColor + "-subtle text-" + item.badgeColor} data-key="t-new">
+                                                            {item.badgeName}
+                                                        </span>
+                                                        }
+                                                    </>
+                                                )}
+                                            </Link>
+                                        )}
                                     </li>
                                 ))
                             )

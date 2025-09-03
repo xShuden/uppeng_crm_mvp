@@ -86,18 +86,6 @@ const Navdata = () => {
                     parentId: "products",
                 },
                 {
-                    id: "gridview",
-                    label: "Grid View",
-                    link: "/products-grid",
-                    parentId: "products",
-                },
-                {
-                    id: "overview",
-                    label: "Overview",
-                    link: "/product-overview",
-                    parentId: "products",
-                },
-                {
                     id: "createproduct",
                     label: "Create Product",
                     link: "/product-create",
@@ -163,16 +151,6 @@ const Navdata = () => {
             link: "/tenant-list",
         },
         {
-            id: "components",
-            label: "Components",
-            icon: "bi bi-layers",
-            link: "//themes.themesbrand.com/toner/react/components/index",
-            isBadgeColorCustom : true,
-            badgeName : "v1.3",
-            badgeColor : "secondary"
-
-        },
-        {
             id: "accounts",
             label: "Hesaplar",
             icon: "bi bi-person-circle",
@@ -193,31 +171,31 @@ const Navdata = () => {
                 },
                 {
                     id: "settings",
-                    label: "Settings",
+                    label: "Ayarlar",
                     link: "/settings",
                     parentId: "account",
                 },
                 {
                     id: "signin",
-                    label: "Sign In",
+                    label: "Giriş Yap",
                     link: "/login",
                     parentId: "account",
                 },
                 {
                     id: "logout",
-                    label: "Logout",
+                    label: "Çıkış Yap",
                     link: "/logout",
                     parentId: "account",
                 },
                 {
                     id: "auth-404",
-                    label: "Error 404",
+                    label: "Hata 404",
                     link: "/404",
                     parentId: "account",
                 },
                 {
                     id: "auth-500",
-                    label: "Error 500",
+                    label: "Hata 500",
                     link: "/500",
                     parentId: "account",
                 },

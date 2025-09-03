@@ -13,15 +13,29 @@ const TopBar = () => {
     const currentTime: any = useRef(null);
     useEffect(() => {
         const interval = setInterval(() => {
-            // date
-            var d = new Date();
-            var dateOptions: object = { weekday: 'short', month: 'short', day: 'numeric' };
-            var date = d.toLocaleDateString(undefined, dateOptions);
-            // time
-            var hours = d.getHours();
-            var ampm = hours >= 12 ? ' PM' : ' AM';
-            var gethours = hours % 12;
-            var time = ("0" + gethours).slice(-2) + ':' + ("0" + d.getMinutes()).slice(-2) + ampm;
+            // Türkiye saati için
+            const d = new Date();
+            
+            // Türkiye saati (UTC+3)
+            const turkeyTime = new Date(d.toLocaleString("en-US", {timeZone: "Europe/Istanbul"}));
+            
+            // Türkçe tarih formatı
+            const dateOptions: Intl.DateTimeFormatOptions = { 
+                weekday: 'long', 
+                year: 'numeric',
+                month: 'long', 
+                day: 'numeric' 
+            };
+            const date = turkeyTime.toLocaleDateString('tr-TR', dateOptions);
+            
+            // 24 saat formatı
+            const timeOptions: Intl.DateTimeFormatOptions = { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                hour12: false 
+            };
+            const time = turkeyTime.toLocaleTimeString('tr-TR', timeOptions);
+            
             currentTime.current.innerHTML = date + " | " + time;
         }, 1000);
         return () => clearInterval(interval);

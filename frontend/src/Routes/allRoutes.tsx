@@ -4,8 +4,6 @@ import Dashboard from "pages/Dashboard";
 
 //Product
 import ListView from "pages/Products/ListView";
-import GridView from "pages/Products/GridView";
-import Overview from "pages/Products/Overview";
 import CreateProduct from "pages/Products/CreateProduct";
 import Categories from "pages/Products/Categories";
 import SubCategories from "pages/Products/SubCategories";
@@ -51,8 +49,6 @@ const authProtectedRoutes = [
 
     //Product
     { path: "/products-list", component: <ListView /> },
-    { path: "/products-grid", component: <GridView /> },
-    { path: "/product-overview", component: <Overview /> },
     { path: "/product-create", component: <CreateProduct /> },
     { path: "/categories", component: <Categories /> },
     { path: "/sub-categories", component: <SubCategories /> },
