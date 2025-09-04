@@ -3,8 +3,6 @@ import { Navigate } from "react-router-dom";
 import Dashboard from "pages/Dashboard";
 
 //Product
-import ListView from "pages/Products/ListView";
-import CreateProduct from "pages/Products/CreateProduct";
 import Categories from "pages/Products/Categories";
 
 // Orders
@@ -47,8 +45,6 @@ const authProtectedRoutes = [
     { path: "/dashboard", component: <Dashboard /> },
 
     //Product
-    { path: "/products-list", component: <ListView /> },
-    { path: "/product-create", component: <CreateProduct /> },
     { path: "/categories", component: <Categories /> },
 
     // Rezervasyon

@@ -80,18 +80,6 @@ const Navdata = () => {
             stateVariables: isEcommerce,
             subItems: [
                 {
-                    id: "listview",
-                    label: "List View",
-                    link: "/products-list",
-                    parentId: "products",
-                },
-                {
-                    id: "createproduct",
-                    label: "Create Product",
-                    link: "/product-create",
-                    parentId: "products",
-                },
-                {
                     id: "tasks",
                     label: "Görevler",
                     link: "/categories",
