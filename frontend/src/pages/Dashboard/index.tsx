@@ -6,7 +6,7 @@ import Revenue from './Revenue';
 
 const Dashboard = () => {
 
-    document.title = "Dashboard | Toner eCommerce + Admin React Template";
+    document.title = "Kontrol Paneli | Uppeng CRM + Admin React Template";
 
     return (
         <React.Fragment>

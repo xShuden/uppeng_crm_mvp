@@ -60,7 +60,7 @@ const Navdata = () => {
         },
         {
             id: "dashboard",
-            label: "Dashboard",
+            label: "Kontrol Paneli",
             icon: "bi bi-speedometer2",
             link: "/dashboard"
         },
