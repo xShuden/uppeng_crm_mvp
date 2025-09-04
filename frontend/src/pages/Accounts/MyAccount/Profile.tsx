@@ -1,6 +1,5 @@
 import React from 'react';
 import { Card, Col, Dropdown, Row, Table } from 'react-bootstrap';
-import RecentOrders from './RecentOrders';
 import { Link } from 'react-router-dom';
 
 // Import Images
@@ -163,7 +162,6 @@ const Profile = () => {
                             </Row>
                         </Card.Body>
                     </Card>
-                    <RecentOrders />
                 </Col>
 
             </Row>
