@@ -67,27 +67,6 @@ const Navdata = () => {
             badgeColor : "danger"
         },
         {
-            id: "products",
-            label: "Products",
-            icon: "bi bi-box-seam",
-            link: "/#",
-            click: function (e: any) {
-                e.preventDefault();
-                setIsEcommerce(!isEcommerce);
-                setIscurrentState('Ecommerce');
-                updateIconSidebar(e);
-            },
-            stateVariables: isEcommerce,
-            subItems: [
-                {
-                    id: "tasks",
-                    label: "Görevler",
-                    link: "/categories",
-                    parentId: "products",
-                },
-            ],
-        },
-        {
             id: "rezervasyon",
             label: "Rezervasyon",
             icon: "bi bi-calendar-check",
@@ -125,6 +104,12 @@ const Navdata = () => {
             label: "Personel",
             icon: "bi bi-people-fill",
             link: "/personnel-list",
+        },
+        {
+            id: "services",
+            label: "Hizmetler",
+            icon: "bi bi-briefcase",
+            link: "/categories",
         },
         {
             id: "tenantlist",

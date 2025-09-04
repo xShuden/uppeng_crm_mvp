@@ -6,7 +6,7 @@ import { categoryListData } from 'Common/data';
 
 const Categories = () => {
 
-    document.title = "Görevler | Uppeng CRM + Admin React Template";
+    document.title = "Hizmetler | Uppeng CRM + Admin React Template";
 
     const [show, setShow] = useState<boolean>(false);
     const [info, setInfo] = useState<any>([]);
@@ -164,13 +164,13 @@ const Categories = () => {
         <React.Fragment>
             <div className="page-content">
                 <Container fluid={true}>
-                    <Breadcrumb title="Görevler" pageTitle="Hizmetler" />
+                    <Breadcrumb title="Hizmetler" pageTitle="Hizmetler" />
                     <Row>
                         <Col xxl={3}>
                             <Card>
                                 <Card.Header>
                                     <h6 className="card-title mb-0">
-                                        {editingTask ? 'Görev Düzenle' : 'Görev Oluştur'}
+                                        {editingTask ? 'Hizmet Düzenle' : 'Hizmet Oluştur'}
                                     </h6>
                                 </Card.Header>
                                 <Card.Body>
@@ -179,9 +179,9 @@ const Categories = () => {
                                         <Row>
                                             <Col xxl={12} lg={6}>
                                                 <div className="mb-3">
-                                                    <label htmlFor="categoryTitle" className="form-label">Görev Başlığı<span className="text-danger">*</span></label>
-                                                    <input type="text" className="form-control" id="categoryTitle" placeholder="Görev başlığını girin" required />
-                                                    <div className="invalid-feedback">Lütfen bir görev başlığı girin.</div>
+                                                    <label htmlFor="categoryTitle" className="form-label">Hizmet Başlığı<span className="text-danger">*</span></label>
+                                                    <input type="text" className="form-control" id="categoryTitle" placeholder="Hizmet başlığını girin" required />
+                                                    <div className="invalid-feedback">Lütfen bir hizmet başlığı girin.</div>
                                                 </div>
                                             </Col>
                                             <Col xxl={12} lg={6}>
@@ -200,18 +200,18 @@ const Categories = () => {
                                             <Col xxl={12} lg={6}>
                                                 <div className="mb-3">
                                                     <label htmlFor="descriptionInput" className="form-label">Açıklama</label>
-                                                    <textarea className="form-control" id="descriptionInput" rows={3} placeholder="Görev açıklaması" required></textarea>
+                                                    <textarea className="form-control" id="descriptionInput" rows={3} placeholder="Hizmet açıklaması" required></textarea>
                                                     <div className="invalid-feedback">Lütfen bir açıklama girin.</div>
                                                 </div>
                                             </Col>
                                             <Col xxl={12}>
                                                 <div className="mb-3">
-                                                    <label className="form-label">Alt Görevler</label>
+                                                    <label className="form-label">Alt Hizmetler</label>
                                                     <div className="d-flex mb-2">
                                                         <input 
                                                             type="text" 
                                                             className="form-control me-2" 
-                                                            placeholder="Alt görev ekle"
+                                                            placeholder="Alt hizmet ekle"
                                                             value={currentSubTask}
                                                             onChange={(e) => setCurrentSubTask(e.target.value)}
                                                             onKeyPress={(e) => {
@@ -256,7 +256,7 @@ const Categories = () => {
                                                         </Button>
                                                     )}
                                                     <Button variant='success' type="submit">
-                                                        {editingTask ? 'Görev Güncelle' : 'Görev Ekle'}
+                                                        {editingTask ? 'Hizmet Güncelle' : 'Hizmet Ekle'}
                                                     </Button>
                                                 </div>
                                             </Col>
@@ -269,7 +269,7 @@ const Categories = () => {
                             <Row className="justify-content-between mb-4">
                                 <Col xxl={3} lg={6}>
                                     <div className="search-box mb-3 mb-lg-0">
-                                        <Form.Control type="text" id="searchInputList" placeholder="Görev Ara..." onChange={(e) => searchTeamMember(e)} />
+                                        <Form.Control type="text" id="searchInputList" placeholder="Hizmet Ara..." onChange={(e) => searchTeamMember(e)} />
                                         <i className="ri-search-line search-icon"></i>
                                     </div>
                                 </Col>
@@ -346,7 +346,7 @@ const Categories = () => {
                     <h6 className="fs-14">Açıklama</h6>
                     <p className="text-muted overview-desc">{info.description}</p>
 
-                    <h6 className="fs-14 mb-3">Alt Görevler</h6>
+                    <h6 className="fs-14 mb-3">Alt Hizmetler</h6>
                     <ul className="vstack gap-2 mb-0 subCategory" style={{ listStyleType: "circle" }}>
                         {(info.subCategory || []).map((item: any, key: number) => (key < 4 && <li key={key}><Link to="#" className="text-reset">{item}</Link></li>))}
                     </ul>
@@ -368,13 +368,13 @@ const Categories = () => {
             {/* Delete Confirmation Modal */}
             <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered>
                 <Modal.Header closeButton>
-                    <Modal.Title>Görevi Sil</Modal.Title>
+                    <Modal.Title>Hizmeti Sil</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>Bu görevi silmek istediğinizden emin misiniz?</p>
+                    <p>Bu hizmeti silmek istediğinizden emin misiniz?</p>
                     {taskToDelete && (
                         <div className="alert alert-warning">
-                            <strong>{taskToDelete.categoryTitle}</strong> görevi kalıcı olarak silinecektir.
+                            <strong>{taskToDelete.categoryTitle}</strong> hizmeti kalıcı olarak silinecektir.
                         </div>
                     )}
                 </Modal.Body>
