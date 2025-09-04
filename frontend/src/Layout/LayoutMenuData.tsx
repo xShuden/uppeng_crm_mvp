@@ -97,12 +97,6 @@ const Navdata = () => {
                     link: "/categories",
                     parentId: "products",
                 },
-                {
-                    id: "subcategories",
-                    label: "Sub Categories",
-                    link: "/sub-categories",
-                    parentId: "products",
-                },
             ],
         },
         {

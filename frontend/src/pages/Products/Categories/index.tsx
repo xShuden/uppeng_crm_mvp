@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Button, Card, Col, Container, Form, Offcanvas, Row } from 'react-bootstrap';
+import { Button, Card, Col, Container, Form, Modal, Offcanvas, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Breadcrumb from 'Common/BreadCrumb';
 import { categoryListData } from 'Common/data';
@@ -10,6 +10,12 @@ const Categories = () => {
 
     const [show, setShow] = useState<boolean>(false);
     const [info, setInfo] = useState<any>([]);
+    const [editingTask, setEditingTask] = useState<any>(null);
+    const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+    const [taskToDelete, setTaskToDelete] = useState<any>(null);
+    const [tasks, setTasks] = useState<any[]>(categoryListData);
+    const [subTasks, setSubTasks] = useState<string[]>([]);
+    const [currentSubTask, setCurrentSubTask] = useState<string>('');
 
     // Pagination
     const [pagination, setPagination] = useState<boolean>(true);
@@ -24,7 +30,7 @@ const Categories = () => {
     const indexOfLast = currentPage * perPageData;
     const indexOfFirst = indexOfLast - perPageData;
 
-    const currentdata = useMemo(() => categoryListData.slice(indexOfFirst, indexOfLast), [indexOfFirst, indexOfLast])
+    const currentdata = useMemo(() => tasks.slice(indexOfFirst, indexOfLast), [indexOfFirst, indexOfLast, tasks])
 
     useEffect(() => {
         setCurrentpages(currentdata)
@@ -34,7 +40,7 @@ const Categories = () => {
         let search = ele.target.value;
         if (search) {
             search = search.toLowerCase()
-            setCurrentpages(categoryListData.filter((data: any) => (data.categoryTitle.toLowerCase().includes(search))));
+            setCurrentpages(tasks.filter((data: any) => (data.categoryTitle.toLowerCase().includes(search))));
             setPagination(false)
         } else {
             setCurrentpages(currentdata);
@@ -42,8 +48,98 @@ const Categories = () => {
         }
     };
 
+    // Edit task function
+    const handleEditTask = (task: any) => {
+        setEditingTask(task);
+        setSubTasks(task.subCategory || []);
+        // Populate form fields with task data
+        const titleInput = document.getElementById('categoryTitle') as HTMLInputElement;
+        const staffSelect = document.getElementById('assignedStaff') as HTMLSelectElement;
+        const descriptionTextarea = document.getElementById('descriptionInput') as HTMLTextAreaElement;
+        
+        if (titleInput) titleInput.value = task.categoryTitle;
+        if (staffSelect) staffSelect.value = 'mehmet-yilmaz'; // Default staff
+        if (descriptionTextarea) descriptionTextarea.value = task.description;
+    };
+
+    // Delete task function
+    const handleDeleteTask = (task: any) => {
+        setTaskToDelete(task);
+        setShowDeleteModal(true);
+    };
+
+    const confirmDelete = () => {
+        if (taskToDelete) {
+            setTasks(tasks.filter(task => task.id !== taskToDelete.id));
+            setShowDeleteModal(false);
+            setTaskToDelete(null);
+        }
+    };
+
+    // Save task function
+    const handleSaveTask = (e: any) => {
+        e.preventDefault();
+        const titleInput = document.getElementById('categoryTitle') as HTMLInputElement;
+        const staffSelect = document.getElementById('assignedStaff') as HTMLSelectElement;
+        const descriptionTextarea = document.getElementById('descriptionInput') as HTMLTextAreaElement;
+
+        if (editingTask) {
+            // Update existing task
+            const updatedTasks = tasks.map(task => 
+                task.id === editingTask.id 
+                    ? { ...task, categoryTitle: titleInput.value, description: descriptionTextarea.value, subCategory: subTasks }
+                    : task
+            );
+            setTasks(updatedTasks);
+            setEditingTask(null);
+        } else {
+            // Add new task
+            const newTask = {
+                id: tasks.length + 1,
+                categoryTitle: titleInput.value,
+                description: descriptionTextarea.value,
+                categoryImg: tasks[0]?.categoryImg || '', // Use default image
+                subCategory: subTasks
+            };
+            setTasks([...tasks, newTask]);
+        }
+
+        // Reset form
+        titleInput.value = '';
+        staffSelect.value = '';
+        descriptionTextarea.value = '';
+        setSubTasks([]);
+    };
+
+    // Cancel editing function
+    const handleCancelEdit = () => {
+        setEditingTask(null);
+        setSubTasks([]);
+        // Clear form
+        const titleInput = document.getElementById('categoryTitle') as HTMLInputElement;
+        const staffSelect = document.getElementById('assignedStaff') as HTMLSelectElement;
+        const descriptionTextarea = document.getElementById('descriptionInput') as HTMLTextAreaElement;
+        
+        if (titleInput) titleInput.value = '';
+        if (staffSelect) staffSelect.value = '';
+        if (descriptionTextarea) descriptionTextarea.value = '';
+    };
+
+    // Add sub task
+    const handleAddSubTask = () => {
+        if (currentSubTask.trim() !== '') {
+            setSubTasks([...subTasks, currentSubTask.trim()]);
+            setCurrentSubTask('');
+        }
+    };
+
+    // Remove sub task
+    const handleRemoveSubTask = (index: number) => {
+        setSubTasks(subTasks.filter((_, i) => i !== index));
+    };
+
     const pageNumbers: any = [];
-    for (let i = 1; i <= Math.ceil(categoryListData.length / perPageData); i++) {
+    for (let i = 1; i <= Math.ceil(tasks.length / perPageData); i++) {
         pageNumbers.push(i);
     }
 
@@ -73,10 +169,12 @@ const Categories = () => {
                         <Col xxl={3}>
                             <Card>
                                 <Card.Header>
-                                    <h6 className="card-title mb-0">Görev Oluştur</h6>
+                                    <h6 className="card-title mb-0">
+                                        {editingTask ? 'Görev Düzenle' : 'Görev Oluştur'}
+                                    </h6>
                                 </Card.Header>
                                 <Card.Body>
-                                    <form autoComplete="off" className="needs-validation createCategory-form" id="createCategory-form" noValidate>
+                                    <form autoComplete="off" className="needs-validation createCategory-form" id="createCategory-form" noValidate onSubmit={handleSaveTask}>
                                         <input type="hidden" id="categoryid-input" className="form-control" value="" />
                                         <Row>
                                             <Col xxl={12} lg={6}>
@@ -101,26 +199,65 @@ const Categories = () => {
                                             </Col>
                                             <Col xxl={12} lg={6}>
                                                 <div className="mb-3">
-                                                    <label htmlFor="priority" className="form-label">Öncelik Seviyesi <span className="text-danger">*</span></label>
-                                                    <select className="form-control" id="priority">
-                                                        <option value="">Öncelik Seçin</option>
-                                                        <option value="low">Düşük</option>
-                                                        <option value="medium">Orta</option>
-                                                        <option value="high">Yüksek</option>
-                                                        <option value="urgent">Acil</option>
-                                                    </select>
-                                                </div>
-                                            </Col>
-                                            <Col xxl={12} lg={6}>
-                                                <div className="mb-3">
                                                     <label htmlFor="descriptionInput" className="form-label">Açıklama</label>
                                                     <textarea className="form-control" id="descriptionInput" rows={3} placeholder="Görev açıklaması" required></textarea>
                                                     <div className="invalid-feedback">Lütfen bir açıklama girin.</div>
                                                 </div>
                                             </Col>
                                             <Col xxl={12}>
+                                                <div className="mb-3">
+                                                    <label className="form-label">Alt Görevler</label>
+                                                    <div className="d-flex mb-2">
+                                                        <input 
+                                                            type="text" 
+                                                            className="form-control me-2" 
+                                                            placeholder="Alt görev ekle"
+                                                            value={currentSubTask}
+                                                            onChange={(e) => setCurrentSubTask(e.target.value)}
+                                                            onKeyPress={(e) => {
+                                                                if (e.key === 'Enter') {
+                                                                    e.preventDefault();
+                                                                    handleAddSubTask();
+                                                                }
+                                                            }}
+                                                        />
+                                                        <Button 
+                                                            variant="outline-primary" 
+                                                            type="button"
+                                                            onClick={handleAddSubTask}
+                                                        >
+                                                            <i className="ri-add-line"></i>
+                                                        </Button>
+                                                    </div>
+                                                    {subTasks.length > 0 && (
+                                                        <div className="border rounded p-2">
+                                                            {subTasks.map((subTask, index) => (
+                                                                <div key={index} className="d-flex align-items-center justify-content-between mb-1">
+                                                                    <span className="text-muted">• {subTask}</span>
+                                                                    <Button 
+                                                                        variant="outline-danger" 
+                                                                        size="sm"
+                                                                        type="button"
+                                                                        onClick={() => handleRemoveSubTask(index)}
+                                                                    >
+                                                                        <i className="ri-close-line"></i>
+                                                                    </Button>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </Col>
+                                            <Col xxl={12}>
                                                 <div className="text-end">
-                                                    <Button variant='success' type="submit">Görev Ekle</Button>
+                                                    {editingTask && (
+                                                        <Button variant='secondary' type="button" className="me-2" onClick={handleCancelEdit}>
+                                                            İptal
+                                                        </Button>
+                                                    )}
+                                                    <Button variant='success' type="submit">
+                                                        {editingTask ? 'Görev Güncelle' : 'Görev Ekle'}
+                                                    </Button>
                                                 </div>
                                             </Col>
                                         </Row>
@@ -136,16 +273,6 @@ const Categories = () => {
                                         <i className="ri-search-line search-icon"></i>
                                     </div>
                                 </Col>
-                                <Col xxl={2} lg={6}>
-                                    <select className="form-select" data-choices data-choices-search-false name="choices-single-default" id="idStatus">
-                                        <option value="">Durum</option>
-                                        <option defaultValue="all">Tümü</option>
-                                        <option value="pending">Beklemede</option>
-                                        <option value="in-progress">Devam Ediyor</option>
-                                        <option value="completed">Tamamlandı</option>
-                                        <option value="cancelled">İptal Edildi</option>
-                                    </select>
-                                </Col>
                             </Row>
 
                             <Row id="categories-list">
@@ -155,8 +282,8 @@ const Categories = () => {
                                             <div className="d-flex align-items-center mb-3">
                                                 <h5 className="flex-grow-1 mb-0">{item.categoryTitle}</h5>
                                                 <ul className="flex-shrink-0 list-unstyled hstack gap-1 mb-0">
-                                                    <li><Link to="#" className="badge bg-info-subtle text-info">Düzenle</Link></li>
-                                                    <li><Link to="#" data-bs-toggle="modal" className="badge bg-danger-subtle text-danger">Sil</Link></li>
+                                                    <li><Link to="#" className="badge bg-info-subtle text-info" onClick={() => handleEditTask(item)}>Düzenle</Link></li>
+                                                    <li><Link to="#" className="badge bg-danger-subtle text-danger" onClick={() => handleDeleteTask(item)}>Sil</Link></li>
                                                 </ul>
                                             </div>
                                             <ul className="list-unstyled vstack gap-2 mb-0">
@@ -237,6 +364,29 @@ const Categories = () => {
                     </Row>
                 </div>
             </Offcanvas>
+
+            {/* Delete Confirmation Modal */}
+            <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Görevi Sil</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>Bu görevi silmek istediğinizden emin misiniz?</p>
+                    {taskToDelete && (
+                        <div className="alert alert-warning">
+                            <strong>{taskToDelete.categoryTitle}</strong> görevi kalıcı olarak silinecektir.
+                        </div>
+                    )}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+                        İptal
+                    </Button>
+                    <Button variant="danger" onClick={confirmDelete}>
+                        <i className="ri-delete-bin-line me-1"></i> Sil
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </React.Fragment >
 
     );

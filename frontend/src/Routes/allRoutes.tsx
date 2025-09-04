@@ -6,7 +6,6 @@ import Dashboard from "pages/Dashboard";
 import ListView from "pages/Products/ListView";
 import CreateProduct from "pages/Products/CreateProduct";
 import Categories from "pages/Products/Categories";
-import SubCategories from "pages/Products/SubCategories";
 
 // Orders
 import OrdersListView from "pages/Orders/ListView"
@@ -51,7 +50,6 @@ const authProtectedRoutes = [
     { path: "/products-list", component: <ListView /> },
     { path: "/product-create", component: <CreateProduct /> },
     { path: "/categories", component: <Categories /> },
-    { path: "/sub-categories", component: <SubCategories /> },
 
     // Rezervasyon
     { path: "/reservation-list", component: <OrdersListView /> },
