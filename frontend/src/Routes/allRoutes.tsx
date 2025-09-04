@@ -44,8 +44,8 @@ import UserProfile from "pages/Authentication/user-profile";
 const authProtectedRoutes = [
     { path: "/dashboard", component: <Dashboard /> },
 
-    //Product
-    { path: "/categories", component: <Categories /> },
+    //Services
+    { path: "/services", component: <Categories /> },
 
     // Rezervasyon
     { path: "/reservation-list", component: <OrdersListView /> },

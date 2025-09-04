@@ -109,7 +109,7 @@ const Navdata = () => {
             id: "services",
             label: "Hizmetler",
             icon: "bi bi-briefcase",
-            link: "/categories",
+            link: "/services",
         },
         {
             id: "tenantlist",
