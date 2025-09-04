@@ -62,9 +62,7 @@ const Navdata = () => {
             id: "dashboard",
             label: "Dashboard",
             icon: "bi bi-speedometer2",
-            link: "/dashboard",
-            badgeName : "Hot",
-            badgeColor : "danger"
+            link: "/dashboard"
         },
         {
             id: "rezervasyon",
