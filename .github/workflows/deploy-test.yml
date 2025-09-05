@@ -10,8 +10,6 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: xshuden/uppeng-crm-frontend
-  DOCKER_HOST: ${{ secrets.DOCKER_HOST }}
-  SERVICE_NAME: uppeng-crm-frontend
 
 jobs:
   build-and-deploy:
@@ -19,59 +17,79 @@ jobs:
     permissions:
       contents: read
       packages: write
+    environment:
+      name: test
+      url: http://test-8xpm.uppeng.co
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Deploy to Server
-        env:
-          COMMIT_SHA: ${{ github.sha }}
-        run: |
-          echo "🚀 Deploying to server..."
-          
-          # Create SSH key file with proper format
-          cat > /tmp/deploy_key << 'EOL'
-          ${{ secrets.DEPLOY_SSH_KEY }}
-          EOL
-          chmod 600 /tmp/deploy_key
-          
-          # Create deployment archive
-          tar -czf /tmp/frontend-source.tar.gz frontend/
-          
-          # Upload source and deploy
-          scp -i /tmp/deploy_key -o StrictHostKeyChecking=no /tmp/frontend-source.tar.gz root@31.42.127.152:/tmp/
-          
-          ssh -i /tmp/deploy_key -o StrictHostKeyChecking=no root@31.42.127.152 << 'EOF'
-            echo "📦 Extracting source code..."
-            cd /tmp
-            rm -rf frontend
-            tar -xzf frontend-source.tar.gz
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/amd64
+
+      - name: Deploy to Test Environment
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: 31.42.127.152
+          username: root
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          command_timeout: 20m
+          script: |
+            IMAGE_TAG="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
+            SERVICE_NAME="uppeng-crm-frontend"
             
-            echo "🔨 Building Docker image on server..."
-            cd frontend
-            docker build -t uppeng-crm-frontend:$COMMIT_SHA .
+            echo "🚀 Deploying $IMAGE_TAG to TEST environment..."
             
-            echo "🗑️ Removing existing service..."
-            docker service rm uppeng-crm-frontend 2>/dev/null || echo "No existing service"
-            sleep 5
+            # Login to registry
+            echo "🔐 Logging in to GitHub Container Registry..."
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             
-            echo "🚀 Creating new service..."
+            # Clean up old images
+            echo "🧹 Cleaning up old images..."
+            docker image prune -f || true
+            
+            # Pull new image
+            echo "📥 Pulling new image: $IMAGE_TAG"
+            docker pull $IMAGE_TAG
+            
+            # Remove old service if exists
+            if docker service ls | grep -q $SERVICE_NAME; then
+              echo "🗑️ Removing old service..."
+              docker service rm $SERVICE_NAME
+              sleep 10
+            fi
+            
+            # Create new service
+            echo "📦 Creating new service..."
             docker service create \
-              --name uppeng-crm-frontend \
+              --name $SERVICE_NAME \
               --publish 3000:3000 \
+              --replicas 1 \
               --restart-condition any \
               --restart-max-attempts 3 \
-              uppeng-crm-frontend:$COMMIT_SHA
+              $IMAGE_TAG
             
-            echo "🧹 Cleaning up..."
-            rm -rf /tmp/frontend /tmp/frontend-source.tar.gz
-            
-            echo "✅ Deployment completed!"
-          EOF
-          
-          # Clean up
-          rm -f /tmp/deploy_key /tmp/frontend-source.tar.gz
+            echo "✅ CRM Frontend deployment completed!"
 
       - name: Verify Deployment
         run: |
