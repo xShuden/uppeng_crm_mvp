@@ -7,8 +7,8 @@ WORKDIR /app
 # Copy package files
 COPY package.json package-lock.json* yarn.lock* ./
 # Install dependencies with better error handling
-RUN npm ci --only=production --frozen-lockfile || \
-    (rm -rf node_modules package-lock.json && npm install --only=production)
+RUN npm ci --only=production --frozen-lockfile --legacy-peer-deps || \
+    (rm -rf node_modules package-lock.json && npm install --only=production --legacy-peer-deps)
 
 # Builder stage
 FROM node:20-alpine AS builder
@@ -16,8 +16,8 @@ WORKDIR /app
 
 # Copy package files and install all dependencies
 COPY package.json package-lock.json* yarn.lock* ./
-RUN npm ci --frozen-lockfile || \
-    (rm -rf node_modules package-lock.json && npm install)
+RUN npm ci --frozen-lockfile --legacy-peer-deps || \
+    (rm -rf node_modules package-lock.json && npm install --legacy-peer-deps)
 
 # Copy source code
 COPY . .
