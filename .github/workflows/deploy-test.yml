@@ -96,91 +96,50 @@ jobs:
               external: true
           EOF
 
-      - name: Setup Docker Context for Remote Host  
+      - name: Setup SSH for Remote Docker Access
         env:
           DOCKER_HOST: ${{ secrets.DOCKER_HOST }}
-          DOCKER_CERT_PATH: ${{ secrets.DOCKER_CERT_PATH }}
-          DOCKER_TLS_VERIFY: ${{ secrets.DOCKER_TLS_VERIFY }}
         run: |
-          # Create docker context for remote deployment
-          if [ ! -z "$DOCKER_HOST" ]; then
-            echo "Setting up Docker context for remote host: $DOCKER_HOST"
-            
-            # Setup certificates if provided
-            if [ ! -z "$DOCKER_CERT_PATH" ]; then
-              mkdir -p ~/.docker/certs
-              echo "${{ secrets.DOCKER_CA_CERT }}" | base64 -d > ~/.docker/certs/ca.pem
-              echo "${{ secrets.DOCKER_CLIENT_CERT }}" | base64 -d > ~/.docker/certs/cert.pem  
-              echo "${{ secrets.DOCKER_CLIENT_KEY }}" | base64 -d > ~/.docker/certs/key.pem
-              chmod 400 ~/.docker/certs/*.pem
-              export DOCKER_CERT_PATH=~/.docker/certs
-            fi
-            
-            # Create and use context
-            docker context create remote --docker "host=$DOCKER_HOST,ca=~/.docker/certs/ca.pem,cert=~/.docker/certs/cert.pem,key=~/.docker/certs/key.pem"
-            docker context use remote
-          else
-            echo "Using local Docker daemon"
-          fi
+          # For now, we'll build locally and deploy via direct SSH
+          echo "Building Docker image locally, deploying via SSH"
+          echo "Remote Docker host: $DOCKER_HOST"
 
-      - name: Deploy to Docker Swarm via Portainer
+      - name: Deploy to Docker Swarm via SSH
         env:
           IMAGE_TAG: ${{ github.ref_name }}-${{ github.sha }}
-          PORTAINER_URL: ${{ secrets.PORTAINER_URL }}
-          PORTAINER_USERNAME: ${{ secrets.PORTAINER_USERNAME }}
-          PORTAINER_PASSWORD: ${{ secrets.PORTAINER_PASSWORD }}
         run: |
-          # Method 1: Direct Docker Swarm deployment
-          if [ ! -z "$DOCKER_HOST" ]; then
-            echo "Deploying to Docker Swarm..."
+          echo "🚀 Deploying to Docker Swarm via SSH..."
+          
+          # Create SSH key file
+          echo "${{ secrets.DEPLOY_SSH_KEY }}" > /tmp/deploy_key
+          chmod 600 /tmp/deploy_key
+          
+          # Deploy via SSH
+          ssh -i /tmp/deploy_key -o StrictHostKeyChecking=no root@31.42.127.152 << 'EOF'
+            # Login to GitHub Container Registry
+            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             
-            # Initialize swarm if not already done
-            docker swarm init --advertise-addr $(docker context inspect remote --format '{{.Endpoints.docker.Host}}' | sed 's/tcp:\/\///' | cut -d: -f1) 2>/dev/null || echo "Swarm already initialized"
-            
-            # Create network if it doesn't exist
+            # Create overlay network if not exists
             docker network create --driver overlay uppeng_network 2>/dev/null || echo "Network already exists"
             
-            # Deploy stack
-            docker stack deploy -c docker-compose.deploy.yml uppeng-crm-stack --with-registry-auth
+            # Remove existing stack if exists
+            docker stack rm uppeng-crm-stack 2>/dev/null || echo "No existing stack to remove"
+            sleep 5
             
-            echo "✅ Stack deployed successfully"
+            # Deploy new stack
+            docker service create \
+              --name uppeng-crm-frontend \
+              --publish 3000:3000 \
+              --network uppeng_network \
+              --restart-condition any \
+              --restart-max-attempts 3 \
+              ghcr.io/xshuden/uppeng-crm-frontend:${{ env.IMAGE_TAG }}
             
-          # Method 2: Portainer API deployment (fallback)
-          elif [ ! -z "$PORTAINER_URL" ]; then
-            echo "Deploying via Portainer API..."
-            
-            # Get Portainer authentication token
-            AUTH_TOKEN=$(curl -s -X POST "$PORTAINER_URL/api/auth" \
-              -H "Content-Type: application/json" \
-              -d '{"Username":"'$PORTAINER_USERNAME'","Password":"'$PORTAINER_PASSWORD'"}' | \
-              python3 -c "import sys, json; print(json.load(sys.stdin)['jwt'])")
-            
-            if [ -z "$AUTH_TOKEN" ]; then
-              echo "❌ Failed to authenticate with Portainer"
-              exit 1
-            fi
-            
-            # Get endpoint ID (assuming first endpoint)
-            ENDPOINT_ID=$(curl -s -H "Authorization: Bearer $AUTH_TOKEN" \
-              "$PORTAINER_URL/api/endpoints" | \
-              python3 -c "import sys, json; print(json.load(sys.stdin)[0]['Id'])")
-            
-            # Deploy stack via Portainer
-            curl -X POST "$PORTAINER_URL/api/stacks" \
-              -H "Authorization: Bearer $AUTH_TOKEN" \
-              -H "Content-Type: application/json" \
-              -d '{
-                "Name": "uppeng-crm-frontend",
-                "SwarmID": "'$ENDPOINT_ID'", 
-                "StackFileContent": "'$(cat docker-compose.deploy.yml | sed 's/"/\\"/g' | tr -d '\n')'",
-                "Env": []
-              }'
-            
-            echo "✅ Deployed via Portainer API"
-          else
-            echo "❌ No deployment method configured (DOCKER_HOST or PORTAINER_URL required)"
-            exit 1
-          fi
+            echo "✅ Service deployed successfully"
+          EOF
+          
+          # Clean up SSH key
+          rm -f /tmp/deploy_key
 
       - name: Verify Deployment
         run: |
