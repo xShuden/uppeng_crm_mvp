@@ -1,0 +1,244 @@
+name: Deploy CRM Frontend to Test Environment
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: xshuden/uppeng-crm-frontend
+  DOCKER_HOST: ${{ secrets.DOCKER_HOST }}
+  SERVICE_NAME: uppeng-crm-frontend
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Create docker-compose.yml for deployment
+        env:
+          IMAGE_TAG: ${{ github.ref_name }}-${{ github.sha }}
+        run: |
+          cat > docker-compose.deploy.yml << EOF
+          version: '3.8'
+          services:
+            uppeng-crm-frontend:
+              image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${IMAGE_TAG}
+              container_name: uppeng-crm-frontend
+              environment:
+                NODE_ENV: production
+                ENVIRONMENT: test
+              ports:
+                - "3000:3000"
+              networks:
+                - uppeng_network
+              restart: unless-stopped
+              healthcheck:
+                test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/health"]
+                interval: 30s
+                timeout: 10s
+                retries: 3
+                start_period: 40s
+              deploy:
+                replicas: 1
+                update_config:
+                  parallelism: 1
+                  delay: 10s
+                  failure_action: rollback
+                restart_policy:
+                  condition: any
+                  delay: 5s
+                  max_attempts: 3
+
+          networks:
+            uppeng_network:
+              external: true
+          EOF
+
+      - name: Setup Docker Context for Remote Host  
+        env:
+          DOCKER_HOST: ${{ secrets.DOCKER_HOST }}
+          DOCKER_CERT_PATH: ${{ secrets.DOCKER_CERT_PATH }}
+          DOCKER_TLS_VERIFY: ${{ secrets.DOCKER_TLS_VERIFY }}
+        run: |
+          # Create docker context for remote deployment
+          if [ ! -z "$DOCKER_HOST" ]; then
+            echo "Setting up Docker context for remote host: $DOCKER_HOST"
+            
+            # Setup certificates if provided
+            if [ ! -z "$DOCKER_CERT_PATH" ]; then
+              mkdir -p ~/.docker/certs
+              echo "${{ secrets.DOCKER_CA_CERT }}" | base64 -d > ~/.docker/certs/ca.pem
+              echo "${{ secrets.DOCKER_CLIENT_CERT }}" | base64 -d > ~/.docker/certs/cert.pem  
+              echo "${{ secrets.DOCKER_CLIENT_KEY }}" | base64 -d > ~/.docker/certs/key.pem
+              chmod 400 ~/.docker/certs/*.pem
+              export DOCKER_CERT_PATH=~/.docker/certs
+            fi
+            
+            # Create and use context
+            docker context create remote --docker "host=$DOCKER_HOST,ca=~/.docker/certs/ca.pem,cert=~/.docker/certs/cert.pem,key=~/.docker/certs/key.pem"
+            docker context use remote
+          else
+            echo "Using local Docker daemon"
+          fi
+
+      - name: Deploy to Docker Swarm via Portainer
+        env:
+          IMAGE_TAG: ${{ github.ref_name }}-${{ github.sha }}
+          PORTAINER_URL: ${{ secrets.PORTAINER_URL }}
+          PORTAINER_USERNAME: ${{ secrets.PORTAINER_USERNAME }}
+          PORTAINER_PASSWORD: ${{ secrets.PORTAINER_PASSWORD }}
+        run: |
+          # Method 1: Direct Docker Swarm deployment
+          if [ ! -z "$DOCKER_HOST" ]; then
+            echo "Deploying to Docker Swarm..."
+            
+            # Initialize swarm if not already done
+            docker swarm init --advertise-addr $(docker context inspect remote --format '{{.Endpoints.docker.Host}}' | sed 's/tcp:\/\///' | cut -d: -f1) 2>/dev/null || echo "Swarm already initialized"
+            
+            # Create network if it doesn't exist
+            docker network create --driver overlay uppeng_network 2>/dev/null || echo "Network already exists"
+            
+            # Deploy stack
+            docker stack deploy -c docker-compose.deploy.yml uppeng-crm-stack --with-registry-auth
+            
+            echo "✅ Stack deployed successfully"
+            
+          # Method 2: Portainer API deployment (fallback)
+          elif [ ! -z "$PORTAINER_URL" ]; then
+            echo "Deploying via Portainer API..."
+            
+            # Get Portainer authentication token
+            AUTH_TOKEN=$(curl -s -X POST "$PORTAINER_URL/api/auth" \
+              -H "Content-Type: application/json" \
+              -d '{"Username":"'$PORTAINER_USERNAME'","Password":"'$PORTAINER_PASSWORD'"}' | \
+              python3 -c "import sys, json; print(json.load(sys.stdin)['jwt'])")
+            
+            if [ -z "$AUTH_TOKEN" ]; then
+              echo "❌ Failed to authenticate with Portainer"
+              exit 1
+            fi
+            
+            # Get endpoint ID (assuming first endpoint)
+            ENDPOINT_ID=$(curl -s -H "Authorization: Bearer $AUTH_TOKEN" \
+              "$PORTAINER_URL/api/endpoints" | \
+              python3 -c "import sys, json; print(json.load(sys.stdin)[0]['Id'])")
+            
+            # Deploy stack via Portainer
+            curl -X POST "$PORTAINER_URL/api/stacks" \
+              -H "Authorization: Bearer $AUTH_TOKEN" \
+              -H "Content-Type: application/json" \
+              -d '{
+                "Name": "uppeng-crm-frontend",
+                "SwarmID": "'$ENDPOINT_ID'", 
+                "StackFileContent": "'$(cat docker-compose.deploy.yml | sed 's/"/\\"/g' | tr -d '\n')'",
+                "Env": []
+              }'
+            
+            echo "✅ Deployed via Portainer API"
+          else
+            echo "❌ No deployment method configured (DOCKER_HOST or PORTAINER_URL required)"
+            exit 1
+          fi
+
+      - name: Verify Deployment
+        run: |
+          echo "⏳ Waiting for service to be ready..."
+          sleep 30
+          
+          if [ ! -z "$DOCKER_HOST" ]; then
+            # Check stack services
+            echo "=== STACK SERVICES ==="
+            docker stack services uppeng-crm-stack
+            
+            echo ""
+            echo "=== RUNNING CONTAINERS ==="  
+            docker ps --filter "name=uppeng-crm-stack"
+            
+            echo ""
+            echo "=== SERVICE LOGS (last 20 lines) ==="
+            docker service logs --tail 20 uppeng-crm-stack_uppeng-crm-frontend 2>/dev/null || echo "Logs not available yet"
+          fi
+
+      - name: Health Check
+        run: |
+          echo "🔍 Running health checks..."
+          
+          # Try to connect to the service
+          MAX_ATTEMPTS=6
+          ATTEMPT=1
+          
+          while [ $ATTEMPT -le $MAX_ATTEMPTS ]; do
+            echo "Health check attempt $ATTEMPT/$MAX_ATTEMPTS..."
+            
+            if curl -f -s http://test-8xpm.uppeng.co/health > /dev/null 2>&1; then
+              echo "✅ Health check passed!"
+              break
+            else
+              echo "⏳ Service not ready yet, waiting..."
+              sleep 30
+              ATTEMPT=$((ATTEMPT + 1))
+            fi
+          done
+          
+          if [ $ATTEMPT -gt $MAX_ATTEMPTS ]; then
+            echo "⚠️  Health check failed after $MAX_ATTEMPTS attempts"
+            echo "Service may still be starting up..."
+          fi
+
+      - name: Deployment Summary
+        if: always()
+        env:
+          IMAGE_TAG: ${{ github.ref_name }}-${{ github.sha }}
+        run: |
+          echo "========================================"
+          echo "🚀 CRM v2 Frontend Deployment Summary"
+          echo "========================================"
+          echo "📦 Image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${IMAGE_TAG}"
+          echo "🎯 Environment: Test"
+          echo "🐳 Deployment: Docker Swarm Stack"
+          echo "🌐 URL: http://test-8xpm.uppeng.co"
+          echo "📋 Stack: uppeng-crm-stack"
+          echo "🔧 Service: uppeng-crm-frontend"
+          echo "========================================"
