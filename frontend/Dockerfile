@@ -1,35 +1,21 @@
 # Multi-stage build for React CRM Application
-FROM node:20-alpine AS deps
-# Add libc6-compat for Alpine compatibility
-RUN apk add --no-cache libc6-compat
-WORKDIR /app
-
-# Copy package files
-COPY package.json package-lock.json* yarn.lock* ./
-# Install dependencies with better error handling
-RUN npm ci --only=production --frozen-lockfile --legacy-peer-deps || \
-    (rm -rf node_modules package-lock.json && npm install --only=production --legacy-peer-deps)
-
-# Builder stage
+# Build stage
 FROM node:20-alpine AS builder
 WORKDIR /app
 
-# Copy package files and install all dependencies
-COPY package.json package-lock.json* yarn.lock* ./
+# Copy package files and install dependencies
+COPY package.json package-lock.json* ./
 RUN npm ci --frozen-lockfile --legacy-peer-deps || \
-    (rm -rf node_modules package-lock.json && npm install --legacy-peer-deps)
+    npm install --legacy-peer-deps
 
-# Copy source code
+# Copy source code and build
 COPY . .
-
-# Build the React application
 ENV NODE_ENV=production
 ENV GENERATE_SOURCEMAP=false
-
 RUN npm run build
 
 # Production stage - Use Nginx to serve built React app
-FROM nginx:1.25-alpine AS runner
+FROM nginx:1.25-alpine
 WORKDIR /usr/share/nginx/html
 
 # Remove default nginx files
@@ -97,20 +83,7 @@ server {
 }
 EOF
 
-# Create non-root user and set permissions
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nginx -u 1001 -G nodejs && \
-    chown -R nginx:nodejs /usr/share/nginx/html && \
-    chown -R nginx:nodejs /var/cache/nginx && \
-    chown -R nginx:nodejs /var/log/nginx && \
-    chown -R nginx:nodejs /etc/nginx/conf.d && \
-    touch /var/run/nginx.pid && \
-    chown -R nginx:nodejs /var/run/nginx.pid
-
-# Switch to non-root user
-USER nginx
-
-# Expose port 3000 (same as React dev server for consistency)
+# Expose port 3000
 EXPOSE 3000
 
 # Health check for container monitoring
