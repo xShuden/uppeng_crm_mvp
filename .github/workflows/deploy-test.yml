@@ -24,74 +24,54 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Log in to Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: |
-            type=ref,event=branch
-            type=ref,event=pr
-            type=sha,prefix={{branch}}-
-            type=raw,value=latest,enable={{is_default_branch}}
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./frontend
-          file: ./frontend/Dockerfile
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      - name: Deploy via Portainer API
+      - name: Deploy to Server
         env:
-          IMAGE_TAG: ${{ github.ref_name }}-${{ github.sha }}
+          COMMIT_SHA: ${{ github.sha }}
         run: |
-          echo "🚀 Deploying via Portainer API..."
+          echo "🚀 Deploying to server..."
           
-          # Create SSH key file
-          echo "${{ secrets.DEPLOY_SSH_KEY }}" > /tmp/deploy_key
+          # Create SSH key file with proper format
+          cat > /tmp/deploy_key << 'EOL'
+          ${{ secrets.DEPLOY_SSH_KEY }}
+          EOL
           chmod 600 /tmp/deploy_key
           
-          # Deploy via SSH to Portainer
+          # Create deployment archive
+          tar -czf /tmp/frontend-source.tar.gz frontend/
+          
+          # Upload source and deploy
+          scp -i /tmp/deploy_key -o StrictHostKeyChecking=no /tmp/frontend-source.tar.gz root@31.42.127.152:/tmp/
+          
           ssh -i /tmp/deploy_key -o StrictHostKeyChecking=no root@31.42.127.152 << 'EOF'
-            echo "🗑️ Removing existing service via Docker..."
-            docker service rm uppeng-crm-frontend 2>/dev/null || echo "No existing service to remove"
-            sleep 10
+            echo "📦 Extracting source code..."
+            cd /tmp
+            rm -rf frontend
+            tar -xzf frontend-source.tar.gz
             
-            echo "🐳 Login to GitHub Container Registry..."
-            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            echo "🔨 Building Docker image on server..."
+            cd frontend
+            docker build -t uppeng-crm-frontend:$COMMIT_SHA .
             
-            echo "📦 Pull latest image..."
-            docker pull ghcr.io/xshuden/uppeng-crm-frontend:master-${{ github.sha }}
+            echo "🗑️ Removing existing service..."
+            docker service rm uppeng-crm-frontend 2>/dev/null || echo "No existing service"
+            sleep 5
             
-            echo "🚀 Create new Docker service..."
+            echo "🚀 Creating new service..."
             docker service create \
               --name uppeng-crm-frontend \
               --publish 3000:3000 \
               --restart-condition any \
               --restart-max-attempts 3 \
-              --with-registry-auth \
-              ghcr.io/xshuden/uppeng-crm-frontend:master-${{ github.sha }}
+              uppeng-crm-frontend:$COMMIT_SHA
             
-            echo "✅ Service deployed successfully"
+            echo "🧹 Cleaning up..."
+            rm -rf /tmp/frontend /tmp/frontend-source.tar.gz
+            
+            echo "✅ Deployment completed!"
           EOF
           
-          # Clean up SSH key
-          rm -f /tmp/deploy_key
+          # Clean up
+          rm -f /tmp/deploy_key /tmp/frontend-source.tar.gz
 
       - name: Verify Deployment
         run: |
