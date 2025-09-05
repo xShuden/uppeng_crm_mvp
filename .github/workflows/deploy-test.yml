@@ -24,77 +24,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Log in to Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: |
-            type=ref,event=branch
-            type=ref,event=pr
-            type=sha,prefix={{branch}}-
-            type=raw,value=latest,enable={{is_default_branch}}
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./frontend
-          file: ./frontend/Dockerfile
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      - name: Create docker-compose.yml for deployment
-        env:
-          IMAGE_TAG: ${{ github.ref_name }}-${{ github.sha }}
+      - name: Prepare deployment files
         run: |
-          cat > docker-compose.deploy.yml << EOF
-          version: '3.8'
-          services:
-            uppeng-crm-frontend:
-              image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${IMAGE_TAG}
-              container_name: uppeng-crm-frontend
-              environment:
-                NODE_ENV: production
-                ENVIRONMENT: test
-              ports:
-                - "3000:3000"
-              networks:
-                - uppeng_network
-              restart: unless-stopped
-              healthcheck:
-                test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/health"]
-                interval: 30s
-                timeout: 10s
-                retries: 3
-                start_period: 40s
-              deploy:
-                replicas: 1
-                update_config:
-                  parallelism: 1
-                  delay: 10s
-                  failure_action: rollback
-                restart_policy:
-                  condition: any
-                  delay: 5s
-                  max_attempts: 3
+          echo "📦 Preparing deployment files..."
+          # Create a deployment archive  
+          tar -czf /tmp/frontend-deploy.tar.gz -C . frontend/
 
-          networks:
-            uppeng_network:
-              external: true
-          EOF
 
       - name: Setup SSH for Remote Docker Access
         env:
@@ -104,36 +39,46 @@ jobs:
           echo "Building Docker image locally, deploying via SSH"
           echo "Remote Docker host: $DOCKER_HOST"
 
-      - name: Deploy to Docker Swarm via SSH
+      - name: Deploy to Server via SSH
         env:
           IMAGE_TAG: ${{ github.ref_name }}-${{ github.sha }}
         run: |
-          echo "🚀 Deploying to Docker Swarm via SSH..."
+          echo "🚀 Deploying to server via SSH..."
           
           # Create SSH key file
           echo "${{ secrets.DEPLOY_SSH_KEY }}" > /tmp/deploy_key
           chmod 600 /tmp/deploy_key
           
+          # Upload frontend files to server
+          scp -i /tmp/deploy_key -o StrictHostKeyChecking=no /tmp/frontend-deploy.tar.gz root@31.42.127.152:/tmp/
+          
           # Deploy via SSH
-          ssh -i /tmp/deploy_key -o StrictHostKeyChecking=no root@31.42.127.152 << 'EOF'
-            # Login to GitHub Container Registry
-            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          ssh -i /tmp/deploy_key -o StrictHostKeyChecking=no root@31.42.127.152 << EOF
+            echo "📦 Extracting frontend files..."
+            cd /tmp
+            rm -rf frontend
+            tar -xzf frontend-deploy.tar.gz
             
-            # Create overlay network if not exists
-            docker network create --driver overlay uppeng_network 2>/dev/null || echo "Network already exists"
+            echo "🔨 Building Docker image on server..."
+            cd /tmp/frontend
             
-            # Remove existing stack if exists
-            docker stack rm uppeng-crm-stack 2>/dev/null || echo "No existing stack to remove"
+            # Build Docker image locally on server
+            docker build -t uppeng-crm-frontend:$IMAGE_TAG .
+            
+            echo "🗑️ Removing existing service if exists..."
+            docker service rm uppeng-crm-frontend 2>/dev/null || echo "No existing service to remove"
             sleep 5
             
-            # Deploy new stack
+            echo "🚀 Creating new service..."
             docker service create \
               --name uppeng-crm-frontend \
               --publish 3000:3000 \
-              --network uppeng_network \
               --restart-condition any \
               --restart-max-attempts 3 \
-              ghcr.io/xshuden/uppeng-crm-frontend:${{ env.IMAGE_TAG }}
+              uppeng-crm-frontend:$IMAGE_TAG
+            
+            echo "🧹 Cleaning up..."
+            rm -rf /tmp/frontend /tmp/frontend-deploy.tar.gz
             
             echo "✅ Service deployed successfully"
           EOF
