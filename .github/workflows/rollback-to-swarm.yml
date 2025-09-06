@@ -1,0 +1,125 @@
+name: Rollback to Docker Swarm
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "ROLLBACK" to confirm rollback to Docker Swarm'
+        required: true
+        type: string
+      reason:
+        description: 'Reason for rollback'
+        required: true
+        type: string
+
+jobs:
+  rollback:
+    name: Execute Rollback
+    runs-on: ubuntu-latest
+    if: github.event.inputs.confirm == 'ROLLBACK'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Log rollback reason
+        run: |
+          echo "Rollback initiated by: ${{ github.actor }}"
+          echo "Reason: ${{ github.event.inputs.reason }}"
+          echo "Time: $(date)"
+      
+      - name: Transfer rollback script
+        uses: appleboy/scp-action@v0.1.5
+        with:
+          host: 31.42.127.152
+          username: root
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          port: 22
+          source: "scripts/rollback_to_swarm.sh"
+          target: "/root/migration/"
+          strip_components: 1
+      
+      - name: Execute rollback
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: 31.42.127.152
+          username: root
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          port: 22
+          command_timeout: 20m
+          script: |
+            cd /root/migration
+            chmod +x rollback_to_swarm.sh
+            
+            echo "Starting rollback to Docker Swarm..."
+            echo "===================================="
+            
+            # Execute rollback script
+            bash rollback_to_swarm.sh
+            
+            # Capture exit code
+            ROLLBACK_STATUS=$?
+            
+            if [ $ROLLBACK_STATUS -eq 0 ]; then
+              echo ""
+              echo "✓ Rollback completed successfully!"
+            else
+              echo ""
+              echo "✗ Rollback failed with exit code: $ROLLBACK_STATUS"
+              exit $ROLLBACK_STATUS
+            fi
+      
+      - name: Validate rollback
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: 31.42.127.152
+          username: root
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          port: 22
+          script: |
+            echo "Rollback Validation"
+            echo "==================="
+            echo ""
+            
+            # Check Docker Swarm
+            echo "Docker Swarm Status:"
+            docker info --format "Swarm: {{.Swarm.LocalNodeState}}"
+            docker node ls
+            echo ""
+            
+            # Check Portainer
+            echo "Portainer Status:"
+            docker ps | grep portainer && echo "✓ Portainer is running" || echo "✗ Portainer not found"
+            echo ""
+            
+            # Check services
+            echo "Docker Services:"
+            docker service ls
+            echo ""
+            
+            # Check that Nomad/Consul are stopped
+            echo "Nomad Status: $(systemctl is-active nomad || echo 'inactive')"
+            echo "Consul Status: $(systemctl is-active consul || echo 'inactive')"
+      
+      - name: Create summary
+        run: |
+          cat >> $GITHUB_STEP_SUMMARY << EOF
+          # Rollback to Docker Swarm
+          
+          ## Status: Completed
+          
+          ### Rollback Details
+          - **Initiated by**: ${{ github.actor }}
+          - **Reason**: ${{ github.event.inputs.reason }}
+          - **Server**: 31.42.127.152
+          - **Time**: $(date)
+          
+          ### Access Points
+          - Portainer: https://31.42.127.152:9443
+          
+          ### Next Steps
+          1. Access Portainer and verify functionality
+          2. Deploy application stacks
+          3. Verify all services are running
+          4. Document lessons learned from migration attempt
+          EOF

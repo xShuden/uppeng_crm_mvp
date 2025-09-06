@@ -1,0 +1,347 @@
+name: Migrate to Nomad Infrastructure
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "MIGRATE" to confirm migration from Docker Swarm to Nomad'
+        required: true
+        type: string
+      backup:
+        description: 'Create backup before migration?'
+        required: true
+        type: boolean
+        default: true
+
+jobs:
+  pre-migration-check:
+    name: Pre-Migration Validation
+    runs-on: ubuntu-latest
+    if: github.event.inputs.confirm == 'MIGRATE'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Validate migration confirmation
+        run: |
+          echo "Migration confirmed with: ${{ github.event.inputs.confirm }}"
+          echo "Backup requested: ${{ github.event.inputs.backup }}"
+      
+      - name: Check server connectivity
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: 31.42.127.152
+          username: root
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          port: 22
+          script: |
+            echo "✓ SSH connection successful"
+            echo "Server Information:"
+            echo "==================="
+            echo "Hostname: $(hostname)"
+            echo "OS: $(lsb_release -d | cut -f2)"
+            echo "Kernel: $(uname -r)"
+            echo "Memory: $(free -h | grep Mem | awk '{print $2}')"
+            echo "Disk: $(df -h / | tail -1 | awk '{print $4}' ) available"
+            echo ""
+            echo "Current Docker Status:"
+            echo "====================="
+            docker --version || echo "Docker not installed"
+            docker info --format "Swarm: {{.Swarm.LocalNodeState}}" 2>/dev/null || echo "Swarm status unknown"
+            echo ""
+            echo "Current Services:"
+            docker service ls 2>/dev/null || echo "No services or swarm not active"
+
+  backup:
+    name: Backup Current State
+    runs-on: ubuntu-latest
+    needs: pre-migration-check
+    if: github.event.inputs.backup == 'true'
+    
+    steps:
+      - name: Create backup of current configuration
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: 31.42.127.152
+          username: root
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          port: 22
+          command_timeout: 10m
+          script: |
+            echo "Creating backup directory..."
+            BACKUP_DIR="/root/backups/migration-$(date +%Y%m%d-%H%M%S)"
+            mkdir -p "$BACKUP_DIR"
+            
+            echo "Backing up Docker configurations..."
+            # Backup Docker Swarm config if active
+            if docker info 2>/dev/null | grep -q "Swarm: active"; then
+              docker service ls > "$BACKUP_DIR/docker-services.txt" 2>/dev/null || true
+              docker stack ls > "$BACKUP_DIR/docker-stacks.txt" 2>/dev/null || true
+              docker network ls > "$BACKUP_DIR/docker-networks.txt" 2>/dev/null || true
+              
+              # Export service definitions
+              for service in $(docker service ls -q 2>/dev/null); do
+                docker service inspect "$service" > "$BACKUP_DIR/service-$service.json" 2>/dev/null || true
+              done
+            fi
+            
+            # Backup container list
+            docker ps -a > "$BACKUP_DIR/docker-containers.txt" 2>/dev/null || true
+            
+            # Backup volumes list
+            docker volume ls > "$BACKUP_DIR/docker-volumes.txt" 2>/dev/null || true
+            
+            # Backup nginx config
+            if [ -d /etc/nginx ]; then
+              cp -r /etc/nginx "$BACKUP_DIR/nginx-config" 2>/dev/null || true
+            fi
+            
+            # Create backup summary
+            cat > "$BACKUP_DIR/backup-summary.txt" << EOF
+            Backup Created: $(date)
+            Server: $(hostname)
+            Docker Version: $(docker --version)
+            Swarm Status: $(docker info --format "{{.Swarm.LocalNodeState}}" 2>/dev/null || echo "unknown")
+            EOF
+            
+            echo "✓ Backup created at: $BACKUP_DIR"
+            ls -la "$BACKUP_DIR"
+
+  migrate:
+    name: Execute Migration
+    runs-on: ubuntu-latest
+    needs: [pre-migration-check, backup]
+    if: always() && needs.pre-migration-check.result == 'success'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Upload migration script
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: 31.42.127.152
+          username: root
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          port: 22
+          script: |
+            echo "Creating migration directory..."
+            mkdir -p /root/migration
+            cd /root/migration
+            
+            echo "Downloading migration script..."
+            cat > migrate_to_nomad.sh << 'SCRIPT_EOF'
+            ${{ github.workspace }}/scripts/migrate_to_nomad.sh
+            SCRIPT_EOF
+      
+      - name: Transfer migration script
+        uses: appleboy/scp-action@v0.1.5
+        with:
+          host: 31.42.127.152
+          username: root
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          port: 22
+          source: "scripts/migrate_to_nomad.sh"
+          target: "/root/migration/"
+          strip_components: 1
+      
+      - name: Execute migration
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: 31.42.127.152
+          username: root
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          port: 22
+          command_timeout: 30m
+          script: |
+            cd /root/migration
+            chmod +x migrate_to_nomad.sh
+            
+            echo "Starting migration..."
+            echo "===================="
+            
+            # Execute migration script
+            bash migrate_to_nomad.sh
+            
+            # Capture exit code
+            MIGRATION_STATUS=$?
+            
+            if [ $MIGRATION_STATUS -eq 0 ]; then
+              echo ""
+              echo "✓ Migration completed successfully!"
+            else
+              echo ""
+              echo "✗ Migration failed with exit code: $MIGRATION_STATUS"
+              exit $MIGRATION_STATUS
+            fi
+
+  post-migration-validation:
+    name: Post-Migration Validation
+    runs-on: ubuntu-latest
+    needs: migrate
+    if: always() && needs.migrate.result == 'success'
+    
+    steps:
+      - name: Validate Nomad and Consul installation
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: 31.42.127.152
+          username: root
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          port: 22
+          script: |
+            echo "Post-Migration Validation"
+            echo "========================="
+            echo ""
+            
+            # Check Consul
+            echo "Consul Status:"
+            if systemctl is-active --quiet consul; then
+              echo "✓ Consul service is running"
+              consul version
+              echo ""
+              echo "Consul Members:"
+              consul members
+            else
+              echo "✗ Consul service is not running"
+              systemctl status consul --no-pager || true
+            fi
+            
+            echo ""
+            echo "---"
+            echo ""
+            
+            # Check Nomad
+            echo "Nomad Status:"
+            if systemctl is-active --quiet nomad; then
+              echo "✓ Nomad service is running"
+              nomad version
+              echo ""
+              echo "Nomad Server Members:"
+              nomad server members
+              echo ""
+              echo "Nomad Nodes:"
+              nomad node status
+            else
+              echo "✗ Nomad service is not running"
+              systemctl status nomad --no-pager || true
+            fi
+            
+            echo ""
+            echo "---"
+            echo ""
+            
+            # Check nginx
+            echo "Nginx Status:"
+            if systemctl is-active --quiet nginx; then
+              echo "✓ Nginx is still running (preserved)"
+            else
+              echo "⚠ Nginx is not running"
+            fi
+            
+            echo ""
+            echo "---"
+            echo ""
+            
+            # Check Docker
+            echo "Docker Status:"
+            if command -v docker &> /dev/null; then
+              echo "✓ Docker is still installed (for Nomad jobs)"
+              docker --version
+              echo "Containers: $(docker ps -aq | wc -l)"
+              echo "Images: $(docker images -q | wc -l)"
+              echo "Volumes: $(docker volume ls -q | wc -l)"
+            else
+              echo "⚠ Docker not found"
+            fi
+            
+            echo ""
+            echo "---"
+            echo ""
+            
+            # Network connectivity check
+            echo "Service Accessibility:"
+            curl -s -o /dev/null -w "Consul UI (8500): %{http_code}\n" http://localhost:8500 || echo "Consul UI: Failed"
+            curl -s -o /dev/null -w "Nomad UI (4646): %{http_code}\n" http://localhost:4646 || echo "Nomad UI: Failed"
+            
+            echo ""
+            echo "========================="
+            echo "Validation Complete"
+
+  cleanup:
+    name: Cleanup Migration Files
+    runs-on: ubuntu-latest
+    needs: post-migration-validation
+    if: always()
+    
+    steps:
+      - name: Clean up migration files
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: 31.42.127.152
+          username: root
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          port: 22
+          continue-on-error: true
+          script: |
+            echo "Cleaning up migration files..."
+            
+            # Remove migration script
+            if [ -f /root/migration/migrate_to_nomad.sh ]; then
+              rm -f /root/migration/migrate_to_nomad.sh
+              echo "✓ Migration script removed"
+            fi
+            
+            # Keep the migration directory for logs
+            echo "Migration logs kept in /root/migration/"
+            
+            echo "✓ Cleanup complete"
+
+  notify:
+    name: Send Notification
+    runs-on: ubuntu-latest
+    needs: [migrate, post-migration-validation]
+    if: always()
+    
+    steps:
+      - name: Prepare summary
+        run: |
+          if [ "${{ needs.migrate.result }}" == "success" ] && [ "${{ needs.post-migration-validation.result }}" == "success" ]; then
+            echo "STATUS=✅ Success" >> $GITHUB_ENV
+            echo "MESSAGE=Migration to Nomad completed successfully!" >> $GITHUB_ENV
+          elif [ "${{ needs.migrate.result }}" == "failure" ]; then
+            echo "STATUS=❌ Failed" >> $GITHUB_ENV
+            echo "MESSAGE=Migration failed during execution" >> $GITHUB_ENV
+          elif [ "${{ needs.post-migration-validation.result }}" == "failure" ]; then
+            echo "STATUS=⚠️ Warning" >> $GITHUB_ENV
+            echo "MESSAGE=Migration completed but validation found issues" >> $GITHUB_ENV
+          else
+            echo "STATUS=⚠️ Unknown" >> $GITHUB_ENV
+            echo "MESSAGE=Migration status unknown" >> $GITHUB_ENV
+          fi
+      
+      - name: Create summary
+        run: |
+          cat >> $GITHUB_STEP_SUMMARY << EOF
+          # Migration to Nomad Infrastructure
+          
+          ## Status: ${{ env.STATUS }}
+          
+          ${{ env.MESSAGE }}
+          
+          ### Details
+          - **Server**: 31.42.127.152
+          - **Migration Time**: $(date)
+          - **Backup Created**: ${{ github.event.inputs.backup }}
+          
+          ### Access Points
+          - Consul UI: http://31.42.127.152:8500
+          - Nomad UI: http://31.42.127.152:4646
+          
+          ### Next Steps
+          1. Verify services are accessible
+          2. Deploy test job to Nomad
+          3. Configure nginx reverse proxy for UI access
+          4. Set up monitoring and alerting
+          EOF
