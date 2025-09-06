@@ -1,0 +1,126 @@
+name: Fix Nomad and Consul Services
+
+on:
+  workflow_dispatch:
+
+jobs:
+  fix-services:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Fix Consul and Nomad Services
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: 31.42.127.152
+          username: root
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            # Create script on server
+            cat > /tmp/fix_consul.sh << 'SCRIPT_END'
+            ${{ github.workspace }}/scripts/fix_consul.sh | sed 's/\r$//'
+            SCRIPT_END
+            
+            # Or directly execute commands
+            echo "=== Fixing Services ==="
+            
+            # Stop any existing Consul processes
+            pkill consul || true
+            systemctl stop consul || true
+            
+            # Fix Consul config
+            mkdir -p /etc/consul.d
+            cat > /etc/consul.d/consul.hcl << EOF
+            datacenter = "dc1"
+            data_dir = "/opt/consul"
+            log_level = "INFO"
+            node_name = "server-1"
+            server = true
+            bootstrap_expect = 1
+            ui_config {
+              enabled = true
+            }
+            
+            bind_addr = "0.0.0.0"
+            client_addr = "0.0.0.0"
+            
+            ports {
+              http = 8500
+            }
+            EOF
+            
+            # Create data dir
+            mkdir -p /opt/consul
+            chown -R consul:consul /opt/consul || true
+            
+            # Start Consul in dev mode (simpler for single node)
+            echo "Starting Consul in dev mode..."
+            nohup consul agent -dev -ui -client=0.0.0.0 > /var/log/consul.log 2>&1 &
+            sleep 5
+            
+            # Check if Consul is running
+            if curl -s http://localhost:8500/v1/status/leader > /dev/null; then
+              echo "✓ Consul is running"
+            else
+              echo "✗ Consul failed to start"
+              tail -50 /var/log/consul.log
+            fi
+            
+            # Fix and start Nomad
+            echo ""
+            echo "Starting Nomad..."
+            
+            # Create Nomad config
+            mkdir -p /etc/nomad.d
+            cat > /etc/nomad.d/nomad.hcl << EOF
+            datacenter = "dc1"
+            data_dir = "/opt/nomad"
+            
+            server {
+              enabled = true
+              bootstrap_expect = 1
+            }
+            
+            client {
+              enabled = true
+              servers = ["127.0.0.1"]
+            }
+            
+            plugin "docker" {
+              config {
+                allow_privileged = true
+              }
+            }
+            
+            ui {
+              enabled = true
+            }
+            
+            bind_addr = "0.0.0.0"
+            EOF
+            
+            # Create data dir
+            mkdir -p /opt/nomad
+            
+            # Start Nomad in dev mode
+            nohup nomad agent -dev -bind=0.0.0.0 -consul-address=127.0.0.1:8500 > /var/log/nomad.log 2>&1 &
+            sleep 5
+            
+            # Check if Nomad is running
+            if curl -s http://localhost:4646/v1/status/leader > /dev/null; then
+              echo "✓ Nomad is running"
+            else
+              echo "✗ Nomad failed to start"
+              tail -50 /var/log/nomad.log
+            fi
+            
+            echo ""
+            echo "=== Service Status ==="
+            ps aux | grep -E "(consul|nomad)" | grep -v grep
+            
+            echo ""
+            echo "=== Access URLs ==="
+            echo "Consul UI: http://31.42.127.152:8500"
+            echo "Nomad UI: http://31.42.127.152:4646"
