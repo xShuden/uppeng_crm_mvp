@@ -1,0 +1,118 @@
+name: Check Service Status
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check-status:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check All Services
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: 31.42.127.152
+          username: root
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            echo "==================================="
+            echo "    SYSTEM SERVICE STATUS CHECK    "
+            echo "==================================="
+            
+            echo ""
+            echo "1. CHECKING PROCESSES:"
+            echo "----------------------"
+            ps aux | grep -E "(consul|nomad)" | grep -v grep || echo "No consul/nomad processes found"
+            
+            echo ""
+            echo "2. CHECKING SYSTEMD SERVICES:"
+            echo "------------------------------"
+            systemctl status consul --no-pager || echo "Consul service not found"
+            echo ""
+            systemctl status nomad --no-pager || echo "Nomad service not found"
+            
+            echo ""
+            echo "3. CHECKING PORTS:"
+            echo "------------------"
+            netstat -tulpn | grep -E "(8500|8600|8301|8302|4646|4647|4648)" || echo "No Nomad/Consul ports open"
+            
+            echo ""
+            echo "4. CHECKING DOCKER:"
+            echo "-------------------"
+            docker ps -a
+            
+            echo ""
+            echo "5. CHECKING LOGS:"
+            echo "-----------------"
+            if [ -f /var/log/consul.log ]; then
+              echo "Last 20 lines of Consul log:"
+              tail -20 /var/log/consul.log
+            else
+              echo "No Consul log file found"
+            fi
+            
+            echo ""
+            if [ -f /var/log/nomad.log ]; then
+              echo "Last 20 lines of Nomad log:"
+              tail -20 /var/log/nomad.log
+            else
+              echo "No Nomad log file found"
+            fi
+            
+            echo ""
+            echo "6. INSTALLED PACKAGES:"
+            echo "----------------------"
+            which consul && consul version || echo "Consul not installed"
+            echo ""
+            which nomad && nomad version || echo "Nomad not installed"
+            
+            echo ""
+            echo "7. TRYING TO START SERVICES:"
+            echo "-----------------------------"
+            
+            # Kill any existing processes
+            pkill -9 consul 2>/dev/null || true
+            pkill -9 nomad 2>/dev/null || true
+            sleep 2
+            
+            # Try to start Consul
+            echo "Starting Consul in dev mode..."
+            nohup consul agent -dev -ui -client=0.0.0.0 > /tmp/consul.log 2>&1 &
+            sleep 5
+            
+            if pgrep consul > /dev/null; then
+              echo "✓ Consul started successfully"
+              echo "Consul PID: $(pgrep consul)"
+            else
+              echo "✗ Failed to start Consul"
+              cat /tmp/consul.log
+            fi
+            
+            # Try to start Nomad
+            echo ""
+            echo "Starting Nomad in dev mode..."
+            nohup nomad agent -dev -bind=0.0.0.0 > /tmp/nomad.log 2>&1 &
+            sleep 5
+            
+            if pgrep nomad > /dev/null; then
+              echo "✓ Nomad started successfully"
+              echo "Nomad PID: $(pgrep nomad)"
+            else
+              echo "✗ Failed to start Nomad"
+              cat /tmp/nomad.log
+            fi
+            
+            echo ""
+            echo "8. FINAL STATUS:"
+            echo "----------------"
+            ps aux | grep -E "(consul|nomad)" | grep -v grep
+            
+            echo ""
+            echo "9. NETWORK STATUS:"
+            echo "------------------"
+            ss -tulpn | grep -E "(8500|4646)" || netstat -tulpn | grep -E "(8500|4646)"
+            
+            echo ""
+            echo "10. FIREWALL STATUS:"
+            echo "--------------------"
+            ufw status || iptables -L -n | head -20
