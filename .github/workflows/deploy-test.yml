@@ -77,13 +77,24 @@ jobs:
             docker stop $SERVICE_NAME 2>/dev/null || true
             docker rm $SERVICE_NAME 2>/dev/null || true
             
-            # Run new container
+            # Run new container (detached with no health check)
             echo "📦 Starting new container..."
             docker run -d \
               --name $SERVICE_NAME \
               --restart unless-stopped \
+              --no-healthcheck \
               -p 3000:3000 \
               $IMAGE_TAG
+            
+            # Verify container is running
+            sleep 5
+            if docker ps | grep -q $SERVICE_NAME; then
+              echo "✅ Container started successfully"
+            else
+              echo "❌ Container failed to start"
+              docker logs $SERVICE_NAME
+              exit 1
+            fi
             
             echo "✅ CRM Frontend deployment completed!"
 
