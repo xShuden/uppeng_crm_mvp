@@ -72,16 +72,10 @@ jobs:
             echo "📥 Pulling new image: $IMAGE_TAG"
             docker pull $IMAGE_TAG
             
-            # Force cleanup of any existing services
-            echo "🗑️ Cleaning up existing services..."
+            # Remove old service if exists
+            echo "🗑️ Removing old service if exists..."
             docker service rm $SERVICE_NAME 2>/dev/null || true
-            sleep 15
-            
-            # Wait until service is completely removed
-            while docker service ls | grep -q $SERVICE_NAME 2>/dev/null; do
-              echo "⏳ Waiting for service removal..."
-              sleep 5
-            done
+            sleep 5
             
             # Create new service
             echo "📦 Creating new service..."
