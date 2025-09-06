@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  frontend:
+    image: ghcr.io/xshuden/uppeng-crm-frontend:${IMAGE_TAG:-latest}
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: rollback
+        monitor: 30s
+        max_failure_ratio: 0.3
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=web"
+        - "traefik.http.routers.crm-frontend.rule=Host(`test-8xpm.uppeng.co`)"
+        - "traefik.http.routers.crm-frontend.entrypoints=websecure"
+        - "traefik.http.routers.crm-frontend.tls=true"
+        - "traefik.http.services.crm-frontend.loadbalancer.server.port=3000"
+    networks:
+      - web
+      - internal
+    ports:
+      - target: 3000
+        published: 3000
+        protocol: tcp
+        mode: ingress
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+
+networks:
+  web:
+    driver: overlay
+    attachable: true
+    external: true
+  internal:
+    driver: overlay
+    attachable: true
+
+configs:
+  nginx-config:
+    file: ./frontend/nginx.conf
+    
+secrets:
+  ssl-cert:
+    file: ./cert/cert.pem
+  ssl-key:
+    file: ./cert/key.pem

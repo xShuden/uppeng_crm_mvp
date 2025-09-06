@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  frontend:
+    image: ghcr.io/xshuden/uppeng-crm-frontend:latest
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+    ports:
+      - "3000:3000"
+    networks:
+      - crm-network
+    environment:
+      - NODE_ENV=production
+
+networks:
+  crm-network:
+    driver: overlay
+    attachable: true

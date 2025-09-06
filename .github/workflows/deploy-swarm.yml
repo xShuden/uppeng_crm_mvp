@@ -1,0 +1,201 @@
+name: Deploy to Docker Swarm
+
+on:
+  push:
+    branches: [master, main]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'test'
+        type: choice
+        options:
+          - test
+          - production
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: xshuden/uppeng-crm-frontend
+  STACK_NAME: crm-stack
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      image-tag: ${{ steps.meta.outputs.tags }}
+      image-digest: ${{ steps.build.outputs.digest }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+            
+      - name: Build and push Docker image
+        id: build
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            BUILDKIT_INLINE_CACHE=1
+            
+  deploy-to-swarm:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ github.event.inputs.environment || 'test' }}
+      url: https://test-8xpm.uppeng.co
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Prepare stack file
+        run: |
+          # Replace image tag in compose file
+          export IMAGE_TAG="${{ github.sha }}"
+          envsubst < docker-compose.swarm.yml > docker-stack.yml
+          
+          # Show the stack file for debugging
+          echo "=== Stack Configuration ==="
+          cat docker-stack.yml
+          
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H 31.42.127.152 >> ~/.ssh/known_hosts
+          
+      - name: Create Docker network if not exists
+        run: |
+          ssh -i ~/.ssh/deploy_key root@31.42.127.152 \
+            "docker network create --driver overlay --attachable web 2>/dev/null || true"
+            
+      - name: Login to registry on remote
+        run: |
+          ssh -i ~/.ssh/deploy_key root@31.42.127.152 \
+            "echo '${{ secrets.GITHUB_TOKEN }}' | docker login ghcr.io -u ${{ github.actor }} --password-stdin"
+            
+      - name: Copy stack file to server
+        run: |
+          scp -i ~/.ssh/deploy_key docker-stack.yml root@31.42.127.152:/tmp/docker-stack.yml
+          
+      - name: Deploy stack
+        run: |
+          ssh -i ~/.ssh/deploy_key root@31.42.127.152 << 'EOF'
+            set -e
+            
+            # Pull the latest image
+            docker pull ghcr.io/xshuden/uppeng-crm-frontend:${{ github.sha }}
+            
+            # Deploy or update the stack
+            docker stack deploy \
+              --compose-file /tmp/docker-stack.yml \
+              --with-registry-auth \
+              --prune \
+              ${{ env.STACK_NAME }}
+              
+            echo "✅ Stack deployed successfully!"
+            
+            # Wait for services to be ready
+            echo "⏳ Waiting for services to stabilize..."
+            sleep 30
+            
+            # Show service status
+            echo "=== Service Status ==="
+            docker stack services ${{ env.STACK_NAME }}
+            
+            echo "=== Running Tasks ==="
+            docker stack ps ${{ env.STACK_NAME }} --no-trunc
+          EOF
+          
+      - name: Verify deployment
+        run: |
+          ssh -i ~/.ssh/deploy_key root@31.42.127.152 << 'EOF'
+            set -e
+            
+            # Check if service is running
+            SERVICE_NAME="${{ env.STACK_NAME }}_frontend"
+            
+            echo "🔍 Checking service health..."
+            REPLICAS=$(docker service ls --filter name=$SERVICE_NAME --format "{{.Replicas}}")
+            echo "Service replicas: $REPLICAS"
+            
+            # Get service logs
+            echo "=== Recent Service Logs ==="
+            docker service logs $SERVICE_NAME --tail 50 2>&1 || true
+            
+            # Test internal connectivity
+            echo "=== Testing Internal Health ==="
+            docker run --rm --network web alpine wget -qO- http://frontend:3000/ > /dev/null 2>&1 && \
+              echo "✅ Internal health check passed" || \
+              echo "⚠️ Internal health check failed"
+          EOF
+          
+      - name: Health check
+        run: |
+          echo "🔍 Testing external connectivity..."
+          MAX_ATTEMPTS=6
+          ATTEMPT=1
+          
+          while [ $ATTEMPT -le $MAX_ATTEMPTS ]; do
+            echo "Attempt $ATTEMPT/$MAX_ATTEMPTS..."
+            
+            if curl -f -s -o /dev/null -w "%{http_code}" https://test-8xpm.uppeng.co | grep -q "200\|301\|302"; then
+              echo "✅ External health check passed!"
+              break
+            else
+              echo "⏳ Service not ready yet, waiting..."
+              sleep 30
+              ATTEMPT=$((ATTEMPT + 1))
+            fi
+          done
+          
+          if [ $ATTEMPT -gt $MAX_ATTEMPTS ]; then
+            echo "⚠️ External health check failed after $MAX_ATTEMPTS attempts"
+            exit 1
+          fi
+          
+      - name: Deployment summary
+        if: always()
+        run: |
+          echo "========================================"
+          echo "🚀 Docker Swarm Deployment Summary"
+          echo "========================================"
+          echo "📦 Image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
+          echo "🎯 Environment: ${{ github.event.inputs.environment || 'test' }}"
+          echo "🐳 Stack: ${{ env.STACK_NAME }}"
+          echo "🔧 Replicas: 2"
+          echo "🌐 URL: https://test-8xpm.uppeng.co"
+          echo "📊 Monitoring: https://test-8xpm.uppeng.co:9443 (Portainer)"
+          echo "========================================"

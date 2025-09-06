@@ -1,0 +1,122 @@
+name: Production Deployment
+
+on:
+  push:
+    branches: [master, main]
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: xshuden/uppeng-crm-frontend
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      
+    steps:
+      # 1. Checkout code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      # 2. Setup Docker Buildx for multi-platform builds
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        
+      # 3. Login to GitHub Container Registry
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          
+      # 4. Build and push Docker image
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          platforms: linux/amd64
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          
+      # 5. Deploy to Docker Swarm
+      - name: Deploy to Server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: 31.42.127.152
+          username: root
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            # Login to registry
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            
+            # Initialize swarm if not already initialized
+            docker swarm init 2>/dev/null || true
+            
+            # Create network if not exists
+            docker network create --driver overlay crm-network 2>/dev/null || true
+            
+            # Pull latest image
+            docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            
+            # Create or update service
+            if docker service ls | grep -q crm-frontend; then
+              echo "Updating existing service..."
+              docker service update \
+                --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest \
+                --force \
+                crm-frontend
+            else
+              echo "Creating new service..."
+              docker service create \
+                --name crm-frontend \
+                --replicas 2 \
+                --publish 3000:3000 \
+                --network crm-network \
+                --restart-condition on-failure \
+                --restart-max-attempts 3 \
+                ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            fi
+            
+            # Wait for service to be ready
+            sleep 20
+            
+            # Show service status
+            docker service ls | grep crm-frontend
+            docker service ps crm-frontend --no-trunc
+            
+      # 6. Verify deployment
+      - name: Verify Deployment
+        run: |
+          echo "Waiting for service to be ready..."
+          sleep 30
+          
+          # Test with curl
+          response=$(curl -s -o /dev/null -w "%{http_code}" https://test-8xpm.uppeng.co || echo "000")
+          
+          if [[ "$response" == "200" ]] || [[ "$response" == "301" ]] || [[ "$response" == "302" ]]; then
+            echo "✅ Deployment successful! HTTP Status: $response"
+          else
+            echo "❌ Deployment verification failed. HTTP Status: $response"
+            exit 1
+          fi
+          
+      # 7. Summary
+      - name: Deployment Summary
+        if: always()
+        run: |
+          echo "========================================"
+          echo "🚀 Deployment Summary"
+          echo "========================================"
+          echo "📦 Image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest"
+          echo "🏷️ Version: ${{ github.sha }}"
+          echo "🌐 URL: https://test-8xpm.uppeng.co"
+          echo "📊 Portainer: https://31.42.127.152:9443"
+          echo "========================================"
