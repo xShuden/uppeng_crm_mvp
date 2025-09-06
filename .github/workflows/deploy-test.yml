@@ -53,50 +53,15 @@ jobs:
           host: 31.42.127.152
           username: root
           key: ${{ secrets.DEPLOY_SSH_KEY }}
-          command_timeout: 20m
+          command_timeout: 5m
           script: |
-            IMAGE_TAG="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
-            SERVICE_NAME="uppeng-crm-frontend"
-            
-            echo "🚀 Deploying $IMAGE_TAG to TEST environment..."
-            
-            # Login to registry
-            echo "🔐 Logging in to GitHub Container Registry..."
+            set -e
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            
-            # Clean up old images
-            echo "🧹 Cleaning up old images..."
-            docker image prune -f || true
-            
-            # Pull new image
-            echo "📥 Pulling new image: $IMAGE_TAG"
-            docker pull $IMAGE_TAG
-            
-            # Stop and remove old container if exists
-            echo "🗑️ Stopping old container if exists..."
-            docker stop $SERVICE_NAME 2>/dev/null || true
-            docker rm $SERVICE_NAME 2>/dev/null || true
-            
-            # Run new container (detached with no health check)
-            echo "📦 Starting new container..."
-            docker run -d \
-              --name $SERVICE_NAME \
-              --restart unless-stopped \
-              --no-healthcheck \
-              -p 3000:3000 \
-              $IMAGE_TAG
-            
-            # Verify container is running
-            sleep 5
-            if docker ps | grep -q $SERVICE_NAME; then
-              echo "✅ Container started successfully"
-            else
-              echo "❌ Container failed to start"
-              docker logs $SERVICE_NAME
-              exit 1
-            fi
-            
-            echo "✅ CRM Frontend deployment completed!"
+            docker stop uppeng-crm-frontend || true
+            docker rm uppeng-crm-frontend || true
+            docker pull ghcr.io/xshuden/uppeng-crm-frontend:latest
+            docker run -d --name uppeng-crm-frontend --restart unless-stopped -p 3000:3000 ghcr.io/xshuden/uppeng-crm-frontend:latest
+            echo "Done!"
 
       - name: Verify Deployment
         uses: appleboy/ssh-action@v1.0.0
