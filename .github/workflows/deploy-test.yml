@@ -72,19 +72,17 @@ jobs:
             echo "📥 Pulling new image: $IMAGE_TAG"
             docker pull $IMAGE_TAG
             
-            # Remove old service if exists
-            echo "🗑️ Removing old service if exists..."
-            docker service rm $SERVICE_NAME 2>/dev/null || true
-            sleep 5
+            # Stop and remove old container if exists
+            echo "🗑️ Stopping old container if exists..."
+            docker stop $SERVICE_NAME 2>/dev/null || true
+            docker rm $SERVICE_NAME 2>/dev/null || true
             
-            # Create new service
-            echo "📦 Creating new service..."
-            docker service create \
+            # Run new container
+            echo "📦 Starting new container..."
+            docker run -d \
               --name $SERVICE_NAME \
-              --publish 3000:3000 \
-              --replicas 1 \
-              --restart-condition any \
-              --restart-max-attempts 3 \
+              --restart unless-stopped \
+              -p 3000:3000 \
               $IMAGE_TAG
             
             echo "✅ CRM Frontend deployment completed!"
@@ -101,16 +99,12 @@ jobs:
             
             SERVICE_NAME="uppeng-crm-frontend"
             
-            echo "=== DOCKER SERVICES ==="
-            docker service ls
-            
-            echo ""
             echo "=== RUNNING CONTAINERS ==="  
             docker ps --filter "name=$SERVICE_NAME"
             
             echo ""
-            echo "=== SERVICE LOGS (last 20 lines) ==="
-            docker service logs --tail 20 $SERVICE_NAME 2>/dev/null || echo "Logs not available yet"
+            echo "=== CONTAINER LOGS (last 20 lines) ==="
+            docker logs --tail 20 $SERVICE_NAME 2>/dev/null || echo "Logs not available yet"
 
       - name: Health Check
         run: |
